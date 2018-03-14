@@ -76,12 +76,12 @@ CREATE TABLE usuarios
     id          bigserial       PRIMARY KEY
   , nom_usuario varchar(255)    NOT NULL UNIQUE
   , password    varchar(255)    NOT NULL
-  , nombre      varchar(255)    NOT NULL
-  , apellidos   varchar(255)    NOT NULL
-  , nif         char(10)        NOT NULL UNIQUE
+  , nombre      varchar(255)
+  , apellidos   varchar(255)
+  , nif         char(10)        UNIQUE
   , direccion   varchar(255)
-  , email       varchar(255)    NOT NULL UNIQUE
-  , tel_movil   numeric(9)      NOT NULL UNIQUE
+  , email       varchar(255)    UNIQUE
+  , tel_movil   numeric(9)      UNIQUE
   , rol         char(1)         NOT NULL
 );
 
