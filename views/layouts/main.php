@@ -43,9 +43,16 @@ AppAsset::register($this);
         ['label' => 'Contact', 'url' => ['/site/contact']],
     ];
     if (!Yii::$app->user->isGuest) {
-        if (Usuarios::find()->where(['id'=>Yii::$app->user->id])->one()->rol === 'A') {
-            $items[] = ['label' => 'Dar de alta colegio', 'url' => ['/colegios/create']];
-        };
+        $us = Usuarios::find()->where(['id'=>Yii::$app->user->id])->one();
+        if ($us->rol !== 'P') {
+            if ($us->rol !== 'V') {
+                $items[] = ['label' => 'Usuarios', 'url' => ['/usuarios/index']];
+                if ($us->rol === 'A') {
+                    $items[] = ['label' => 'Dar de alta colegio', 'url' => ['/colegios/create']];
+                }
+            }
+            $items[] = ['label' => 'Colegios', 'url' => ['/colegios/index']];
+        }
     }
     $items[] = Yii::$app->user->isGuest ? (
         ['label' => 'Login', 'url' => ['/site/login']]
