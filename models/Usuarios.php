@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "usuarios".
@@ -22,7 +23,7 @@ use Yii;
  * @property Facturas[] $facturas
  * @property Sms[] $sms
  */
-class Usuarios extends \yii\db\ActiveRecord
+class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
 {
     /**
      * {@inheritdoc}
@@ -91,5 +92,29 @@ class Usuarios extends \yii\db\ActiveRecord
     public function getSms()
     {
         return $this->hasMany(Sms::className(), ['receptor_id' => 'id'])->inverseOf('receptor');
+    }
+
+    public static function findIdentity($id)
+    {
+        return self::findOne($id);
+    }
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+    }
+    public function getId()
+    {
+        return $this->id;
+    }
+    public function getAuthKey()
+    {
+        // return $this->auth_key;
+    }
+    public function validateAuthKey($authKey)
+    {
+        // return $this->getAuthKey() === $authKey;
+    }
+    public function validatePassword($password)
+    {
+        return Yii::$app->security->validatePassword($password, $this->password);
     }
 }
