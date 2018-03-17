@@ -3,7 +3,6 @@
 namespace app\models;
 
 use Yii;
-use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "usuarios".
@@ -18,12 +17,14 @@ use yii\web\IdentityInterface;
  * @property string $email
  * @property string $tel_movil
  * @property string $rol
+ * @property int $colegio_id
  *
  * @property Correos[] $correos
  * @property Facturas[] $facturas
  * @property Sms[] $sms
+ * @property Colegios $colegio
  */
-class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
+class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     /**
      * {@inheritdoc}
@@ -39,15 +40,18 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['nom_usuario', 'password', 'nombre', 'apellidos', 'nif', 'email', 'tel_movil', 'rol'], 'required'],
+            [['nom_usuario', 'password', 'rol'], 'required'],
             [['tel_movil'], 'number'],
+            [['colegio_id'], 'default', 'value' => null],
+            [['colegio_id'], 'integer'],
             [['nom_usuario', 'password', 'nombre', 'apellidos', 'direccion', 'email'], 'string', 'max' => 255],
-            [['nif'], 'string', 'max' => 10],
+            [['nif'], 'string', 'max' => 9],
             [['rol'], 'string', 'max' => 1],
             [['email'], 'unique'],
             [['nif'], 'unique'],
             [['nom_usuario'], 'unique'],
             [['tel_movil'], 'unique'],
+            [['colegio_id'], 'exist', 'skipOnError' => true, 'targetClass' => Colegios::className(), 'targetAttribute' => ['colegio_id' => 'id']],
         ];
     }
 
@@ -67,6 +71,7 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
             'email' => 'Email',
             'tel_movil' => 'Tel Movil',
             'rol' => 'Rol',
+            'colegio_id' => 'Colegio ID',
         ];
     }
 
@@ -94,6 +99,13 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->hasMany(Sms::className(), ['receptor_id' => 'id'])->inverseOf('receptor');
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getColegio()
+    {
+        return $this->hasOne(Colegios::className(), ['id' => 'colegio_id'])->inverseOf('usuarios');
+    }
     public static function findIdentity($id)
     {
         return self::findOne($id);
@@ -116,5 +128,17 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
     public function validatePassword($password)
     {
         return Yii::$app->security->validatePassword($password, $this->password);
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($insert) {
+                // $this->auth_key = Yii::$app->security->generateRandomString();
+                $this->password = Yii::$app->security->generatePasswordHash($this->password);
+            }
+            return true;
+        }
+        return false;
     }
 }

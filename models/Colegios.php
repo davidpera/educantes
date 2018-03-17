@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use Yii;
-
 /**
  * This is the model class for table "colegios".
  *
@@ -18,6 +16,7 @@ use Yii;
  * @property Correos[] $correos
  * @property Libros[] $libros
  * @property Sms[] $sms
+ * @property Usuarios[] $usuarios
  */
 class Colegios extends \yii\db\ActiveRecord
 {
@@ -37,7 +36,8 @@ class Colegios extends \yii\db\ActiveRecord
         return [
             [['cif', 'nombre', 'email', 'cod_postal', 'direccion'], 'required'],
             [['cod_postal'], 'number'],
-            [['cif', 'nombre', 'email', 'direccion'], 'string', 'max' => 255],
+            [['cif'], 'string', 'max' => 9],
+            [['nombre', 'email', 'direccion'], 'string', 'max' => 255],
             [['cif'], 'unique'],
             [['email'], 'unique'],
             [['nombre'], 'unique'],
@@ -52,7 +52,7 @@ class Colegios extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'cif' => 'Cif',
-            'nombre' => 'Nombre',
+            'nombre' => 'Colegio',
             'email' => 'Email',
             'cod_postal' => 'Cod Postal',
             'direccion' => 'Direccion',
@@ -89,5 +89,13 @@ class Colegios extends \yii\db\ActiveRecord
     public function getSms()
     {
         return $this->hasMany(Sms::className(), ['emisario_id' => 'id'])->inverseOf('emisario');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsuarios()
+    {
+        return $this->hasMany(Usuarios::className(), ['colegio_id' => 'id'])->inverseOf('colegio');
     }
 }
