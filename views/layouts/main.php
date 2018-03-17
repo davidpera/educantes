@@ -45,10 +45,13 @@ AppAsset::register($this);
     if (!Yii::$app->user->isGuest) {
         $us = Usuarios::find()->where(['id'=>Yii::$app->user->id])->one();
         if ($us->rol !== 'P') {
+            if ($us->rol !== 'V') {
+                $items[] = ['label' => 'Usuarios', 'url' => ['/usuarios/index']];
+                if ($us->rol === 'A') {
+                    $items[] = ['label' => 'Dar de alta colegio', 'url' => ['/colegios/create']];
+                }
+            }
             $items[] = ['label' => 'Colegios', 'url' => ['/colegios/index']];
-            if ($us->rol === 'A') {
-                $items[] = ['label' => 'Dar de alta colegio', 'url' => ['/colegios/create']];
-            };
         }
     }
     $items[] = Yii::$app->user->isGuest ? (

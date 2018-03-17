@@ -45,7 +45,8 @@ class UsuariosController extends Controller
      */
     public function actionIndex()
     {
-        if (Usuarios::find()->where(['id' => Yii::$app->user->id])->one()->rol !== 'A') {
+        $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
+        if ($us->rol !== 'A' && $us->rol !== 'C') {
             return $this->goHome();
         }
         $searchModel = new UsuariosSearch();
@@ -103,6 +104,9 @@ class UsuariosController extends Controller
      */
     public function actionCreate()
     {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
         $model = new Usuarios();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
