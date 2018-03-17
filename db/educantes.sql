@@ -14,6 +14,8 @@ CREATE TABLE uniformes
   , IVA         numeric(3)      NOT NULL
   , ubicacion   varchar(255)
   , cantidad    numeric(10)     NOT NULL
+  , colegio_id  bigint          NOT NULL REFERENCES colegios (id)
+                                ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS secstocks CASCADE;
@@ -34,7 +36,7 @@ DROP TABLE IF EXISTS colegios CASCADE;
 CREATE TABLE colegios
 (
     id          bigserial       PRIMARY KEY
-  , cif         varchar(255)    NOT NULL UNIQUE
+  , cif         char(9)         NOT NULL UNIQUE
   , nombre      varchar(255)    NOT NULL UNIQUE
   , email       varchar(255)    NOT NULL UNIQUE
   , cod_postal  numeric(5)      NOT NULL
@@ -78,11 +80,13 @@ CREATE TABLE usuarios
   , password    varchar(255)    NOT NULL
   , nombre      varchar(255)
   , apellidos   varchar(255)
-  , nif         char(10)        UNIQUE
+  , nif         char(9)        UNIQUE
   , direccion   varchar(255)
   , email       varchar(255)    UNIQUE
   , tel_movil   numeric(9)      UNIQUE
   , rol         char(1)         NOT NULL
+  , colegio_id  bigint          REFERENCES colegios (id)
+                                ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS sms CASCADE;
@@ -131,3 +135,10 @@ CREATE TABLE detalles
   , cantidad        numeric(10)     NOT NULL
   , PRIMARY KEY (num_detalle, factura_id)
 );
+
+INSERT INTO colegios (cif, nombre, email, cod_postal, direccion)
+        VALUES  ('A12345678','Educantes Sanlucar','educantes.sanlucar@educantes.es',11540,'C/Urano nº 6');
+
+INSERT INTO usuarios (nom_usuario, password, rol, colegio_id)
+        VALUES  ('pepe', crypt('pepe', gen_salt('bf', 13)), 'A', null),
+                ('juan', crypt('juan', gen_salt('bf', 13)), 'C', 1);
