@@ -60,6 +60,22 @@ AppAsset::register($this);
                             ['label' => 'Ver uniformes', 'url' => ['uniformes/index']],
                         ],
                     ];
+                    $items[] = [
+                        'label' => 'Libros',
+                        'items' => [
+                            ['label' => 'Crear libro', 'url' => ['libros/create']],
+                            '<li class="divider"></li>',
+                            ['label' => 'Ver libros', 'url' => ['libros/index']],
+                        ],
+                    ];
+                    $items[] = [
+                        'label' => 'Alumnos',
+                        'items' => [
+                            ['label' => 'Crear Alumno', 'url' => ['alumnos/create']],
+                            '<li class="divider"></li>',
+                            ['label' => 'Ver alumnos', 'url' => ['alumnos/index']],
+                        ],
+                    ];
                 }
             }
             $items2[] = ['label' => 'Datos colegios', 'url' => ['/colegios/index']];

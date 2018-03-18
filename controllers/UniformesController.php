@@ -132,6 +132,10 @@ class UniformesController extends Controller
      */
     public function actionDelete($id)
     {
+        $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
+        if ($us->rol !== 'A' && $us->rol !== 'C') {
+            return $this->goHome();
+        }
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
