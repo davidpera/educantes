@@ -2,12 +2,13 @@
 
 namespace app\controllers;
 
-use Yii;
 use app\models\Alumnos;
 use app\models\AlumnosSearch;
+use app\models\Usuarios;
+use Yii;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * AlumnosController implements the CRUD actions for Alumnos model.
@@ -26,6 +27,16 @@ class AlumnosController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'only' => ['index', 'create', 'update', 'view'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -35,6 +46,10 @@ class AlumnosController extends Controller
      */
     public function actionIndex()
     {
+        $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
+        if ($us->rol !== 'A' && $us->rol !== 'C') {
+            return $this->goHome();
+        }
         $searchModel = new AlumnosSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -46,12 +61,16 @@ class AlumnosController extends Controller
 
     /**
      * Displays a single Alumnos model.
-     * @param integer $id
+     * @param int $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
+        $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
+        if ($us->rol !== 'A' && $us->rol !== 'C') {
+            return $this->goHome();
+        }
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -64,7 +83,12 @@ class AlumnosController extends Controller
      */
     public function actionCreate()
     {
+        $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
+        if ($us->rol !== 'C') {
+            return $this->goHome();
+        }
         $model = new Alumnos();
+        $model->colegio_id = $us->colegio_id;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -78,12 +102,16 @@ class AlumnosController extends Controller
     /**
      * Updates an existing Alumnos model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
+     * @param int $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
+        $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
+        if ($us->rol !== 'A' && $us->rol !== 'C') {
+            return $this->goHome();
+        }
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -98,12 +126,16 @@ class AlumnosController extends Controller
     /**
      * Deletes an existing Alumnos model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
+     * @param int $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
     {
+        $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
+        if ($us->rol !== 'A' && $us->rol !== 'C') {
+            return $this->goHome();
+        }
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -112,7 +144,7 @@ class AlumnosController extends Controller
     /**
      * Finds the Alumnos model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
+     * @param int $id
      * @return Alumnos the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
