@@ -59,10 +59,10 @@ $this->params['breadcrumbs'][] = $this->title;
                            ['rol' => 'P'],
                         ])->one();
                         if ($usv->rol === 'V') {
-                            return Html::a('Dar de baja vendedor', ['usuarios/delete', 'id' => $usv->id], [
+                            return Html::a('Dar de baja vendedor', ['usuarios/delete', 'id' => $model->id], [
                                     'class' => 'btn btn-danger',
                                     'data' => [
-                                        'confirm' => '¿Está seguro de que quiere dar de baja a '.$usv->nom_usuario.'?',
+                                        'confirm' => '¿Está seguro de que quiere dar de baja a '.$model->nom_usuario.'?',
                                         'method' => 'post',
                                     ],
                                 ]);
