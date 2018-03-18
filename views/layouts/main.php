@@ -53,6 +53,7 @@ AppAsset::register($this);
             }
             $items[] = ['label' => 'Colegios', 'url' => ['/colegios/index']];
         }
+        $items[] = ['label' => 'Cambiar datos personales', 'url' => ['/usuarios/update', 'id' => Yii::$app->user->id]];
     }
     $items[] = Yii::$app->user->isGuest ? (
         ['label' => 'Login', 'url' => ['/site/login']]
@@ -66,6 +67,7 @@ AppAsset::register($this);
         . Html::endForm()
         . '</li>'
     );
+
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => $items,
