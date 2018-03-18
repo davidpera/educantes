@@ -30,28 +30,36 @@ $this->params['breadcrumbs'][] = $this->title;
         'cod_postal',
         'direccion',
     ];
-    if (Usuarios::find()->where(['id' => Yii::$app->user->id])->one()->rol === 'A') {
+    $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
+    if ($us->rol === 'A' || $us->rol === 'C') {
         $columnas[] = [
             'class' => 'yii\grid\ActionColumn',
             'template' => '{alta}',
             'buttons' => [
                 'alta' => function($url, $model, $key){
-                    if (Usuarios::find()->where(['colegio_id' => $model->id])->count('*') !== 0) {
-                        $us = Usuarios::find()->where(['colegio_id' => $model->id , 'rol' => 'C'])->one();
-                        return Html::a('Dar de baja admin', ['usuarios/delete', 'id' => $us->id], [
-                                'class' => 'btn btn-danger',
-                                'data' => [
-                                    'confirm' => '¿Está seguro de que quiere dar de baja a '.$us->nom_usuario.'?',
-                                    'method' => 'post',
-                                ],
-                            ]);
-                    } else {
-                        return Html::a('Dar de alta admin', ['usuarios/alta', 'colegio_id' => $model->id],
+                    $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
+                    if ($us->rol === 'A') {
+                        if (Usuarios::find()->where(['colegio_id' => $model->id])->count('*') !== 0) {
+                            $usc = Usuarios::find()->where(['colegio_id' => $model->id , 'rol' => 'C'])->one();
+                            return Html::a('Dar de baja admin', ['usuarios/delete', 'id' => $usc->id], [
+                                    'class' => 'btn btn-danger',
+                                    'data' => [
+                                        'confirm' => '¿Está seguro de que quiere dar de baja a '.$us->nom_usuario.'?',
+                                        'method' => 'post',
+                                    ],
+                                ]);
+                        } else {
+                            return Html::a('Dar de alta admin', ['usuarios/alta', 'colegio_id' => $model->id],
+                                [
+                                    'class' => 'btn btn-primary',
+                                ]);
+                        }
+                    } elseif ($us->rol === 'C' && $us->colegio_id === $model->id) {
+                        return Html::a('Dar de alta Vendedor', ['usuarios/alta', 'colegio_id' => $model->id],
                             [
                                 'class' => 'btn btn-primary',
                             ]);
                     }
-
                 },
             ],
         ];;
