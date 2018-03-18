@@ -46,8 +46,13 @@ class ColegiosController extends Controller
      */
     public function actionIndex()
     {
+        $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
+        if ($us->rol !== 'A' && $us->rol !== 'C') {
+            return $this->goHome();
+        }
         $searchModel = new ColegiosSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
 
         return $this->render('index', [
             'searchModel' => $searchModel,
