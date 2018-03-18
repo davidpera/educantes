@@ -46,26 +46,50 @@ AppAsset::register($this);
         $us = Usuarios::find()->where(['id'=>Yii::$app->user->id])->one();
         if ($us->rol !== 'P') {
             if ($us->rol !== 'V') {
-                $items[] = ['label' => 'Usuarios', 'url' => ['/usuarios/index']];
+                $items[] = ['label' => 'Lista Usuarios', 'url' => ['/usuarios/index']];
                 if ($us->rol === 'A') {
-                    $items[] = ['label' => 'Dar de alta colegio', 'url' => ['/colegios/create']];
+                    $items2 =[
+                        ['label' => 'Dar de alta colegio', 'url' => ['/colegios/create']]
+                    ];
+                } else {
+                    $items[] = [
+                        'label' => 'Uniformes',
+                        'items' => [
+                            ['label' => 'Crear uniforme', 'url' => ['uniformes/create']],
+                            '<li class="divider"></li>',
+                            ['label' => 'Ver uniformes', 'url' => ['uniformes/index']],
+                        ],
+                    ];
                 }
             }
-            $items[] = ['label' => 'Colegios', 'url' => ['/colegios/index']];
+            $items2[] = ['label' => 'Datos colegios', 'url' => ['/colegios/index']];
+            $items[] = [
+                'label' => 'Colegios',
+                'items' => $items2,
+            ];
         }
-        $items[] = ['label' => 'Cambiar datos personales', 'url' => ['/usuarios/update', 'id' => Yii::$app->user->id]];
     }
-    $items[] = Yii::$app->user->isGuest ? (
-        ['label' => 'Login', 'url' => ['/site/login']]
+    Yii::$app->user->isGuest ? (
+        $items[] = [
+            'label' => 'Usuarios',
+            'items' => [
+                ['label' => 'Login', 'url' => ['/site/login']],
+                ['label' => 'Registrarse', 'url' => ['usuarios/create']],
+            ],
+        ]
     ) : (
-        '<li>'
-        . Html::beginForm(['/site/logout'], 'post')
-        . Html::submitButton(
-            'Logout (' . Yii::$app->user->identity->nom_usuario . ')',
-            ['class' => 'btn btn-link logout']
-        )
-        . Html::endForm()
-        . '</li>'
+        $items[] = [
+            'label' => 'Usuarios ('.Yii::$app->user->identity->nom_usuario.')',
+            'items' => [
+                ['label' => 'Modificar datos', 'url' => ['usuarios/update', 'id' => Yii::$app->user->id]],
+                '<li class="divider"></li>',
+                [
+                    'label' => 'Logout',
+                    'url' => ['/site/logout'],
+                    'linkOptions' => ['data-method' => 'POST'],
+                ],
+            ],
+        ]
     );
 
     echo Nav::widget([

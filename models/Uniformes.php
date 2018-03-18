@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use Yii;
-
 /**
  * This is the model class for table "uniformes".
  *
@@ -15,6 +13,7 @@ use Yii;
  * @property string $iva
  * @property string $ubicacion
  * @property string $cantidad
+ * @property int $colegio_id
  *
  * @property Detalles[] $detalles
  * @property Secstocks[] $secstocks
@@ -35,8 +34,10 @@ class Uniformes extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['codigo', 'descripcion', 'talla', 'precio', 'iva', 'cantidad'], 'required'],
+            [['codigo', 'descripcion', 'talla', 'precio', 'iva', 'cantidad', 'colegio_id'], 'required'],
             [['precio', 'iva', 'cantidad'], 'number'],
+            [['colegio_id'], 'default', 'value' => null],
+            [['colegio_id'], 'integer'],
             [['codigo', 'descripcion', 'talla', 'ubicacion'], 'string', 'max' => 255],
             [['codigo'], 'unique'],
         ];
@@ -56,6 +57,7 @@ class Uniformes extends \yii\db\ActiveRecord
             'iva' => 'Iva',
             'ubicacion' => 'Ubicacion',
             'cantidad' => 'Cantidad',
+            'colegio_id' => 'Colegio ID',
         ];
     }
 
@@ -73,5 +75,12 @@ class Uniformes extends \yii\db\ActiveRecord
     public function getSecstocks()
     {
         return $this->hasMany(Secstocks::className(), ['uniforme_id' => 'id'])->inverseOf('uniforme');
+    }
+
+    public function getColegio()
+    {
+        if ($this->colegio_id !== null) {
+            return $this->hasOne(Colegios::className(), ['id' => 'colegio_id'])->inverseOf('usuarios');
+        }
     }
 }
