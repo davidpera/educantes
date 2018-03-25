@@ -2,10 +2,8 @@
 
 namespace app\models;
 
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Alumnos;
 
 /**
  * AlumnosSearch represents the model behind the search form of `app\models\Alumnos`.
@@ -19,7 +17,7 @@ class AlumnosSearch extends Alumnos
     {
         return [
             [['id', 'colegio_id'], 'integer'],
-            [['codigo', 'nombre', 'apellidos', 'fech_nac', 'nom_padre', 'nom_madre'], 'safe'],
+            [['codigo', 'nombre', 'primer_apellido', 'segundo_apellido', 'fecha_de_nacimiento', 'dni_primer_tutor', 'dni_segundo_tutor', 'unidad'], 'safe'],
         ];
     }
 
@@ -33,7 +31,7 @@ class AlumnosSearch extends Alumnos
     }
 
     /**
-     * Creates data provider instance with search query applied
+     * Creates data provider instance with search query applied.
      *
      * @param array $params
      *
@@ -60,15 +58,17 @@ class AlumnosSearch extends Alumnos
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'fech_nac' => $this->fech_nac,
+            'fecha_de_nacimiento' => $this->fecha_de_nacimiento,
+            'dni_primer_tutor' => $this->dni_primer_tutor,
+            'dni_segundo_tutor' => $this->dni_segundo_tutor,
             'colegio_id' => $this->colegio_id,
         ]);
 
         $query->andFilterWhere(['ilike', 'codigo', $this->codigo])
             ->andFilterWhere(['ilike', 'nombre', $this->nombre])
-            ->andFilterWhere(['ilike', 'apellidos', $this->apellidos])
-            ->andFilterWhere(['ilike', 'nom_padre', $this->nom_padre])
-            ->andFilterWhere(['ilike', 'nom_madre', $this->nom_madre]);
+            ->andFilterWhere(['ilike', 'primer_apellido', $this->primer_apellido])
+            ->andFilterWhere(['ilike', 'segundo_apellido', $this->segundo_apellido])
+            ->andFilterWhere(['ilike', 'unidad', $this->unidad]);
 
         return $dataProvider;
     }

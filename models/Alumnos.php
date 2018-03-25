@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use Yii;
-
 /**
  * This is the model class for table "alumnos".
  *
@@ -34,12 +32,14 @@ class Alumnos extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['codigo', 'nombre', 'apellidos', 'fech_nac', 'nom_padre', 'nom_madre', 'colegio_id'], 'required'],
-            [['fech_nac'], 'safe'],
+            [['codigo', 'nombre', 'primer_apellido', 'fecha_de_nacimiento', 'dni_primer_tutor', 'dni_segundo_tutor', 'colegio_id'], 'required'],
+            [['fecha_de_nacimiento'], 'safe'],
             [['colegio_id'], 'default', 'value' => null],
             [['colegio_id'], 'integer'],
-            [['codigo', 'nombre', 'apellidos', 'nom_padre', 'nom_madre'], 'string', 'max' => 255],
-            [['codigo'], 'unique'],
+            [['nombre', 'primer_apellido', 'segundo_apellido', 'unidad'], 'string', 'max' => 255],
+            [['codigo'], 'number'],
+            [['dni_primer_tutor', 'dni_segundo_tutor'], 'string', 'max' => 9],
+            [['codigo', 'dni_primer_tutor', 'dni_segundo_tutor'], 'unique'],
             [['colegio_id'], 'exist', 'skipOnError' => true, 'targetClass' => Colegios::className(), 'targetAttribute' => ['colegio_id' => 'id']],
         ];
     }
@@ -53,10 +53,11 @@ class Alumnos extends \yii\db\ActiveRecord
             'id' => 'ID',
             'codigo' => 'Codigo',
             'nombre' => 'Nombre',
-            'apellidos' => 'Apellidos',
-            'fech_nac' => 'Fech Nac',
-            'nom_padre' => 'Nom Padre',
-            'nom_madre' => 'Nom Madre',
+            'primer_apellido' => 'Primer Apellido',
+            'segundo_apellido' => 'Segundo Apellido',
+            'fecha_de_nacimiento' => 'Fecha de nacimiento',
+            'dni_primer_tutor' => 'DNI Primer Tutor',
+            'dni_segundo_tutor' => 'DNI Segundo Tutor',
             'colegio_id' => 'Colegio ID',
         ];
     }

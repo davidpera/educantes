@@ -86,13 +86,41 @@ class UsuariosController extends Controller
                         for ($col = 'A'; $col != $highestColumn; ++$col) {
                             $celda = $worksheet->getCell($col . $row)
                                 ->getValue();
-                            $campo = $worksheet->getCell($col . 1)
-                                ->getValue();
+                            switch ($worksheet->getCell($col . 1)
+                                ->getValue()) {
+                                case 'Nº Id. Escolar':
+                                    $worksheet->getCell($col . 1)
+                                    ->setValue('codigo');
+                                    break;
+                                case 'DNI/Pasaporte Primer tutor':
+                                    $worksheet->getCell($col . 1)
+                                    ->setValue('dni_primer_tutor');
+                                    break;
+                                case 'DNI/Pasaporte Segundo tutor':
+                                    $worksheet->getCell($col . 1)
+                                    ->setValue('dni_segundo_tutor');
+                                    break;
+                                case 'Primer Apellido':
+                                    $worksheet->getCell($col . 1)
+                                    ->setValue('primer_apellido');
+                                    break;
+                                case 'Segundo Apellido':
+                                    $worksheet->getCell($col . 1)
+                                    ->setValue('segundo_apellido');
+                                    break;
+                                case 'Fecha de nacimiento':
+                                    $worksheet->getCell($col . 1)
+                                    ->setValue('fecha_de_nacimiento');
+                                    break;
+                            }
+                            $campo = strtolower($worksheet->getCell($col . 1)
+                                ->getValue());
                             $model->$campo = $celda;
                         }
+                        // var_dump($model->validate());
                         $model->save();
                     }
-
+                    // return;
                     return $this->redirect(['alumnos/index']);
                 }
             }

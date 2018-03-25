@@ -60,15 +60,17 @@ DROP TABLE IF EXISTS alumnos CASCADE;
 
 CREATE TABLE alumnos
 (
-    id          bigserial       PRIMARY KEY
-  , codigo      varchar(255)    NOT NULL UNIQUE
-  , nombre      varchar(255)    NOT NULL
-  , apellidos   varchar(255)    NOT NULL
-  , fech_nac    date            NOT NULL
-  , nom_padre   varchar(255)    NOT NULL
-  , nom_madre   varchar(255)    NOT NULL
-  , colegio_id  bigint          NOT NULL REFERENCES colegios (id)
-                                ON DELETE NO ACTION ON UPDATE CASCADE
+    id                          bigserial       PRIMARY KEY
+  , codigo                      numeric(8)      NOT NULL UNIQUE
+  , unidad                      varchar(255)
+  , nombre                      varchar(255)    NOT NULL
+  , primer_apellido             varchar(255)    NOT NULL
+  , segundo_apellido            varchar(255)
+  , fecha_de_nacimiento         date            NOT NULL
+  , dni_primer_tutor            char(9)         NOT NULL UNIQUE
+  , dni_segundo_tutor           char(9)         UNIQUE
+  , colegio_id                  bigint          NOT NULL REFERENCES colegios (id)
+                                                ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS usuarios CASCADE;
