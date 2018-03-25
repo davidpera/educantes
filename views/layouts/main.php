@@ -71,6 +71,8 @@ AppAsset::register($this);
                     $items[] = [
                         'label' => 'Alumnos',
                         'items' => [
+                            ['label' => 'Insertar Alumnos', 'url' => ['usuarios/upload']],
+                            '<li class="divider"></li>',
                             ['label' => 'Crear Alumno', 'url' => ['alumnos/create']],
                             '<li class="divider"></li>',
                             ['label' => 'Ver alumnos', 'url' => ['alumnos/index']],

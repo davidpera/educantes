@@ -2,12 +2,15 @@
 
 namespace app\controllers;
 
+use app\models\Alumnos;
+use app\models\UploadForm;
 use app\models\Usuarios;
 use app\models\UsuariosSearch;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 
 /**
  * UsuariosController implements the CRUD actions for Usuarios model.
@@ -56,6 +59,47 @@ class UsuariosController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+    public function actionUpload()
+    {
+        if (Yii::$app->user->identity->rol === 'C') {
+            $model = new UploadForm();
+
+            if (Yii::$app->request->isPost) {
+                $model->file_alum = UploadedFile::getInstance($model, 'file_alum');
+                if ($model->upload()) {
+                    $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
+                    $reader->setReadDataOnly(true);
+                    $spreadsheet = $reader->load('uploads/test.xlsx');
+
+                    $worksheet = $spreadsheet->getActiveSheet();
+                    // Get the highest row number and column letter referenced in the worksheet
+                    $highestRow = $worksheet->getHighestRow(); // e.g. 10
+                    $highestColumn = $worksheet->getHighestColumn(); // e.g 'F'
+                    // Increment the highest column letter
+                    $highestColumn++;
+
+                    for ($row = 2; $row <= $highestRow; ++$row) {
+                        $model = new Alumnos();
+                        $model->colegio_id = Yii::$app->user->identity->colegio_id;
+                        for ($col = 'A'; $col != $highestColumn; ++$col) {
+                            $celda = $worksheet->getCell($col . $row)
+                                ->getValue();
+                            $campo = $worksheet->getCell($col . 1)
+                                ->getValue();
+                            $model->$campo = $celda;
+                        }
+                        $model->save();
+                    }
+
+                    return $this->redirect(['alumnos/index']);
+                }
+            }
+
+            return $this->render('upload', ['model' => $model]);
+        }
+        return $this->goHome();
     }
 
     /**

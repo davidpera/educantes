@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'fech_nac',
             //'nom_padre',
             //'nom_madre',
-            //'colegio_id',
+            'colegio.nombre',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
