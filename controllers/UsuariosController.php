@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use app\models\Alumnos;
+use app\models\Libros;
+use app\models\Uniformes;
 use app\models\UploadForm;
 use app\models\Usuarios;
 use app\models\UsuariosSearch;
@@ -31,7 +33,7 @@ class UsuariosController extends Controller
             ],
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only' => ['index', 'update', 'view'],
+                'only' => ['index', 'update', 'view', 'upload'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -61,7 +63,7 @@ class UsuariosController extends Controller
         ]);
     }
 
-    public function actionUpload()
+    public function actionUpload($tabla)
     {
         if (Yii::$app->user->identity->rol === 'C') {
             $model = new UploadForm();
@@ -81,46 +83,52 @@ class UsuariosController extends Controller
                     $highestColumn++;
 
                     for ($row = 2; $row <= $highestRow; ++$row) {
-                        $model = new Alumnos();
+                        if ($tabla === 'alumnos') {
+                            $model = new Alumnos();
+                        } elseif ($tabla === 'libros') {
+                            $model = new Libros();
+                        } else {
+                            $model = new Uniformes();
+                        }
                         $model->colegio_id = Yii::$app->user->identity->colegio_id;
                         for ($col = 'A'; $col != $highestColumn; ++$col) {
                             $celda = $worksheet->getCell($col . $row)
                                 ->getValue();
-                            switch ($worksheet->getCell($col . 1)
-                                ->getValue()) {
-                                case 'Nº Id. Escolar':
-                                    $worksheet->getCell($col . 1)
-                                    ->setValue('codigo');
-                                    break;
-                                case 'DNI/Pasaporte Primer tutor':
-                                    $worksheet->getCell($col . 1)
-                                    ->setValue('dni_primer_tutor');
-                                    break;
-                                case 'DNI/Pasaporte Segundo tutor':
-                                    $worksheet->getCell($col . 1)
-                                    ->setValue('dni_segundo_tutor');
-                                    break;
-                                case 'Primer Apellido':
-                                    $worksheet->getCell($col . 1)
-                                    ->setValue('primer_apellido');
-                                    break;
-                                case 'Segundo Apellido':
-                                    $worksheet->getCell($col . 1)
-                                    ->setValue('segundo_apellido');
-                                    break;
-                                case 'Fecha de nacimiento':
-                                    $worksheet->getCell($col . 1)
-                                    ->setValue('fecha_de_nacimiento');
-                                    break;
+                            if ($tabla === 'alumnos') {
+                                switch ($worksheet->getCell($col . 1)
+                                    ->getValue()) {
+                                    case 'Nº Id. Escolar':
+                                        $worksheet->getCell($col . 1)
+                                        ->setValue('codigo');
+                                        break;
+                                    case 'DNI/Pasaporte Primer tutor':
+                                        $worksheet->getCell($col . 1)
+                                        ->setValue('dni_primer_tutor');
+                                        break;
+                                    case 'DNI/Pasaporte Segundo tutor':
+                                        $worksheet->getCell($col . 1)
+                                        ->setValue('dni_segundo_tutor');
+                                        break;
+                                    case 'Primer Apellido':
+                                        $worksheet->getCell($col . 1)
+                                        ->setValue('primer_apellido');
+                                        break;
+                                    case 'Segundo Apellido':
+                                        $worksheet->getCell($col . 1)
+                                        ->setValue('segundo_apellido');
+                                        break;
+                                    case 'Fecha de nacimiento':
+                                        $worksheet->getCell($col . 1)
+                                        ->setValue('fecha_de_nacimiento');
+                                        break;
+                                }
                             }
                             $campo = strtolower($worksheet->getCell($col . 1)
                                 ->getValue());
                             $model->$campo = $celda;
                         }
-                        // var_dump($model->validate());
                         $model->save();
                     }
-                    // return;
                     return $this->redirect(['alumnos/index']);
                 }
             }

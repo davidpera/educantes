@@ -18,6 +18,12 @@ class UploadForm extends Model
             [['file_alum'], 'file', 'skipOnEmpty' => false],
         ];
     }
+    public function attributeLabels()
+    {
+        return [
+            'file_alum' => 'Archivo',
+        ];
+    }
 
     public function upload()
     {
