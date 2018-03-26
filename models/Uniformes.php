@@ -64,17 +64,11 @@ class Uniformes extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDetalles()
+    public function getSecstock()
     {
-        return $this->hasMany(Detalles::className(), ['uniformes_id' => 'id'])->inverseOf('uniformes');
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSecstocks()
-    {
-        return $this->hasMany(Secstocks::className(), ['uniforme_id' => 'id'])->inverseOf('uniforme');
+        if (Secstocks::find()->where(['uniforme_id' => $this->id])->count('*') !== 0) {
+            return $this->hasOne(Secstocks::className(), ['uniforme_id' => 'id'])->inverseOf('uniforme');
+        }
     }
 
     public function getColegio()

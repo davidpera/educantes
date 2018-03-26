@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use Yii;
-
 /**
  * This is the model class for table "secstocks".
  *
@@ -47,10 +45,10 @@ class Secstocks extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'cd' => 'Cd',
-            'pe' => 'Pe',
-            'ss' => 'Ss',
-            'mp' => 'Mp',
+            'cd' => 'Consumo diario',
+            'pe' => 'Tiempo pedido',
+            'ss' => 'Stock de seguridad',
+            'mp' => 'Cantidad cuando pedir',
             'uniforme_id' => 'Uniforme ID',
         ];
     }
