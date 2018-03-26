@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Secstocks;
 use app\models\SecstocksSearch;
+use app\models\Usuarios;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -24,6 +25,16 @@ class SecstocksController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'only' => ['index', 'create', 'update', 'view'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
@@ -65,6 +76,10 @@ class SecstocksController extends Controller
      */
     public function actionCreate($uniforme_id)
     {
+        $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
+        if ($us->rol !== 'C') {
+            return $this->goHome();
+        }
         $model = new Secstocks();
         $model->uniforme_id = $uniforme_id;
 
@@ -90,6 +105,10 @@ class SecstocksController extends Controller
      */
     public function actionUpdate($uniforme_id)
     {
+        $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
+        if ($us->rol !== 'C') {
+            return $this->goHome();
+        }
         $st = Secstocks::find()->where(['uniforme_id' => $uniforme_id])->one();
         $model = $this->findModel($st->id);
 
