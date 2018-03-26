@@ -57,7 +57,8 @@ class Uniformes extends \yii\db\ActiveRecord
             'iva' => 'Iva',
             'ubicacion' => 'Ubicacion',
             'cantidad' => 'Cantidad',
-            'colegio_id' => 'Colegio ID',
+            'colegio.nombre' => 'Colegio',
+            'secstock.mp' => 'Cantidad cuando pedir',
         ];
     }
 
