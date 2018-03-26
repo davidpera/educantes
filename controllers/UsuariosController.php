@@ -2,12 +2,17 @@
 
 namespace app\controllers;
 
+use app\models\Alumnos;
+use app\models\Libros;
+use app\models\Uniformes;
+use app\models\UploadForm;
 use app\models\Usuarios;
 use app\models\UsuariosSearch;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 
 /**
  * UsuariosController implements the CRUD actions for Usuarios model.
@@ -28,7 +33,7 @@ class UsuariosController extends Controller
             ],
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only' => ['index', 'update', 'view'],
+                'only' => ['index', 'update', 'view', 'upload'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -56,6 +61,109 @@ class UsuariosController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+    public function actionUpload($tabla)
+    {
+        if (Yii::$app->user->identity->rol === 'C') {
+            $model = new UploadForm();
+
+            if (Yii::$app->request->isPost) {
+                $model->file_alum = UploadedFile::getInstance($model, 'file_alum');
+                if ($model->upload()) {
+                    $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
+                    $reader->setReadDataOnly(true);
+                    $spreadsheet = $reader->load('uploads/test.xlsx');
+
+                    $worksheet = $spreadsheet->getActiveSheet();
+                    // Get the highest row number and column letter referenced in the worksheet
+                    $highestRow = $worksheet->getHighestRow(); // e.g. 10
+                    $highestColumn = $worksheet->getHighestColumn(); // e.g 'F'
+                    // Increment the highest column letter
+                    $highestColumn++;
+
+                    $connection = Yii::$app->db;
+                    $sql = "SELECT column_name
+                            FROM information_schema.columns
+                            WHERE table_schema = 'public'
+                            AND table_name = '$tabla'";
+                    $command = $connection->createCommand($sql);
+                    $dataReader = $command->query();
+                    $rows = $dataReader->readAll();
+
+                    for ($row = 2; $row <= $highestRow; ++$row) {
+                        if ($tabla === 'alumnos') {
+                            $model = new Alumnos();
+                        } elseif ($tabla === 'libros') {
+                            $model = new Libros();
+                        } else {
+                            $model = new Uniformes();
+                        }
+                        $model->colegio_id = Yii::$app->user->identity->colegio_id;
+
+                        for ($col = 'A'; $col != $highestColumn; ++$col) {
+                            $celda = $worksheet->getCell($col . $row)
+                                ->getValue();
+                            if ($tabla === 'alumnos') {
+                                switch ($worksheet->getCell($col . 1)
+                                    ->getValue()) {
+                                    case 'Nº Id. Escolar':
+                                        $worksheet->getCell($col . 1)
+                                        ->setValue('codigo');
+                                        break;
+                                    case 'DNI/Pasaporte Primer tutor':
+                                        $worksheet->getCell($col . 1)
+                                        ->setValue('dni_primer_tutor');
+                                        break;
+                                    case 'DNI/Pasaporte Segundo tutor':
+                                        $worksheet->getCell($col . 1)
+                                        ->setValue('dni_segundo_tutor');
+                                        break;
+                                    case 'Primer Apellido':
+                                        $worksheet->getCell($col . 1)
+                                        ->setValue('primer_apellido');
+                                        break;
+                                    case 'Segundo Apellido':
+                                        $worksheet->getCell($col . 1)
+                                        ->setValue('segundo_apellido');
+                                        break;
+                                    case 'Fecha de nacimiento':
+                                        $worksheet->getCell($col . 1)
+                                        ->setValue('fecha_de_nacimiento');
+                                        break;
+                                }
+                            }
+                            $campo = strtolower($worksheet->getCell($col . 1)
+                                ->getValue());
+                            $cade = utf8_decode($campo);
+                            $no_permitidas = ['á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú', 'ñ', 'À', 'Ã', 'Ì', 'Ò', 'Ù', 'Ã™', 'Ã', 'Ã¨', 'Ã¬', 'Ã²', 'Ã¹', 'ç', 'Ç', 'Ã¢', 'ê', 'Ã®', 'Ã´', 'Ã»', 'Ã‚', 'ÃŠ', 'ÃŽ', 'Ã', 'Ã›', 'ü', 'Ã¶', 'Ã–', 'Ã¯', 'Ã¤', '«', 'Ò', 'Ã', 'Ã„', 'Ã‹', 'Ñ', 'à', 'è', 'ì', 'ò', 'ù'];
+                            $permitidas = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', 'n', 'N', 'A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u', 'c', 'C', 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', 'u', 'o', 'O', 'i', 'a', 'e', 'U', 'I', 'A', 'E', 'N', 'a', 'e', 'i', 'o', 'u'];
+                            $texto = str_replace($no_permitidas, $permitidas, $cade);
+
+                            $vale = false;
+                            for ($i = 0; $i < count($rows); $i++) {
+                                if ($rows[$i]['column_name'] === $texto) {
+                                    $vale = true;
+                                }
+                            }
+
+                            if ($vale === false) {
+                                Yii::$app->session->setFlash('error', 'Campos del archivo incorrectos, revise el archivo');
+                                return $this->redirect(['upload', 'tabla' => $tabla]);
+                            }
+
+                            $model->$texto = $celda;
+                        }
+                        $model->save();
+                    }
+                    // return;
+                    return $this->redirect(['alumnos/index']);
+                }
+            }
+
+            return $this->render('upload', ['model' => $model]);
+        }
+        return $this->goHome();
     }
 
     /**
