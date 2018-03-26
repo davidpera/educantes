@@ -1,7 +1,4 @@
 <?php
-
-use app\models\Alumnos;
-
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 

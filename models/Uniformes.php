@@ -71,6 +71,9 @@ class Uniformes extends \yii\db\ActiveRecord
         }
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getColegio()
     {
         if ($this->colegio_id !== null) {
