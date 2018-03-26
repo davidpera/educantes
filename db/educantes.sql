@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS uniformes CASCADE;
 CREATE TABLE uniformes
 (
     id          bigserial       PRIMARY KEY
-  , codigo      varchar(255)    NOT NULL UNIQUE
+  , codigo      varchar(255)    NOT NULL 
   , descripcion varchar(255)    NOT NULL
   , talla       varchar(255)    NOT NULL
   , precio      numeric(5,2)    NOT NULL

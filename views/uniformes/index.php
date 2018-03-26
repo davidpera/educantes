@@ -37,16 +37,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'template' => '{segStock}',
                 'buttons' => [
                     'segStock' => function($url, $model, $key){
-                        if (Secstocks::find()->where(['uniforme_id' => $model->id])->count('*') === 0) {
-                            return Html::a('Añadir stock de seguridad', ['secstocks/create', 'uniforme_id' => $model->id],
-                                [
-                                    'class' => 'btn btn-success',
-                                ]);
-                        } else {
-                            return Html::a('Modificar stock de seguridad', ['secstocks/update', 'uniforme_id' => $model->id],
-                                [
-                                    'class' => 'btn btn-primary',
-                                ]);
+                        if ($model->colegio_id === Yii::$app->user->identity->colegio_id) {
+                            if (Secstocks::find()->where(['uniforme_id' => $model->id])->count('*') === 0) {
+                                return Html::a('Añadir stock de seguridad', ['secstocks/create', 'uniforme_id' => $model->id],
+                                    [
+                                        'class' => 'btn btn-success',
+                                    ]);
+                            } else {
+                                return Html::a('Modificar stock de seguridad', ['secstocks/update', 'uniforme_id' => $model->id],
+                                    [
+                                        'class' => 'btn btn-primary',
+                                    ]);
+                            }
                         }
                     }
                 ]
