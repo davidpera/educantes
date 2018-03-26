@@ -39,7 +39,6 @@ class Uniformes extends \yii\db\ActiveRecord
             [['colegio_id'], 'default', 'value' => null],
             [['colegio_id'], 'integer'],
             [['codigo', 'descripcion', 'talla', 'ubicacion'], 'string', 'max' => 255],
-            [['codigo'], 'unique'],
         ];
     }
 
@@ -57,26 +56,24 @@ class Uniformes extends \yii\db\ActiveRecord
             'iva' => 'Iva',
             'ubicacion' => 'Ubicacion',
             'cantidad' => 'Cantidad',
-            'colegio_id' => 'Colegio ID',
+            'colegio.nombre' => 'Colegio',
+            'secstock.mp' => 'Cantidad cuando pedir',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDetalles()
+    public function getSecstock()
     {
-        return $this->hasMany(Detalles::className(), ['uniformes_id' => 'id'])->inverseOf('uniformes');
+        if (Secstocks::find()->where(['uniforme_id' => $this->id])->count('*') !== 0) {
+            return $this->hasOne(Secstocks::className(), ['uniforme_id' => 'id'])->inverseOf('uniforme');
+        }
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getSecstocks()
-    {
-        return $this->hasMany(Secstocks::className(), ['uniforme_id' => 'id'])->inverseOf('uniforme');
-    }
-
     public function getColegio()
     {
         if ($this->colegio_id !== null) {

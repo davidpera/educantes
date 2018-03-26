@@ -63,6 +63,12 @@ class UsuariosController extends Controller
         ]);
     }
 
+    /**
+     * Este método descarga el archivo y lo inyecta directamente
+     * a la base de datos.
+     * @param  [type] $tabla [description]
+     * @return [type]        [description]
+     */
     public function actionUpload($tabla)
     {
         if (Yii::$app->user->identity->rol === 'C') {
@@ -182,6 +188,11 @@ class UsuariosController extends Controller
         ]);
     }
 
+    /**
+     * Este método da de alta a un colegio.
+     * @param  [type] $colegio_id [description]
+     * @return [type]             [description]
+     */
     public function actionAlta($colegio_id)
     {
         $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();

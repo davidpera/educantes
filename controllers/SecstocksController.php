@@ -2,8 +2,8 @@
 
 namespace app\controllers;
 
-use app\models\Uniformes;
-use app\models\UniformesSearch;
+use app\models\Secstocks;
+use app\models\SecstocksSearch;
 use app\models\Usuarios;
 use Yii;
 use yii\filters\VerbFilter;
@@ -11,9 +11,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
- * UniformesController implements the CRUD actions for Uniformes model.
+ * SecstocksController implements the CRUD actions for Secstocks model.
  */
-class UniformesController extends Controller
+class SecstocksController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -41,16 +41,12 @@ class UniformesController extends Controller
     }
 
     /**
-     * Lists all Uniformes models.
+     * Lists all Secstocks models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
-        if ($us->rol !== 'A' && $us->rol !== 'C') {
-            return $this->goHome();
-        }
-        $searchModel = new UniformesSearch();
+        $searchModel = new SecstocksSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -60,38 +56,39 @@ class UniformesController extends Controller
     }
 
     /**
-     * Displays a single Uniformes model.
+     * Displays a single Secstocks model.
      * @param int $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
-        if ($us->rol !== 'A' && $us->rol !== 'C') {
-            return $this->goHome();
-        }
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new Uniformes model.
+     * Creates a new Secstocks model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
+     * @param mixed $uniforme_id
      */
-    public function actionCreate()
+    public function actionCreate($uniforme_id)
     {
         $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
         if ($us->rol !== 'C') {
             return $this->goHome();
         }
-        $model = new Uniformes();
+        $model = new Secstocks();
+        $model->uniforme_id = $uniforme_id;
 
-        $model->colegio_id = $us->colegio_id;
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+        if ($model->load(Yii::$app->request->post())) {
+            $mp = ($model->cd * $model->pe) + $model->ss;
+            $model->mp = $mp;
+            if ($model->save()) {
+                return $this->redirect(['uniformes/index']);
+            }
         }
 
         return $this->render('create', [
@@ -100,22 +97,27 @@ class UniformesController extends Controller
     }
 
     /**
-     * Updates an existing Uniformes model.
+     * Updates an existing Secstocks model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id
+     * @param mixed $uniforme_id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($uniforme_id)
     {
         $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
-        if ($us->rol !== 'A' && $us->rol !== 'C') {
+        if ($us->rol !== 'C') {
             return $this->goHome();
         }
-        $model = $this->findModel($id);
+        $st = Secstocks::find()->where(['uniforme_id' => $uniforme_id])->one();
+        $model = $this->findModel($st->id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+        if ($model->load(Yii::$app->request->post())) {
+            $mp = ($model->cd * $model->pe) + $model->ss;
+            $model->mp = $mp;
+            if ($model->save()) {
+                return $this->redirect(['uniformes/index']);
+            }
         }
 
         return $this->render('update', [
@@ -124,7 +126,7 @@ class UniformesController extends Controller
     }
 
     /**
-     * Deletes an existing Uniformes model.
+     * Deletes an existing Secstocks model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id
      * @return mixed
@@ -132,25 +134,21 @@ class UniformesController extends Controller
      */
     public function actionDelete($id)
     {
-        $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
-        if ($us->rol !== 'A' && $us->rol !== 'C') {
-            return $this->goHome();
-        }
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the Uniformes model based on its primary key value.
+     * Finds the Secstocks model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id
-     * @return Uniformes the loaded model
+     * @return Secstocks the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Uniformes::findOne($id)) !== null) {
+        if (($model = Secstocks::findOne($id)) !== null) {
             return $model;
         }
 
