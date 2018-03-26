@@ -11,7 +11,7 @@ CREATE TABLE uniformes
   , descripcion varchar(255)    NOT NULL
   , talla       varchar(255)    NOT NULL
   , precio      numeric(5,2)    NOT NULL
-  , IVA         numeric(3)      NOT NULL
+  , iva         numeric(3)      NOT NULL
   , ubicacion   varchar(255)
   , cantidad    numeric(10)     NOT NULL
   , colegio_id  bigint          NOT NULL REFERENCES colegios (id)
@@ -48,7 +48,7 @@ DROP TABLE IF EXISTS libros CASCADE;
 CREATE TABLE libros
 (
     id          bigserial       PRIMARY KEY
-  , ISBN        numeric(13)     NOT NULL
+  , isbn        numeric(13)     NOT NULL
   , titulo      varchar(255)    NOT NULL
   , curso       varchar(255)    NOT NULL
   , precio      numeric(5,2)    NOT NULL

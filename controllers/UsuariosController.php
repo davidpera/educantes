@@ -82,6 +82,15 @@ class UsuariosController extends Controller
                     // Increment the highest column letter
                     $highestColumn++;
 
+                    $connection = Yii::$app->db;
+                    $sql = "SELECT column_name
+                            FROM information_schema.columns
+                            WHERE table_schema = 'public'
+                            AND table_name = '$tabla'";
+                    $command = $connection->createCommand($sql);
+                    $dataReader = $command->query();
+                    $rows = $dataReader->readAll();
+
                     for ($row = 2; $row <= $highestRow; ++$row) {
                         if ($tabla === 'alumnos') {
                             $model = new Alumnos();
@@ -91,6 +100,7 @@ class UsuariosController extends Controller
                             $model = new Uniformes();
                         }
                         $model->colegio_id = Yii::$app->user->identity->colegio_id;
+
                         for ($col = 'A'; $col != $highestColumn; ++$col) {
                             $celda = $worksheet->getCell($col . $row)
                                 ->getValue();
@@ -125,10 +135,28 @@ class UsuariosController extends Controller
                             }
                             $campo = strtolower($worksheet->getCell($col . 1)
                                 ->getValue());
-                            $model->$campo = $celda;
+                            $cade = utf8_decode($campo);
+                            $no_permitidas = ['á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú', 'ñ', 'À', 'Ã', 'Ì', 'Ò', 'Ù', 'Ã™', 'Ã', 'Ã¨', 'Ã¬', 'Ã²', 'Ã¹', 'ç', 'Ç', 'Ã¢', 'ê', 'Ã®', 'Ã´', 'Ã»', 'Ã‚', 'ÃŠ', 'ÃŽ', 'Ã', 'Ã›', 'ü', 'Ã¶', 'Ã–', 'Ã¯', 'Ã¤', '«', 'Ò', 'Ã', 'Ã„', 'Ã‹', 'Ñ', 'à', 'è', 'ì', 'ò', 'ù'];
+                            $permitidas = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', 'n', 'N', 'A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u', 'c', 'C', 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', 'u', 'o', 'O', 'i', 'a', 'e', 'U', 'I', 'A', 'E', 'N', 'a', 'e', 'i', 'o', 'u'];
+                            $texto = str_replace($no_permitidas, $permitidas, $cade);
+
+                            $vale = false;
+                            for ($i = 0; $i < count($rows); $i++) {
+                                if ($rows[$i]['column_name'] === $texto) {
+                                    $vale = true;
+                                }
+                            }
+
+                            if ($vale === false) {
+                                Yii::$app->session->setFlash('error', 'Campos del archivo incorrectos, revise el archivo');
+                                return $this->redirect(['upload', 'tabla' => $tabla]);
+                            }
+
+                            $model->$texto = $celda;
                         }
                         $model->save();
                     }
+                    // return;
                     return $this->redirect(['alumnos/index']);
                 }
             }
