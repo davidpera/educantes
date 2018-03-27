@@ -98,4 +98,9 @@ class Colegios extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Usuarios::className(), ['colegio_id' => 'id'])->inverseOf('colegio');
     }
+
+    public function getUniformes()
+    {
+        return $this->hasMany(Uniformes::className(), ['colegio_id' => 'id'])->inverseOf('colegio');
+    }
 }

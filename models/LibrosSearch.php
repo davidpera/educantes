@@ -5,7 +5,6 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Libros;
 
 /**
  * LibrosSearch represents the model behind the search form of `app\models\Libros`.
@@ -34,7 +33,7 @@ class LibrosSearch extends Libros
     }
 
     /**
-     * Creates data provider instance with search query applied
+     * Creates data provider instance with search query applied.
      *
      * @param array $params
      *
@@ -42,7 +41,7 @@ class LibrosSearch extends Libros
      */
     public function search($params)
     {
-        $query = Libros::find();
+        $query = Libros::find()->where(['colegio_id' => Yii::$app->user->identity->colegio_id]);
 
         // add conditions that should always apply here
 

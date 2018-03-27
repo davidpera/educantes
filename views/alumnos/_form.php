@@ -14,15 +14,19 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'codigo')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'unidad')->textInput(['maxlength' => true]) ?>
+
     <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'apellidos')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'primer_apellido')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'fech_nac')->textInput() ?>
+    <?= $form->field($model, 'segundo_apellido')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'nom_padre')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'fecha_de_nacimiento')->textInput() ?>
 
-    <?= $form->field($model, 'nom_madre')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'dni_primer_tutor')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'dni_segundo_tutor')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
