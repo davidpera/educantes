@@ -6,6 +6,7 @@ use app\models\Colegios;
 use app\models\ColegiosSearch;
 use app\models\Usuarios;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -73,43 +74,31 @@ class ColegiosController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new Colegios model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
+    public function actionGestionar($id = null)
     {
-        if (Usuarios::find()->where(['id' => Yii::$app->user->id])->one()->rol !== 'A') {
-            return $this->goHome();
-        }
-        $model = new Colegios();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
-        }
-
-        return $this->render('create', [
-            'model' => $model,
+        $query = Colegios::find();
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 7,
+            ],
+            'sort' => ['defaultOrder' => ['nombre' => SORT_ASC]],
         ]);
-    }
 
-    /**
-     * Updates an existing Colegios model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($id === null) {
+            $model = new Colegios();
+        } else {
+            $model = $this->findModel($id);
         }
 
-        return $this->render('update', [
+
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['gestionar']);
+        }
+
+        return $this->render('gestionar', [
+            'dataProvider' => $dataProvider,
             'model' => $model,
         ]);
     }

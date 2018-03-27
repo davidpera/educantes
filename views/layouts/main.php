@@ -49,7 +49,7 @@ AppAsset::register($this);
                 $items[] = ['label' => 'Lista Usuarios', 'url' => ['/usuarios/index']];
                 if ($us->rol === 'A') {
                     $items2 =[
-                        ['label' => 'Dar de alta colegio', 'url' => ['/colegios/create']]
+                        ['label' => 'Gestionar colegios', 'url' => ['/colegios/gestionar']]
                     ];
                 } else {
                     $items[] = [
