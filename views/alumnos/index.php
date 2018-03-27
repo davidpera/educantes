@@ -23,9 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
             'codigo',
             'nombre',
             'primer_apellido',
@@ -33,7 +31,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'fecha_de_nacimiento',
             'dni_primer_tutor',
             'dni_segundo_tutor',
-            'colegio.nombre',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

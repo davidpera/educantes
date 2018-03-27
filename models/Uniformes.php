@@ -76,8 +76,6 @@ class Uniformes extends \yii\db\ActiveRecord
      */
     public function getColegio()
     {
-        if ($this->colegio_id !== null) {
-            return $this->hasOne(Colegios::className(), ['id' => 'colegio_id'])->inverseOf('usuarios');
-        }
+        return $this->hasOne(Colegios::className(), ['id' => 'colegio_id'])->inverseOf('uniformes');
     }
 }

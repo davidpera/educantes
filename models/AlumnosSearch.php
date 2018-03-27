@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
@@ -39,7 +40,7 @@ class AlumnosSearch extends Alumnos
      */
     public function search($params)
     {
-        $query = Alumnos::find();
+        $query = Alumnos::find()->where(['colegio_id' => Yii::$app->user->identity->colegio_id]);
 
         // add conditions that should always apply here
 

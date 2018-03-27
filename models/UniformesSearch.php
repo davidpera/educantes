@@ -2,10 +2,8 @@
 
 namespace app\models;
 
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Uniformes;
 
 /**
  * UniformesSearch represents the model behind the search form of `app\models\Uniformes`.
@@ -19,9 +17,16 @@ class UniformesSearch extends Uniformes
     {
         return [
             [['id'], 'integer'],
-            [['codigo', 'descripcion', 'talla', 'ubicacion'], 'safe'],
+            [['codigo', 'descripcion', 'talla', 'ubicacion', 'colegio.nombre'], 'safe'],
             [['precio', 'iva', 'cantidad'], 'number'],
         ];
+    }
+
+    public function attributes()
+    {
+        return array_merge(parent::attributes(), [
+            'colegio.nombre',
+        ]);
     }
 
     /**
@@ -34,7 +39,7 @@ class UniformesSearch extends Uniformes
     }
 
     /**
-     * Creates data provider instance with search query applied
+     * Creates data provider instance with search query applied.
      *
      * @param array $params
      *
@@ -42,7 +47,7 @@ class UniformesSearch extends Uniformes
      */
     public function search($params)
     {
-        $query = Uniformes::find();
+        $query = Uniformes::find()->joinWith(['colegio']);
 
         // add conditions that should always apply here
 
@@ -58,6 +63,11 @@ class UniformesSearch extends Uniformes
             return $dataProvider;
         }
 
+        $dataProvider->sort->attributes['colegio.nombre'] = [
+            'asc' => ['colegios.nombre' => SORT_ASC],
+            'desc' => ['colegios.nombre' => SORT_DESC],
+        ];
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
@@ -69,7 +79,8 @@ class UniformesSearch extends Uniformes
         $query->andFilterWhere(['ilike', 'codigo', $this->codigo])
             ->andFilterWhere(['ilike', 'descripcion', $this->descripcion])
             ->andFilterWhere(['ilike', 'talla', $this->talla])
-            ->andFilterWhere(['ilike', 'ubicacion', $this->ubicacion]);
+            ->andFilterWhere(['ilike', 'ubicacion', $this->ubicacion])
+            ->andFilterWhere(['ilike', 'colegios.nombre', $this->getAttribute('colegio.nombre')]);
 
         return $dataProvider;
     }
