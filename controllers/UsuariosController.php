@@ -79,7 +79,7 @@ class UsuariosController extends Controller
                 if ($model->upload()) {
                     $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
                     $reader->setReadDataOnly(true);
-                    $spreadsheet = $reader->load('uploads/test.xlsx');
+                    $spreadsheet = $reader->load('uploads/' . $model->file_alum);
 
                     $worksheet = $spreadsheet->getActiveSheet();
                     // Get the highest row number and column letter referenced in the worksheet
