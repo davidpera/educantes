@@ -11,6 +11,29 @@ body {
     /* font-family: Anonymice powerline; */
 }
 
+.padre {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.contenedor {
+    width: 50%;
+    height: 250px;
+    text-align: center;
+}
+
+.central {
+    width: 100%;
+    text-align: center;
+}
+
+.lema {
+    width: 75%;
+    height: 170px;
+    margin-top: 35px;
+}
+
 .imagen {
     width: 45%;
 }
