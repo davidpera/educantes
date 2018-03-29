@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Yii;
 use yii\base\Model;
 use yii\web\UploadedFile;
 
@@ -28,7 +29,8 @@ class UploadForm extends Model
     public function upload()
     {
         if ($this->validate()) {
-            $this->file_alum->saveAs('uploads/' . $this->file_alum->baseName . '.' . $this->file_alum->extension);
+            $nombre = Yii::getAlias('@uploads/') . $this->file_alum->baseName . '.' . $this->file_alum->extension;
+            $this->file_alum->saveAs($nombre);
             return true;
         }
         return false;

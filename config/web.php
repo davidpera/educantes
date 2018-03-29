@@ -6,11 +6,13 @@ $log = require __DIR__ . '/log.php';
 
 $config = [
     'id' => 'basic',
+    'name' => 'Educantes',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
+        '@uploads' => '@app/web/uploads',
     ],
     'language' => 'es-ES',
     'components' => [

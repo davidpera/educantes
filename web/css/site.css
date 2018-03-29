@@ -8,6 +8,15 @@ body {
     height: auto;
     margin: 0 auto -60px;
     padding: 0 0 60px;
+    /* font-family: Anonymice powerline; */
+}
+
+.imagen {
+    width: 45%;
+}
+
+.formul > form > div input{
+    max-width: 300px;
 }
 
 .wrap > .container {
@@ -21,9 +30,35 @@ body {
     padding-top: 20px;
 }
 
+.navbar {
+    background-color: #8FC3E9;
+}
+
+.navbar > .container a{
+    color: black;
+}
+
+.navbar > .container ul .active{
+    background-color: #026ACF;
+}
+
+.navbar li.active > a {
+    background-color: #026ACF!important;
+}
+
+.navbar li.open > a {
+    background-color: #026ACF!important;
+}
+
+
+.navbar > .container li a{
+    color: black;
+}
+
 .jumbotron {
     text-align: center;
     background-color: transparent;
+    padding: 0px 0px;
 }
 
 .jumbotron .btn {
