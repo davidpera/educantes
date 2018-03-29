@@ -101,7 +101,7 @@ AppAsset::register($this);
             'label' => 'Usuarios',
             'items' => [
                 ['label' => 'Login', 'url' => ['/site/login']],
-                ['label' => 'Registrarse', 'url' => ['usuarios/create']],
+                // ['label' => 'Registrarse', 'url' => ['usuarios/create']],
             ],
         ]
     ) : (
