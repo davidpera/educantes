@@ -50,7 +50,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
      */
     public function rules()
     {
-        return [
+        $rules = [
             [['nom_usuario', 'rol'], 'required'],
             [['password', 'confirmar'], 'required', 'on' => self::ESCENARIO_CREATE],
             [
@@ -60,18 +60,23 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
                  'skipOnEmpty' => false,
                  'on' => [self::ESCENARIO_CREATE, self::ESCENARIO_UPDATE],
              ],
-            [['tel_movil'], 'number'],
+            [['tel_movil'], 'number', 'min' => 100000000, 'max' => 999999999],
             [['colegio_id'], 'default', 'value' => null],
             [['colegio_id'], 'integer'],
             [['nom_usuario', 'password', 'nombre', 'apellidos', 'direccion', 'email'], 'string', 'max' => 255],
             [['nif'], 'string', 'max' => 9],
             [['rol'], 'string', 'max' => 1],
             [['email'], 'unique'],
+            [['email'], 'email'],
             [['nif'], 'unique'],
             [['nom_usuario'], 'unique'],
             [['tel_movil'], 'unique'],
             [['colegio_id'], 'exist', 'skipOnError' => true, 'targetClass' => Colegios::className(), 'targetAttribute' => ['colegio_id' => 'id']],
         ];
+        if (Yii::$app->user->isGuest || Yii::$app->user->identity->rol === 'P') {
+            $rules[] = [['nombre', 'apellidos', 'direccion', 'nif', 'email', 'tel_movil'], 'required'];
+        }
+        return $rules;
     }
 
     /**
@@ -81,14 +86,14 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     {
         return [
             'id' => 'ID',
-            'nom_usuario' => 'Nom Usuario',
-            'password' => 'Password',
+            'nom_usuario' => 'Nombre de Usuario',
+            'password' => 'Contraseña',
             'nombre' => 'Nombre',
             'apellidos' => 'Apellidos',
             'nif' => 'Nif',
-            'direccion' => 'Direccion',
+            'direccion' => 'Dirección',
             'email' => 'Email',
-            'tel_movil' => 'Tel Movil',
+            'tel_movil' => 'Telefono Movil',
             'rol' => 'Rol',
             'colegio_id' => 'Colegio ID',
             'confirmar' => 'Confirmar contraseña',
