@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             return Html::a('Dar de baja admin', ['usuarios/delete', 'id' => $usc->id], [
                                     'class' => 'btn btn-danger',
                                     'data' => [
-                                        'confirm' => '¿Está seguro de que quiere dar de baja a '.$us->nom_usuario.'?',
+                                        'confirm' => '¿Está seguro de que quiere dar de baja a '.$usc->nom_usuario.'?',
                                         'method' => 'post',
                                     ],
                                 ]);
