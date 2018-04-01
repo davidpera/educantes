@@ -12,7 +12,9 @@ use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 use yii\web\UploadedFile;
+use yii\widgets\ActiveForm;
 
 /**
  * UsuariosController implements the CRUD actions for Usuarios model.
@@ -75,11 +77,11 @@ class UsuariosController extends Controller
             $model = new UploadForm();
 
             if (Yii::$app->request->isPost) {
-                $model->file_alum = UploadedFile::getInstance($model, 'file_alum');
+                $model->file = UploadedFile::getInstance($model, 'file');
                 if ($model->upload()) {
                     $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
                     $reader->setReadDataOnly(true);
-                    $spreadsheet = $reader->load('uploads/' . $model->file_alum);
+                    $spreadsheet = $reader->load('uploads/' . $model->file);
 
                     $worksheet = $spreadsheet->getActiveSheet();
                     // Get the highest row number and column letter referenced in the worksheet
@@ -188,6 +190,18 @@ class UsuariosController extends Controller
         ]);
     }
 
+    public function actionVerificar($token_val)
+    {
+        $model = Usuarios::findOne(['token_val' => $token_val]);
+        if ($model === null) {
+            Yii::$app->session->setFlash('error', 'Usuario ya validado');
+        }
+        $model->token_val = null;
+        $model->save();
+        Yii::$app->session->setFlash('success', 'Usuario validado. Logeese');
+        return $this->redirect(['site/login']);
+    }
+
     /**
      * Este método da de alta a un colegio.
      * @param  [type] $colegio_id [description]
@@ -196,7 +210,7 @@ class UsuariosController extends Controller
     public function actionAlta($colegio_id)
     {
         $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
-        $model = new Usuarios();
+        $model = new Usuarios(['scenario' => Usuarios::ESCENARIO_CREATE]);
         if ($us->rol === 'A') {
             $model->rol = 'C';
         } elseif ($us->rol === 'C') {
@@ -226,10 +240,17 @@ class UsuariosController extends Controller
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-        $model = new Usuarios();
+        $model = new Usuarios(['scenario' => Usuarios::ESCENARIO_CREATE]);
+        $model->rol = 'P';
+
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $model->email();
+            return $this->goHome();
         }
 
         return $this->render('create', [
@@ -246,10 +267,17 @@ class UsuariosController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $model = Yii::$app->user->identity;
+        $model->scenario = Usuarios::ESCENARIO_UPDATE;
+        $model->password = '';
+
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->goHome();
         }
 
         return $this->render('update', [
@@ -268,7 +296,7 @@ class UsuariosController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['colegios/index']);
+        return $this->redirect(['usuarios/index']);
     }
 
     /**

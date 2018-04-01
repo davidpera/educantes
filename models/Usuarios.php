@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "usuarios".
@@ -26,6 +28,10 @@ use Yii;
  */
 class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
+    const ESCENARIO_CREATE = 'create';
+    const ESCENARIO_UPDATE = 'update';
+
+    public $confirmar;
     /**
      * {@inheritdoc}
      */
@@ -34,25 +40,45 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         return 'usuarios';
     }
 
+    public function attributes()
+    {
+        return array_merge(parent::attributes(), [
+            'confirmar',
+        ]);
+    }
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
-        return [
-            [['nom_usuario', 'password', 'rol'], 'required'],
-            [['tel_movil'], 'number'],
+        $rules = [
+            [['nom_usuario', 'rol'], 'required'],
+            [['password', 'confirmar'], 'required', 'on' => self::ESCENARIO_CREATE],
+            [
+                 ['confirmar'],
+                 'compare',
+                 'compareAttribute' => 'password',
+                 'skipOnEmpty' => false,
+                 'on' => [self::ESCENARIO_CREATE, self::ESCENARIO_UPDATE],
+             ],
+            [['tel_movil'], 'number', 'min' => 100000000, 'max' => 999999999],
             [['colegio_id'], 'default', 'value' => null],
             [['colegio_id'], 'integer'],
             [['nom_usuario', 'password', 'nombre', 'apellidos', 'direccion', 'email'], 'string', 'max' => 255],
             [['nif'], 'string', 'max' => 9],
             [['rol'], 'string', 'max' => 1],
             [['email'], 'unique'],
+            [['email'], 'email'],
             [['nif'], 'unique'],
             [['nom_usuario'], 'unique'],
             [['tel_movil'], 'unique'],
             [['colegio_id'], 'exist', 'skipOnError' => true, 'targetClass' => Colegios::className(), 'targetAttribute' => ['colegio_id' => 'id']],
         ];
+        if (Yii::$app->user->isGuest || Yii::$app->user->identity->rol === 'P') {
+            $rules[] = [['nombre', 'apellidos', 'direccion', 'nif', 'email', 'tel_movil'], 'required'];
+        }
+        return $rules;
     }
 
     /**
@@ -62,17 +88,29 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     {
         return [
             'id' => 'ID',
-            'nom_usuario' => 'Nom Usuario',
-            'password' => 'Password',
+            'nom_usuario' => 'Nombre de Usuario',
+            'password' => 'Contraseña',
             'nombre' => 'Nombre',
             'apellidos' => 'Apellidos',
             'nif' => 'Nif',
-            'direccion' => 'Direccion',
+            'direccion' => 'Dirección',
             'email' => 'Email',
-            'tel_movil' => 'Tel Movil',
+            'tel_movil' => 'Telefono Movil',
             'rol' => 'Rol',
             'colegio_id' => 'Colegio ID',
+            'confirmar' => 'Confirmar contraseña',
         ];
+    }
+
+    public function email()
+    {
+        $resultado = Yii::$app->mailer->compose()
+            ->setFrom(Yii::$app->params['adminEmail'])
+            ->setTo($this->email)
+            ->setSubject('Validación de tu cuenta de email')->setTextBody('A traves del enlace de este correo verificaras tu cuenta de email')
+            ->setHtmlBody(Html::a('verificar', Url::to(['usuarios/verificar', 'token_val' => $this->token_val], true)))
+            ->send();
+        Yii::$app->session->setFlash('info', 'Se le ha enviado un correo');
     }
 
     /**
@@ -135,7 +173,20 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         if (parent::beforeSave($insert)) {
             if ($insert) {
                 // $this->auth_key = Yii::$app->security->generateRandomString();
-                $this->password = Yii::$app->security->generatePasswordHash($this->password);
+                if (Yii::$app->user->isGuest) {
+                    $this->token_val = Yii::$app->security->generateRandomString();
+                }
+                if ($this->scenario === self::ESCENARIO_CREATE) {
+                    $this->password = Yii::$app->security->generatePasswordHash($this->password);
+                }
+            } else {
+                if ($this->scenario === self::ESCENARIO_UPDATE) {
+                    if ($this->password === '') {
+                        $this->password = $this->getOldAttribute('password');
+                    } else {
+                        $this->password = Yii::$app->security->generatePasswordHash($this->password);
+                    }
+                }
             }
             return true;
         }

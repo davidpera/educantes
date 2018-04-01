@@ -37,6 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'direccion',
             'email:email',
             'tel_movil',
+            'token_val',
             'rol',
         ],
     ]) ?>

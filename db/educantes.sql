@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS uniformes CASCADE;
 CREATE TABLE uniformes
 (
     id          bigserial       PRIMARY KEY
-  , codigo      varchar(255)    NOT NULL 
+  , codigo      varchar(255)    NOT NULL
   , descripcion varchar(255)    NOT NULL
   , talla       varchar(255)    NOT NULL
   , precio      numeric(5,2)    NOT NULL
@@ -87,6 +87,7 @@ CREATE TABLE usuarios
   , email       varchar(255)    UNIQUE
   , tel_movil   numeric(9)      UNIQUE
   , rol         char(1)         NOT NULL
+  , token_val   varchar(255)    UNIQUE
   , colegio_id  bigint          REFERENCES colegios (id)
                                 ON DELETE NO ACTION ON UPDATE CASCADE
 );
