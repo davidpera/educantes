@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "usuarios".
@@ -100,6 +102,17 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         ];
     }
 
+    public function email()
+    {
+        $resultado = Yii::$app->mailer->compose()
+            ->setFrom(Yii::$app->params['adminEmail'])
+            ->setTo($this->email)
+            ->setSubject('Validación de tu cuenta de email')->setTextBody('A traves del enlace de este correo verificaras tu cuenta de email')
+            ->setHtmlBody(Html::a('verificar', Url::to(['usuarios/verificar', 'token_val' => $this->token_val], true)))
+            ->send();
+        Yii::$app->session->setFlash('info', 'Se le ha enviado un correo');
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -160,7 +173,9 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         if (parent::beforeSave($insert)) {
             if ($insert) {
                 // $this->auth_key = Yii::$app->security->generateRandomString();
-                // $this->token_val = Yii::$app->security->generateRandomString();
+                if (Yii::$app->user->isGuest) {
+                    $this->token_val = Yii::$app->security->generateRandomString();
+                }
                 if ($this->scenario === self::ESCENARIO_CREATE) {
                     $this->password = Yii::$app->security->generatePasswordHash($this->password);
                 }
