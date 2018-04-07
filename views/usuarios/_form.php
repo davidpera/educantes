@@ -34,7 +34,7 @@ use yii\widgets\ActiveForm;
 
         <?= $form->field($model, 'tel_movil', ['enableAjaxValidation' => true])->textInput() ?>
 
-        <?= $form->field($model, 'colegio_id')->dropDownList() ?>
+        
 
     <?php endif; ?>
 
