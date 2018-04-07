@@ -95,7 +95,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             'email' => 'Email',
             'tel_movil' => 'Telefono Movil',
             'rol' => 'Rol',
-            'colegio_id' => 'Colegio ID',
+            'colegio_id' => 'Colegio',
             'confirmar' => 'Confirmar contraseña',
         ];
     }

@@ -1,5 +1,7 @@
 <?php
 
+use yii\web\View;
+
 use yii\helpers\Html;
 
 
@@ -9,6 +11,7 @@ use yii\helpers\Html;
 $this->title = 'Create Usuarios';
 $this->params['breadcrumbs'][] = ['label' => 'Usuarios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+$this->registerJsFile('/js/comprobacionAlumno.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
 ?>
 <div class="usuarios-create">
 
