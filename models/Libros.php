@@ -32,6 +32,7 @@ class Libros extends \yii\db\ActiveRecord
         return [
             [['isbn', 'titulo', 'curso', 'precio', 'colegio_id'], 'required'],
             [['isbn', 'precio'], 'number'],
+            [['isbn'], 'match', 'pattern' => '/^\d{13}$/'],
             [['colegio_id'], 'default', 'value' => null],
             [['colegio_id'], 'integer'],
             [['titulo', 'curso'], 'string', 'max' => 255],

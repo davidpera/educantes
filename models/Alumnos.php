@@ -33,12 +33,12 @@ class Alumnos extends \yii\db\ActiveRecord
     {
         return [
             [['codigo', 'nombre', 'primer_apellido', 'fecha_de_nacimiento', 'dni_primer_tutor', 'dni_segundo_tutor', 'colegio_id'], 'required'],
-            [['fecha_de_nacimiento'], 'safe'],
+            [['fecha_de_nacimiento'], 'date'],
             [['colegio_id'], 'default', 'value' => null],
             [['colegio_id'], 'integer'],
             [['nombre', 'primer_apellido', 'segundo_apellido', 'unidad'], 'string', 'max' => 255],
             [['codigo'], 'number'],
-            [['dni_primer_tutor', 'dni_segundo_tutor'], 'string', 'max' => 9],
+            [['dni_primer_tutor', 'dni_segundo_tutor'], 'match', 'pattern' => '/^\d{8}[A-Z]{1}$/'],
             [['codigo', 'dni_primer_tutor', 'dni_segundo_tutor'], 'unique'],
             [['colegio_id'], 'exist', 'skipOnError' => true, 'targetClass' => Colegios::className(), 'targetAttribute' => ['colegio_id' => 'id']],
         ];
