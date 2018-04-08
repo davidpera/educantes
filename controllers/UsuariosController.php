@@ -77,11 +77,11 @@ class UsuariosController extends Controller
             $model = new UploadForm();
 
             if (Yii::$app->request->isPost) {
-                $model->file = UploadedFile::getInstance($model, 'file');
+                $model->file_alum = UploadedFile::getInstance($model, 'file_alum');
                 if ($model->upload()) {
                     $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
                     $reader->setReadDataOnly(true);
-                    $spreadsheet = $reader->load('uploads/' . $model->file);
+                    $spreadsheet = $reader->load('uploads/' . $model->file_alum);
 
                     $worksheet = $spreadsheet->getActiveSheet();
                     // Get the highest row number and column letter referenced in the worksheet
