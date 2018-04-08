@@ -1,5 +1,7 @@
 <?php
 
+use app\models\Colegios;
+
 use yii\web\View;
 
 use yii\helpers\Html;
@@ -12,7 +14,7 @@ use yii\widgets\ActiveForm;
 
 <div class="usuarios-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'formulario']); ?>
 
     <?= $form->field($model, 'nom_usuario', ['enableAjaxValidation' => true])->textInput(['maxlength' => true]) ?>
 
@@ -34,11 +36,12 @@ use yii\widgets\ActiveForm;
 
         <?= $form->field($model, 'tel_movil', ['enableAjaxValidation' => true])->textInput() ?>
 
-        
+        <?php $var = \yii\helpers\ArrayHelper::map(Colegios::find()->all(), 'id', 'nombre'); ?>
+        <?= $form->field($model, 'colegio_id')->dropDownList($var) ?>
 
     <?php endif; ?>
 
-    <div class="form-group">
+    <div id="botones" class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
 

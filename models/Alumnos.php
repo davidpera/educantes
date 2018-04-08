@@ -32,8 +32,8 @@ class Alumnos extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['codigo', 'nombre', 'primer_apellido', 'fecha_de_nacimiento', 'dni_primer_tutor', 'dni_segundo_tutor', 'colegio_id'], 'required'],
-            [['fecha_de_nacimiento'], 'date'],
+            [['codigo', 'unidad', 'nombre', 'primer_apellido', 'fecha_de_nacimiento', 'dni_primer_tutor', 'dni_segundo_tutor', 'colegio_id'], 'required'],
+            [['fecha_de_nacimiento'], 'date', 'format' => 'php:Y-m-d'],
             [['colegio_id'], 'default', 'value' => null],
             [['colegio_id'], 'integer'],
             [['nombre', 'primer_apellido', 'segundo_apellido', 'unidad'], 'string', 'max' => 255],

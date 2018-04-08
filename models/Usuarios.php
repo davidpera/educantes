@@ -95,7 +95,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             'email' => 'Email',
             'tel_movil' => 'Telefono Movil',
             'rol' => 'Rol',
-            'colegio_id' => 'Colegio ID',
+            'colegio_id' => 'Colegio',
             'confirmar' => 'Confirmar contraseña',
         ];
     }
@@ -172,6 +172,18 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             if ($insert) {
                 // $this->auth_key = Yii::$app->security->generateRandomString();
                 if (Yii::$app->user->isGuest) {
+                    $query = Alumnos::find()->where(['colegio_id' => Yii::$app->request->post()['Usuarios']['colegio_id']])
+                    ->andWhere(['nombre' => Yii::$app->request->post()['Hijo']['nombre']])
+                    ->andWhere(['primer_apellido' => Yii::$app->request->post()['Hijo']['prim-ape']])
+                    ->andWhere(['fecha_de_nacimiento' => Yii::$app->request->post()['Hijo']['fech-nac']]);
+                    if (Yii::$app->request->post()['Hijo']['sec-ape'] !== '') {
+                        $query->andWhere(['segundo_apellido' => Yii::$app->request->post()['Hijo']['sec-ape']]);
+                    }
+                    $hijo = $query->one();
+                    if ($hijo === null) {
+                        Yii::$app->session->setFlash('error', 'El alumno escogido no existe el el colegio indicado, compruebe que ha elegido bien el colegio');
+                        return false;
+                    }
                     $this->token_val = Yii::$app->security->generateRandomString();
                 }
                 if ($this->scenario === self::ESCENARIO_CREATE) {
