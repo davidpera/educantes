@@ -496,6 +496,24 @@
 | **Entrega**     | v3             |
 | **Incidencia**  | [55](https://github.com/davidpera/educantes/issues/55) |
 
+| **R56**     | **Alta/baja usuarios padre**           |
+| --------------: | :------------------- |
+| **Descripción** | Alta de los usuarios padres generados por los usuarios administradores de colegio             |
+| **Prioridad**   | Importante           |
+| **Tipo**        | Funcional                |
+| **Complejidad** | Fácil         |
+| **Entrega**     | v1             |
+| **Incidencia**  | [67](https://github.com/davidpera/educantes/issues/67) |
+
+| **R57**     | **Tutores**           |
+| --------------: | :------------------- |
+| **Descripción** | Sobre los tutores guardaríamos sus datos personales como es el nombre, apellidos, dni, etc.             |
+| **Prioridad**   | Importante           |
+| **Tipo**        | Información                |
+| **Complejidad** | Fácil         |
+| **Entrega**     | v2             |
+| **Incidencia**  | [68](https://github.com/davidpera/educantes/issues/68) |
+
 
 ## Cuadro resumen
 
@@ -556,3 +574,5 @@
 | (**R53**) Recordar contraseña | Importante | Funcional | Fácil | v3 | [53](https://github.com/davidpera/educantes/issues/53) |
 | (**R54**) Enviar correo a vendedores | Opcional | Funcional | Fácil | v3 | [54](https://github.com/davidpera/educantes/issues/54) |
 | (**R55**) Facturación de uniformes | Opcional | Funcional | Media | v3 | [55](https://github.com/davidpera/educantes/issues/55) |
+| (**R56**) Alta/baja usuarios padre | Importante | Funcional | Fácil | v1 | [67](https://github.com/davidpera/educantes/issues/67) |
+| (**R57**) Tutores | Importante | Información | Fácil | v2 | [68](https://github.com/davidpera/educantes/issues/68) |
