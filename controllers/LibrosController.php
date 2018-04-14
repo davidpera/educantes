@@ -53,9 +53,17 @@ class LibrosController extends Controller
         $searchModel = new LibrosSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        $model = new Libros();
+        $model->colegio_id = $us->colegio_id;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['index']);
+        }
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'model' => $model,
         ]);
     }
 

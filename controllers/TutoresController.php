@@ -2,18 +2,17 @@
 
 namespace app\controllers;
 
-use app\models\Alumnos;
-use app\models\AlumnosSearch;
-use app\models\Usuarios;
+use app\models\Tutores;
+use app\models\TutoresSearch;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
- * AlumnosController implements the CRUD actions for Alumnos model.
+ * TutoresController implements the CRUD actions for Tutores model.
  */
-class AlumnosController extends Controller
+class TutoresController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -29,7 +28,7 @@ class AlumnosController extends Controller
             ],
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only' => ['index', 'create', 'update', 'view'],
+                'only' => ['index', 'create', 'update', 'view', 'upload'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -41,24 +40,25 @@ class AlumnosController extends Controller
     }
 
     /**
-     * Lists all Alumnos models.
+     * Lists all Tutores models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
+        $us = Yii::$app->user->identity;
         if ($us->rol !== 'A' && $us->rol !== 'C') {
             return $this->goHome();
         }
-        $searchModel = new AlumnosSearch();
-        $dataProvider = $searchModel
-        ->search(Yii::$app->request->queryParams);
+        $searchModel = new TutoresSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        $model = new Alumnos();
-        $model->colegio_id = $us->colegio_id;
+        $model = new Tutores();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->colegio_id = $us->colegio_id;
+            if ($model->save()) {
+                return $this->redirect(['index']);
+            }
         }
 
         return $this->render('index', [
@@ -69,14 +69,14 @@ class AlumnosController extends Controller
     }
 
     /**
-     * Displays a single Alumnos model.
+     * Displays a single Tutores model.
      * @param int $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
+        $us = Yii::$app->user->identity;
         if ($us->rol !== 'A' && $us->rol !== 'C') {
             return $this->goHome();
         }
@@ -86,21 +86,25 @@ class AlumnosController extends Controller
     }
 
     /**
-     * Creates a new Alumnos model.
+     * Creates a new Tutores model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
+        $us = Yii::$app->user->identity;
         if ($us->rol !== 'C') {
             return $this->goHome();
         }
-        $model = new Alumnos();
-        $model->colegio_id = $us->colegio_id;
+        $model = new Tutores();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+
+
+        if ($model->load(Yii::$app->request->post())) {
+            $model->colegio_id = $us->colegio_id;
+            if ($model->save()) {
+                return $this->redirect(['index']);
+            }
         }
 
         return $this->render('create', [
@@ -109,7 +113,7 @@ class AlumnosController extends Controller
     }
 
     /**
-     * Updates an existing Alumnos model.
+     * Updates an existing Tutores model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id
      * @return mixed
@@ -117,19 +121,14 @@ class AlumnosController extends Controller
      */
     public function actionUpdate($id)
     {
-        $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
+        $us = Yii::$app->user->identity;
         if ($us->rol !== 'A' && $us->rol !== 'C') {
             return $this->goHome();
         }
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->segundo_apellido === '') {
-                $model->segundo_apellido = null;
-            }
-            if ($model->save()) {
-                return $this->redirect(['index']);
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -138,7 +137,7 @@ class AlumnosController extends Controller
     }
 
     /**
-     * Deletes an existing Alumnos model.
+     * Deletes an existing Tutores model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id
      * @return mixed
@@ -146,7 +145,7 @@ class AlumnosController extends Controller
      */
     public function actionDelete($id)
     {
-        $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
+        $us = Yii::$app->user->identity;
         if ($us->rol !== 'A' && $us->rol !== 'C') {
             return $this->goHome();
         }
@@ -156,15 +155,15 @@ class AlumnosController extends Controller
     }
 
     /**
-     * Finds the Alumnos model based on its primary key value.
+     * Finds the Tutores model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id
-     * @return Alumnos the loaded model
+     * @return Tutores the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Alumnos::findOne($id)) !== null) {
+        if (($model = Tutores::findOne($id)) !== null) {
             return $model;
         }
 

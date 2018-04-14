@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 },
             ],
-        ];;
+        ];
         $columnas[] = ['class' => 'yii\grid\ActionColumn'];
 
     }

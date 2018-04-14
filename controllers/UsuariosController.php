@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Alumnos;
 use app\models\Libros;
+use app\models\Tutores;
 use app\models\Uniformes;
 use app\models\UploadForm;
 use app\models\Usuarios;
@@ -35,7 +36,7 @@ class UsuariosController extends Controller
             ],
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only' => ['index', 'update', 'view', 'upload'],
+                'only' => ['index', 'create', 'update', 'view', 'upload'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -52,7 +53,7 @@ class UsuariosController extends Controller
      */
     public function actionIndex()
     {
-        $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
+        $us = Yii::$app->user->identity;
         if ($us->rol !== 'A' && $us->rol !== 'C') {
             return $this->goHome();
         }
@@ -205,11 +206,31 @@ class UsuariosController extends Controller
     /**
      * Este método da de alta a un colegio.
      * @param  [type] $colegio_id [description]
+     * @param null|mixed $id
      * @return [type]             [description]
      */
-    public function actionAlta($colegio_id)
+    public function actionAlta($colegio_id, $id = null)
     {
-        $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
+        if ($id !== null) {
+            $tutor = Tutores::find()->where(['id' => $id])->one();
+            $model = new Usuarios(['scenario' => Usuarios::ESCENARIO_CREATE]);
+            $model->nom_usuario = substr($tutor->nombre, 0, 2) . substr($tutor->apellidos, 0, 2) . substr($tutor->telefono, 0, 2);
+            $model->password = Yii::$app->security->generateRandomString(10);
+            $model->confirmar = $model->password;
+            $model->nombre = $tutor->nombre;
+            $model->apellidos = $tutor->apellidos;
+            $model->direccion = $tutor->direccion;
+            $model->nif = $tutor->nif;
+            $model->tel_movil = $tutor->telefono;
+            $model->email = $tutor->email;
+            $model->colegio_id = $tutor->colegio_id;
+            $model->rol = 'P';
+            if ($model->save()) {
+                return $this->redirect(['tutores/index']);
+            }
+        }
+
+        $us = Yii::$app->user->identity;
         $model = new Usuarios(['scenario' => Usuarios::ESCENARIO_CREATE]);
         if ($us->rol === 'A') {
             $model->rol = 'C';
@@ -296,7 +317,7 @@ class UsuariosController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['usuarios/index']);
+        return $this->goBack();
     }
 
     /**

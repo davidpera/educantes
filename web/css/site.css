@@ -11,6 +11,27 @@ body {
     /* font-family: Anonymice powerline; */
 }
 
+.acciones {
+    z-index: 1;
+    position: fixed;
+    top: 85%;
+    left: 85%;
+}
+
+.mas{
+
+    background-color: green;
+    color: white;
+    border-radius: 50%;
+}
+
+.modal-dialog{
+    height: auto;
+    max-width: 500px;
+    background-color: white;
+    border-radius: 4px;
+}
+
 .padre {
     display: flex;
     flex-direction: row;

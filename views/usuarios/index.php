@@ -11,6 +11,7 @@ use yii\grid\GridView;
 
 $this->title = 'Usuarios';
 $this->params['breadcrumbs'][] = $this->title;
+Yii::$app->user->setReturnUrl(Yii::$app->request->url);
 ?>
 <div class="usuarios-index">
 

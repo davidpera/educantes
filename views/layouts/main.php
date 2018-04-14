@@ -62,8 +62,6 @@ AppAsset::register($this);
                         'items' => [
                             ['label' => 'Insertar Uniformes', 'url' => ['usuarios/upload', 'tabla' => 'uniformes']],
                             '<li class="divider"></li>',
-                            ['label' => 'Crear uniforme', 'url' => ['uniformes/create']],
-                            '<li class="divider"></li>',
                             ['label' => 'Ver uniformes', 'url' => ['uniformes/index']],
                         ],
                     ];
@@ -71,8 +69,6 @@ AppAsset::register($this);
                         'label' => 'Libros',
                         'items' => [
                             ['label' => 'Insertar Libros', 'url' => ['usuarios/upload', 'tabla' => 'libros']],
-                            '<li class="divider"></li>',
-                            ['label' => 'Crear libro', 'url' => ['libros/create']],
                             '<li class="divider"></li>',
                             ['label' => 'Ver libros', 'url' => ['libros/index']],
                         ],
@@ -82,9 +78,15 @@ AppAsset::register($this);
                         'items' => [
                             ['label' => 'Insertar Alumnos', 'url' => ['usuarios/upload', 'tabla' => 'alumnos']],
                             '<li class="divider"></li>',
-                            ['label' => 'Crear Alumno', 'url' => ['alumnos/create']],
-                            '<li class="divider"></li>',
                             ['label' => 'Ver alumnos', 'url' => ['alumnos/index']],
+                        ],
+                    ];
+                    $items[] = [
+                        'label' => 'Tutores',
+                        'items' => [
+                            ['label' => 'Insertar Tutores', 'url' => ['usuarios/upload', 'tabla' => 'tutores']],
+                            '<li class="divider"></li>',
+                            ['label' => 'Ver Tutores', 'url' => ['tutores/index']],
                         ],
                     ];
                 }

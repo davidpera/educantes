@@ -67,6 +67,8 @@ CREATE TABLE tutores
   , direccion   varchar(255)    NOT NULL
   , telefono    numeric(9)      NOT NULL
   , email       varchar(255)    NOT NULL
+  , colegio_id  bigint          NOT NULL REFERENCES colegios (id)
+                                ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS alumnos CASCADE;
