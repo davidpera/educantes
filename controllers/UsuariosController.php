@@ -160,6 +160,21 @@ class UsuariosController extends Controller
                                 Yii::$app->session->setFlash('error', 'Campos del archivo incorrectos, revise el archivo');
                                 return $this->redirect(['upload', 'tabla' => $tabla]);
                             }
+                            if ($texto === 'dni_primer_tutor') {
+                                $tutor1 = Tutores::find()->where(['nif' => $model->dni_primer_tutor])->one();
+                                if ($tutor1 === null) {
+                                    Yii::$app->session->setFlash('error', 'Alguno de los alumnos que intenta crear no tienen un tutor creado todavia, cree primero los tutores y luego los alumnos');
+                                    return $this->redirect(['upload', 'tabla' => $tabla]);
+                                }
+                                $model->tutor_id = $tutor1->id;
+                            }
+
+                            if ($texto === 'dni_segundo_tutor') {
+                                $tutor2 = Tutores::find()->where(['nif' => $model->dni_segundo_tutor])->one();
+                                if ($tutor2 !== null) {
+                                    $model->tutor2_id = $tutor2->id;
+                                }
+                            }
 
                             $model->$texto = $celda;
                         }
