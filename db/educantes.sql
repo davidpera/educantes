@@ -56,6 +56,19 @@ CREATE TABLE libros
                                 ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
+DROP TABLE IF EXISTS tutores CASCADE;
+
+CREATE TABLE tutores
+(
+    id          bigserial       PRIMARY KEY
+  , nif         char(9)         NOT NULL
+  , nombre      varchar(255)    NOT NULL
+  , apellidos   varchar(255)    NOT NULL
+  , direccion   varchar(255)    NOT NULL
+  , telefono    numeric(9)      NOT NULL
+  , email       varchar(255)    NOT NULL
+);
+
 DROP TABLE IF EXISTS alumnos CASCADE;
 
 CREATE TABLE alumnos
@@ -69,6 +82,10 @@ CREATE TABLE alumnos
   , fecha_de_nacimiento         date            NOT NULL
   , dni_primer_tutor            char(9)         NOT NULL UNIQUE
   , dni_segundo_tutor           char(9)         UNIQUE
+  , tutor_id                    bigint          NOT NULL REFERENCES tutores (id)
+                                                ON DELETE NO ACTION ON UPDATE CASCADE
+  , tutor2_id                   bigint          REFERENCES tutores(id)
+                                                ON DELETE NO ACTION ON UPDATE CASCADE
   , colegio_id                  bigint          NOT NULL REFERENCES colegios (id)
                                                 ON DELETE NO ACTION ON UPDATE CASCADE
 );

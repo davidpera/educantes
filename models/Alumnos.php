@@ -69,4 +69,14 @@ class Alumnos extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Colegios::className(), ['id' => 'colegio_id'])->inverseOf('alumnos');
     }
+
+    public function getTutor()
+    {
+        return $this->hasOne(Tutores::className(), ['id' => 'tutor_id'])->inverseOf('alumnos');
+    }
+
+    public function getTutor2()
+    {
+        return $this->hasOne(Tutores::className(), ['id' => 'tutor2_id'])->inverseOf('alumnos0');
+    }
 }
