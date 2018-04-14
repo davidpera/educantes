@@ -221,13 +221,13 @@ class UsuariosController extends Controller
     /**
      * Este método da de alta a un colegio.
      * @param  [type] $colegio_id [description]
-     * @param null|mixed $id
+     * @param null|mixed $idtut
      * @return [type]             [description]
      */
-    public function actionAlta($colegio_id, $id = null)
+    public function actionAlta($colegio_id, $idtut = null)
     {
-        if ($id !== null) {
-            $tutor = Tutores::find()->where(['id' => $id])->one();
+        if ($idtut !== null) {
+            $tutor = Tutores::find()->where(['id' => $idtut])->one();
             $model = new Usuarios(['scenario' => Usuarios::ESCENARIO_CREATE]);
             $model->nom_usuario = substr($tutor->nombre, 0, 2) . substr($tutor->apellidos, 0, 2) . substr($tutor->telefono, 0, 2);
             $model->password = Yii::$app->security->generateRandomString(10);
@@ -243,27 +243,31 @@ class UsuariosController extends Controller
             if ($model->save()) {
                 return $this->redirect(['tutores/index']);
             }
-        }
-
-        $us = Yii::$app->user->identity;
-        $model = new Usuarios(['scenario' => Usuarios::ESCENARIO_CREATE]);
-        if ($us->rol === 'A') {
-            $model->rol = 'C';
-        } elseif ($us->rol === 'C') {
-            $model->rol = 'V';
         } else {
-            return $this->goHome();
+            $us = Yii::$app->user->identity;
+            $model = new Usuarios(['scenario' => Usuarios::ESCENARIO_CREATE]);
+            if ($us->rol === 'A') {
+                $model->rol = 'C';
+            } elseif ($us->rol === 'C') {
+                $model->rol = 'V';
+            } else {
+                return $this->goHome();
+            }
+            $model->colegio_id = $colegio_id;
+
+            if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+            }
+
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['colegios/index']);
+            }
+
+            return $this->render('create', [
+                'model' => $model,
+            ]);
         }
-        $model->colegio_id = $colegio_id;
-
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['colegios/index']);
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
     }
 
     /**

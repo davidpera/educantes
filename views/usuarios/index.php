@@ -59,6 +59,7 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
                            ['rol' => 'V'],
                            ['rol' => 'P'],
                         ])->one();
+                        var_dump($usv->rol);
                         if ($usv->rol === 'V') {
                             return Html::a('Dar de baja vendedor', ['usuarios/delete', 'id' => $model->id], [
                                     'class' => 'btn btn-danger',

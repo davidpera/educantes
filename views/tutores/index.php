@@ -45,7 +45,7 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
                                 ],
                             ]);
                     } else {
-                        return Html::a('Dar de alta', ['usuarios/alta', 'colegio_id' => $model->colegio_id, 'id' => $model->id],
+                        return Html::a('Dar de alta', ['usuarios/alta', 'colegio_id' => $model->colegio_id, 'idtut' => $model->id],
                         [
                             'class' => 'btn btn-primary',
                         ]);

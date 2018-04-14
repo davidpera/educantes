@@ -73,9 +73,6 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             [['nom_usuario', 'email', 'tel_movil'], 'unique'],
             [['colegio_id'], 'exist', 'skipOnError' => true, 'targetClass' => Colegios::className(), 'targetAttribute' => ['colegio_id' => 'id']],
         ];
-        if (Yii::$app->user->isGuest || Yii::$app->user->identity->rol === 'P') {
-            $rules[] = [['nombre', 'apellidos', 'direccion', 'nif', 'email', 'tel_movil'], 'required'];
-        }
         return $rules;
     }
 
