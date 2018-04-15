@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Alumnos;
 use app\models\Tutores;
 use app\models\TutoresSearch;
 use Yii;
@@ -56,6 +57,10 @@ class TutoresController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $model->colegio_id = $us->colegio_id;
+            if (Alumnos::find()->where(['dni_primer_tutor' => $model->nif])->orWhere(['dni_segundo_tutor' => $model->nif])->one() === null) {
+                Yii::$app->session->setFlash('error', 'El tutor que intenta introducir no tiene ningun hijo en el centro, compruebe si es un error o si no ha introducido los alumnos todavia');
+                return $this->redirect(['index']);
+            }
             if ($model->save()) {
                 return $this->redirect(['index']);
             }

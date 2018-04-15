@@ -64,22 +64,6 @@ class Tutores extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAlumnos()
-    {
-        return $this->hasMany(Alumnos::className(), ['tutor_id' => 'id'])->inverseOf('tutor');
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAlumnos0()
-    {
-        return $this->hasMany(Alumnos::className(), ['tutor2_id' => 'id'])->inverseOf('tutor2');
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getColegio()
     {
         return $this->hasOne(Colegios::className(), ['id' => 'colegio_id'])->inverseOf('tutores');

@@ -4,7 +4,6 @@ namespace app\controllers;
 
 use app\models\Alumnos;
 use app\models\AlumnosSearch;
-use app\models\Tutores;
 use app\models\Usuarios;
 use Yii;
 use yii\filters\VerbFilter;
@@ -59,16 +58,6 @@ class AlumnosController extends Controller
         $model->colegio_id = $us->colegio_id;
 
         if ($model->load(Yii::$app->request->post())) {
-            $tutor1 = Tutores::find()->where(['nif' => $model->dni_primer_tutor])->one();
-            if ($tutor1 === null) {
-                Yii::$app->session->setFlash('error', 'El alumno que intenta crear no tiene un tutor creado todavia, cree primero los tutores y luego los alumnos');
-                return $this->redirect(['index']);
-            }
-            $model->tutor_id = $tutor1->id;
-            $tutor2 = Tutores::find()->where(['nif' => $model->dni_segundo_tutor])->one();
-            if ($tutor2 !== null) {
-                $model->tutor2_id = $tutor2->id;
-            }
             if ($model->save()) {
                 return $this->redirect(['index']);
             }
@@ -113,19 +102,9 @@ class AlumnosController extends Controller
         $model->colegio_id = $us->colegio_id;
 
         if ($model->load(Yii::$app->request->post())) {
-            $tutor1 = Tutores::find()->where(['nif' => $model->dni_primer_tutor])->one();
-            if ($tutor1 === null) {
-                Yii::$app->session->setFlash('error', 'El alumno que intenta crear no tiene un tutor creado todavia');
+            if ($model->save()) {
                 return $this->redirect(['index']);
             }
-            $model->tutor_id = $tutor1->id;
-            $tutor2 = Tutores::find()->where(['nif' => $model->dni_segundo_tutor])->one();
-            if ($tutor2 !== null) {
-                $model->tutor2_id = $tutor2->id;
-            }
-            // if ($model->save()) {
-            //     return $this->redirect(['index']);
-            // }
         }
 
         return $this->render('create', [

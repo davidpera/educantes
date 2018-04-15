@@ -84,10 +84,6 @@ CREATE TABLE alumnos
   , fecha_de_nacimiento         date            NOT NULL
   , dni_primer_tutor            char(9)         NOT NULL UNIQUE
   , dni_segundo_tutor           char(9)         UNIQUE
-  , tutor_id                    bigint          NOT NULL REFERENCES tutores (id)
-                                                ON DELETE NO ACTION ON UPDATE CASCADE
-  , tutor2_id                   bigint          REFERENCES tutores(id)
-                                                ON DELETE NO ACTION ON UPDATE CASCADE
   , colegio_id                  bigint          NOT NULL REFERENCES colegios (id)
                                                 ON DELETE NO ACTION ON UPDATE CASCADE
 );

@@ -105,8 +105,10 @@ class UsuariosController extends Controller
                             $model = new Alumnos();
                         } elseif ($tabla === 'libros') {
                             $model = new Libros();
-                        } else {
+                        } elseif ($tabla === 'uniformes') {
                             $model = new Uniformes();
+                        } else {
+                            $model = new Tutores();
                         }
                         $model->colegio_id = Yii::$app->user->identity->colegio_id;
 
@@ -160,23 +162,14 @@ class UsuariosController extends Controller
                                 Yii::$app->session->setFlash('error', 'Campos del archivo incorrectos, revise el archivo');
                                 return $this->redirect(['upload', 'tabla' => $tabla]);
                             }
-                            if ($texto === 'dni_primer_tutor') {
-                                $tutor1 = Tutores::find()->where(['nif' => $model->dni_primer_tutor])->one();
-                                if ($tutor1 === null) {
-                                    Yii::$app->session->setFlash('error', 'Alguno de los alumnos que intenta crear no tienen un tutor creado todavia, cree primero los tutores y luego los alumnos');
-                                    return $this->redirect(['upload', 'tabla' => $tabla]);
-                                }
-                                $model->tutor_id = $tutor1->id;
-                            }
-
-                            if ($texto === 'dni_segundo_tutor') {
-                                $tutor2 = Tutores::find()->where(['nif' => $model->dni_segundo_tutor])->one();
-                                if ($tutor2 !== null) {
-                                    $model->tutor2_id = $tutor2->id;
-                                }
-                            }
 
                             $model->$texto = $celda;
+                            if ($tabla === 'tutores') {
+                                if ($texto === 'nif' && Alumnos::find()->where(['dni_primer_tutor' => $model->nif])->orWhere(['dni_segundo_tutor' => $model->nif])->one() === null) {
+                                    Yii::$app->session->setFlash('error', 'Algun de los tutores insertados no tiene nigun hijo en el colegio, compruebe si es un error o si no ha introducido los alumnos todavia');
+                                    return $this->redirect(['upload', 'tabla' => $tabla]);
+                                }
+                            }
                         }
                         $model->save();
                     }
