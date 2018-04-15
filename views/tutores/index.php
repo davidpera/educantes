@@ -20,7 +20,6 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
 
     <?php
     $columnas = [
-        ['class' => 'yii\grid\SerialColumn'],
 
         'nif',
         'nombre',
