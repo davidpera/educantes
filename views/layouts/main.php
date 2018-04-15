@@ -44,8 +44,6 @@ AppAsset::register($this);
     ]);
     $items = [
         ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']],
     ];
     if (!Yii::$app->user->isGuest) {
         $us = Usuarios::find()->where(['id'=>Yii::$app->user->id])->one();
@@ -54,7 +52,12 @@ AppAsset::register($this);
                 $items[] = ['label' => 'Lista Usuarios', 'url' => ['/usuarios/index']];
                 if ($us->rol === 'A') {
                     $items2 =[
-                        ['label' => 'Gestionar colegios', 'url' => ['/colegios/gestionar']]
+                        ['label' => 'Gestionar colegios', 'url' => ['/colegios/gestionar']],
+                        ['label' => 'Datos colegios', 'url' => ['/colegios/index']]
+                    ];
+                    $items[] = [
+                        'label' => 'Colegios',
+                        'items' => $items2,
                     ];
                 } else {
                     $items[] = [
@@ -89,13 +92,10 @@ AppAsset::register($this);
                             ['label' => 'Ver Tutores', 'url' => ['tutores/index']],
                         ],
                     ];
+                    $items[] = ['label' => 'Colegios', 'url' => ['/colegios/index']];
+
                 }
             }
-            $items2[] = ['label' => 'Datos colegios', 'url' => ['/colegios/index']];
-            $items[] = [
-                'label' => 'Colegios',
-                'items' => $items2,
-            ];
         }
     }
     Yii::$app->user->isGuest ? (

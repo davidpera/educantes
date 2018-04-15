@@ -23,11 +23,11 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
         'nom_usuario',
         'nombre',
         'apellidos',
-        'nif',
-        'direccion',
+        // 'nif',
+        // 'direccion',
         'email:email',
         'tel_movil',
-        'rol',
+        // 'rol',
     ];
     if (Yii::$app->user->identity->rol === 'A') {
         $columnas[] = 'colegio.nombre';

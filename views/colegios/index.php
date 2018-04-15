@@ -19,7 +19,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php
     $columnas = [
-        ['class' => 'yii\grid\SerialColumn'],
 
         'cif',
         'nombre',
