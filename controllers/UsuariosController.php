@@ -264,8 +264,11 @@ class UsuariosController extends Controller
                 return ActiveForm::validate($model);
             }
 
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['colegios/index']);
+            if ($model->load(Yii::$app->request->post())) {
+                $model->contrasena = $model->password;
+                if ($model->save()) {
+                    return $this->redirect(['colegios/index']);
+                }
             }
 
             return $this->render('create', [

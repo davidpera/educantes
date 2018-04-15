@@ -55,12 +55,8 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
 
                         }
                     } elseif ($us->rol === 'C' && $us->colegio_id === $model->colegio_id) {
-                        $usv = Usuarios::find()->andWhere(['colegio_id' => $us->colegio_id])
-                        ->andWhere(['or',
-                           ['rol' => 'V'],
-                           ['rol' => 'P'],
-                        ])->one();
-                        if ($usv->rol === 'V') {
+                        var_dump($model->rol);
+                        if ($model->rol === 'V') {
                             return Html::a('Dar de baja vendedor', ['usuarios/delete', 'id' => $model->id], [
                                     'class' => 'btn btn-danger',
                                     'data' => [
@@ -69,10 +65,10 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
                                     ],
                                 ]);
                         }else{
-                            return Html::a('Dar de baja padre', ['usuarios/delete', 'id' => $usv->id], [
+                            return Html::a('Dar de baja padre', ['usuarios/delete', 'id' => $model->id], [
                                     'class' => 'btn btn-danger',
                                     'data' => [
-                                        'confirm' => '¿Está seguro de que quiere dar de baja a '.$usv->nom_usuario.'?',
+                                        'confirm' => '¿Está seguro de que quiere dar de baja a '.$model->nom_usuario.'?',
                                         'method' => 'post',
                                     ],
                                 ]);

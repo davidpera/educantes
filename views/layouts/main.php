@@ -99,12 +99,7 @@ AppAsset::register($this);
         }
     }
     Yii::$app->user->isGuest ? (
-        $items[] = [
-            'label' => 'Usuarios',
-            'items' => [
-                ['label' => 'Login', 'url' => ['/site/login']],
-            ],
-        ]
+        $items[] = ['label' => 'Login', 'url' => ['/site/login']]
     ) : (
         $items[] = [
             'label' => 'Usuarios ('.Yii::$app->user->identity->nom_usuario.')',
