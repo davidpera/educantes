@@ -32,7 +32,7 @@ class Alumnos extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['codigo', 'unidad', 'nombre', 'primer_apellido', 'fecha_de_nacimiento', 'dni_primer_tutor', 'dni_segundo_tutor', 'colegio_id'], 'required'],
+            [['codigo', 'unidad', 'nombre', 'primer_apellido', 'fecha_de_nacimiento', 'dni_primer_tutor', 'colegio_id'], 'required'],
             [['fecha_de_nacimiento'], 'date', 'format' => 'php:Y-m-d'],
             [['colegio_id'], 'default', 'value' => null],
             [['colegio_id'], 'integer'],
@@ -68,15 +68,5 @@ class Alumnos extends \yii\db\ActiveRecord
     public function getColegio()
     {
         return $this->hasOne(Colegios::className(), ['id' => 'colegio_id'])->inverseOf('alumnos');
-    }
-
-    public function getTutor()
-    {
-        return $this->hasOne(Tutores::className(), ['id' => 'tutor_id'])->inverseOf('alumnos');
-    }
-
-    public function getTutor2()
-    {
-        return $this->hasOne(Tutores::className(), ['id' => 'tutor2_id'])->inverseOf('alumnos0');
     }
 }

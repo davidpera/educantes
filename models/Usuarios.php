@@ -31,6 +31,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     const ESCENARIO_CREATE = 'create';
     const ESCENARIO_UPDATE = 'update';
 
+
     public $confirmar;
     /**
      * {@inheritdoc}
@@ -54,7 +55,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     {
         $rules = [
             [['nom_usuario', 'rol'], 'required'],
-            [['password', 'confirmar'], 'required', 'on' => self::ESCENARIO_CREATE],
+            [['password', 'contrasena', 'confirmar'], 'required', 'on' => self::ESCENARIO_CREATE],
             [
                  ['confirmar'],
                  'compare',
@@ -73,9 +74,6 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             [['nom_usuario', 'email', 'tel_movil'], 'unique'],
             [['colegio_id'], 'exist', 'skipOnError' => true, 'targetClass' => Colegios::className(), 'targetAttribute' => ['colegio_id' => 'id']],
         ];
-        if (Yii::$app->user->isGuest || Yii::$app->user->identity->rol === 'P') {
-            $rules[] = [['nombre', 'apellidos', 'direccion', 'nif', 'email', 'tel_movil'], 'required'];
-        }
         return $rules;
     }
 
@@ -88,6 +86,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             'id' => 'ID',
             'nom_usuario' => 'Nombre de Usuario',
             'password' => 'Contraseña',
+            'contrasena' => 'Contraseña',
             'nombre' => 'Nombre',
             'apellidos' => 'Apellidos',
             'nif' => 'Nif',
@@ -166,6 +165,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         return Yii::$app->security->validatePassword($password, $this->password);
     }
 
+
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
@@ -187,6 +187,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
                     $this->token_val = Yii::$app->security->generateRandomString();
                 }
                 if ($this->scenario === self::ESCENARIO_CREATE) {
+                    $this->contrasena = $this->password;
                     $this->password = Yii::$app->security->generatePasswordHash($this->password);
                 }
             } else {

@@ -25,7 +25,7 @@ use yii\widgets\ActiveForm;
         <li>Título</li>
         <li>Curso</li>
         <li>Precio</li>
-    <?php else : ?>
+    <?php elseif ($_GET['tabla'] === 'uniformes') : ?>
         <li>Código</li>
         <li>Descripción</li>
         <li>Talla</li>
@@ -33,6 +33,13 @@ use yii\widgets\ActiveForm;
         <li>IVA</li>
         <li>Ubicación</li>
         <li>Cantidad</li>
+    <?php else: ?>
+        <li>Dni/Nif</li>
+        <li>Nombre</li>
+        <li>Apellidos</li>
+        <li>Direccion</li>
+        <li>Telefono</li>
+        <li>Email</li>
     <?php endif ?>
     </ul>
     <?php

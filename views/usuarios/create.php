@@ -8,10 +8,14 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Usuarios */
 
-$this->title = 'Create Usuarios';
+$this->title = 'Crear Usuario';
+if (Yii::$app->user->identity->rol === 'C') {
+    $this->title .= ' Vendedor';
+} else {
+    $this->title .= ' Administrador de colegio';
+}
 $this->params['breadcrumbs'][] = ['label' => 'Usuarios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-$this->registerJsFile('/js/comprobacionAlumno.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
 ?>
 <div class="usuarios-create">
 

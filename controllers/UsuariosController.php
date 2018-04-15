@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Alumnos;
 use app\models\Libros;
+use app\models\Tutores;
 use app\models\Uniformes;
 use app\models\UploadForm;
 use app\models\Usuarios;
@@ -35,7 +36,7 @@ class UsuariosController extends Controller
             ],
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only' => ['index', 'update', 'view', 'upload'],
+                'only' => ['index', 'create', 'update', 'view', 'upload'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -52,7 +53,7 @@ class UsuariosController extends Controller
      */
     public function actionIndex()
     {
-        $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
+        $us = Yii::$app->user->identity;
         if ($us->rol !== 'A' && $us->rol !== 'C') {
             return $this->goHome();
         }
@@ -104,8 +105,10 @@ class UsuariosController extends Controller
                             $model = new Alumnos();
                         } elseif ($tabla === 'libros') {
                             $model = new Libros();
-                        } else {
+                        } elseif ($tabla === 'uniformes') {
                             $model = new Uniformes();
+                        } else {
+                            $model = new Tutores();
                         }
                         $model->colegio_id = Yii::$app->user->identity->colegio_id;
 
@@ -161,6 +164,12 @@ class UsuariosController extends Controller
                             }
 
                             $model->$texto = $celda;
+                            if ($tabla === 'tutores') {
+                                if ($texto === 'nif' && Alumnos::find()->where(['dni_primer_tutor' => $model->nif])->orWhere(['dni_segundo_tutor' => $model->nif])->one() === null) {
+                                    Yii::$app->session->setFlash('error', 'Algun de los tutores insertados no tiene nigun hijo en el colegio, compruebe si es un error o si no ha introducido los alumnos todavia');
+                                    return $this->redirect(['upload', 'tabla' => $tabla]);
+                                }
+                            }
                         }
                         $model->save();
                     }
@@ -182,12 +191,14 @@ class UsuariosController extends Controller
      */
     public function actionView($id)
     {
-        if (Usuarios::find()->where(['id' => Yii::$app->user->id])->one()->rol !== 'A') {
-            return $this->goHome();
+        $us = Yii::$app->user->identity;
+        $visto = Usuarios::find()->where(['id' => $id])->one();
+        if ($us->rol === 'A' || ($us->rol === 'C' && $us->colegio_id === $visto->colegio_id)) {
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+            ]);
         }
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        return $this->goHome();
     }
 
     public function actionVerificar($token_val)
@@ -205,29 +216,58 @@ class UsuariosController extends Controller
     /**
      * Este método da de alta a un colegio.
      * @param  [type] $colegio_id [description]
+     * @param null|mixed $idtut
      * @return [type]             [description]
      */
-    public function actionAlta($colegio_id)
+    public function actionAlta($colegio_id, $idtut = null)
     {
-        $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
-        $model = new Usuarios(['scenario' => Usuarios::ESCENARIO_CREATE]);
-        if ($us->rol === 'A') {
-            $model->rol = 'C';
-        } elseif ($us->rol === 'C') {
-            $model->rol = 'V';
+        if ($idtut !== null) {
+            $tutor = Tutores::find()->where(['id' => $idtut])->one();
+            $model = new Usuarios(['scenario' => Usuarios::ESCENARIO_CREATE]);
+            $model->nom_usuario = substr($tutor->nombre, 0, 2) . substr($tutor->apellidos, 0, 2) . substr($tutor->telefono, 0, 2);
+            $model->password = Yii::$app->security->generateRandomString(10);
+            $model->contrasena = $model->password;
+            $model->confirmar = $model->password;
+            $model->nombre = $tutor->nombre;
+            $model->apellidos = $tutor->apellidos;
+            $model->direccion = $tutor->direccion;
+            $model->nif = $tutor->nif;
+            $model->tel_movil = $tutor->telefono;
+            $model->email = $tutor->email;
+            $model->colegio_id = $tutor->colegio_id;
+            $model->rol = 'P';
+            var_dump($model->validate());
+            if ($model->save()) {
+                return $this->redirect(['tutores/index']);
+            }
         } else {
-            return $this->goHome();
+            $us = Yii::$app->user->identity;
+            $model = new Usuarios(['scenario' => Usuarios::ESCENARIO_CREATE]);
+            if ($us->rol === 'A') {
+                $model->rol = 'C';
+            } elseif ($us->rol === 'C') {
+                $model->rol = 'V';
+            } else {
+                return $this->goHome();
+            }
+            $model->colegio_id = $colegio_id;
+
+            if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+            }
+
+            if ($model->load(Yii::$app->request->post())) {
+                $model->contrasena = $model->password;
+                if ($model->save()) {
+                    return $this->redirect(['colegios/index']);
+                }
+            }
+
+            return $this->render('create', [
+                'model' => $model,
+            ]);
         }
-        $model->colegio_id = $colegio_id;
-
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['colegios/index']);
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -296,7 +336,7 @@ class UsuariosController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['usuarios/index']);
+        return $this->goBack();
     }
 
     /**

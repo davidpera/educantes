@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Usuarios */
+/* @var $model app\models\Tutores */
 
-$this->title = $model->nom_usuario;
-$this->params['breadcrumbs'][] = ['label' => 'Usuarios', 'url' => ['index']];
+$this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Tutores', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="usuarios-view">
+<div class="tutores-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -24,23 +24,19 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
-    <?php
-    $attributes = [
-        'nom_usuario',
-        'contrasena',
-        'nombre',
-        'apellidos',
-        'nif',
-        'direccion',
-        'email:email',
-        'tel_movil',
-        'rol',
-    ];
-  ?>
 
     <?= DetailView::widget([
         'model' => $model,
-        'attributes' => $attributes,
+        'attributes' => [
+            'id',
+            'nif',
+            'nombre',
+            'apellidos',
+            'direccion',
+            'telefono',
+            'email:email',
+            'colegio_id',
+        ],
     ]) ?>
 
 </div>

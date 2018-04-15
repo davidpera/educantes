@@ -67,6 +67,8 @@ CREATE TABLE tutores
   , direccion   varchar(255)    NOT NULL
   , telefono    numeric(9)      NOT NULL
   , email       varchar(255)    NOT NULL
+  , colegio_id  bigint          NOT NULL REFERENCES colegios (id)
+                                ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS alumnos CASCADE;
@@ -82,10 +84,6 @@ CREATE TABLE alumnos
   , fecha_de_nacimiento         date            NOT NULL
   , dni_primer_tutor            char(9)         NOT NULL UNIQUE
   , dni_segundo_tutor           char(9)         UNIQUE
-  , tutor_id                    bigint          NOT NULL REFERENCES tutores (id)
-                                                ON DELETE NO ACTION ON UPDATE CASCADE
-  , tutor2_id                   bigint          REFERENCES tutores(id)
-                                                ON DELETE NO ACTION ON UPDATE CASCADE
   , colegio_id                  bigint          NOT NULL REFERENCES colegios (id)
                                                 ON DELETE NO ACTION ON UPDATE CASCADE
 );
@@ -97,6 +95,7 @@ CREATE TABLE usuarios
     id          bigserial       PRIMARY KEY
   , nom_usuario varchar(255)    NOT NULL UNIQUE
   , password    varchar(255)    NOT NULL
+  , contrasena  varchar(255)
   , nombre      varchar(255)
   , apellidos   varchar(255)
   , nif         char(9)        UNIQUE

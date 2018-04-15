@@ -11,6 +11,7 @@ use yii\grid\GridView;
 
 $this->title = 'Usuarios';
 $this->params['breadcrumbs'][] = $this->title;
+Yii::$app->user->setReturnUrl(Yii::$app->request->url);
 ?>
 <div class="usuarios-index">
 
@@ -18,18 +19,19 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <?php
     $columnas = [
-        ['class' => 'yii\grid\SerialColumn'],
 
         'nom_usuario',
         'nombre',
         'apellidos',
-        'nif',
-        'direccion',
+        // 'nif',
+        // 'direccion',
         'email:email',
         'tel_movil',
-        'rol',
-        'colegio.nombre',
+        // 'rol',
     ];
+    if (Yii::$app->user->identity->rol === 'A') {
+        $columnas[] = 'colegio.nombre';
+    }
     $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
     if ($us->rol === 'A' || $us->rol === 'C') {
         $columnas[] = [
@@ -53,12 +55,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         }
                     } elseif ($us->rol === 'C' && $us->colegio_id === $model->colegio_id) {
-                        $usv = Usuarios::find()->andWhere(['colegio_id' => $us->colegio_id])
-                        ->andWhere(['or',
-                           ['rol' => 'V'],
-                           ['rol' => 'P'],
-                        ])->one();
-                        if ($usv->rol === 'V') {
+                        var_dump($model->rol);
+                        if ($model->rol === 'V') {
                             return Html::a('Dar de baja vendedor', ['usuarios/delete', 'id' => $model->id], [
                                     'class' => 'btn btn-danger',
                                     'data' => [
@@ -67,10 +65,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                     ],
                                 ]);
                         }else{
-                            return Html::a('Dar de baja padre', ['usuarios/delete', 'id' => $usv->id], [
+                            return Html::a('Dar de baja padre', ['usuarios/delete', 'id' => $model->id], [
                                     'class' => 'btn btn-danger',
                                     'data' => [
-                                        'confirm' => '¿Está seguro de que quiere dar de baja a '.$usv->nom_usuario.'?',
+                                        'confirm' => '¿Está seguro de que quiere dar de baja a '.$model->nom_usuario.'?',
                                         'method' => 'post',
                                     ],
                                 ]);

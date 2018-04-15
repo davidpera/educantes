@@ -44,8 +44,6 @@ AppAsset::register($this);
     ]);
     $items = [
         ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']],
     ];
     if (!Yii::$app->user->isGuest) {
         $us = Usuarios::find()->where(['id'=>Yii::$app->user->id])->one();
@@ -54,15 +52,18 @@ AppAsset::register($this);
                 $items[] = ['label' => 'Lista Usuarios', 'url' => ['/usuarios/index']];
                 if ($us->rol === 'A') {
                     $items2 =[
-                        ['label' => 'Gestionar colegios', 'url' => ['/colegios/gestionar']]
+                        ['label' => 'Gestionar colegios', 'url' => ['/colegios/gestionar']],
+                        ['label' => 'Datos colegios', 'url' => ['/colegios/index']]
+                    ];
+                    $items[] = [
+                        'label' => 'Colegios',
+                        'items' => $items2,
                     ];
                 } else {
                     $items[] = [
                         'label' => 'Uniformes',
                         'items' => [
                             ['label' => 'Insertar Uniformes', 'url' => ['usuarios/upload', 'tabla' => 'uniformes']],
-                            '<li class="divider"></li>',
-                            ['label' => 'Crear uniforme', 'url' => ['uniformes/create']],
                             '<li class="divider"></li>',
                             ['label' => 'Ver uniformes', 'url' => ['uniformes/index']],
                         ],
@@ -72,8 +73,6 @@ AppAsset::register($this);
                         'items' => [
                             ['label' => 'Insertar Libros', 'url' => ['usuarios/upload', 'tabla' => 'libros']],
                             '<li class="divider"></li>',
-                            ['label' => 'Crear libro', 'url' => ['libros/create']],
-                            '<li class="divider"></li>',
                             ['label' => 'Ver libros', 'url' => ['libros/index']],
                         ],
                     ];
@@ -82,28 +81,25 @@ AppAsset::register($this);
                         'items' => [
                             ['label' => 'Insertar Alumnos', 'url' => ['usuarios/upload', 'tabla' => 'alumnos']],
                             '<li class="divider"></li>',
-                            ['label' => 'Crear Alumno', 'url' => ['alumnos/create']],
-                            '<li class="divider"></li>',
                             ['label' => 'Ver alumnos', 'url' => ['alumnos/index']],
                         ],
                     ];
+                    $items[] = [
+                        'label' => 'Tutores',
+                        'items' => [
+                            ['label' => 'Insertar Tutores', 'url' => ['usuarios/upload', 'tabla' => 'tutores']],
+                            '<li class="divider"></li>',
+                            ['label' => 'Ver Tutores', 'url' => ['tutores/index']],
+                        ],
+                    ];
+                    $items[] = ['label' => 'Colegios', 'url' => ['/colegios/index']];
+
                 }
             }
-            $items2[] = ['label' => 'Datos colegios', 'url' => ['/colegios/index']];
-            $items[] = [
-                'label' => 'Colegios',
-                'items' => $items2,
-            ];
         }
     }
     Yii::$app->user->isGuest ? (
-        $items[] = [
-            'label' => 'Usuarios',
-            'items' => [
-                ['label' => 'Login', 'url' => ['/site/login']],
-                ['label' => 'Registrarse', 'url' => ['usuarios/create']],
-            ],
-        ]
+        $items[] = ['label' => 'Login', 'url' => ['/site/login']]
     ) : (
         $items[] = [
             'label' => 'Usuarios ('.Yii::$app->user->identity->nom_usuario.')',
