@@ -198,12 +198,14 @@ class UsuariosController extends Controller
      */
     public function actionView($id)
     {
-        if (Usuarios::find()->where(['id' => Yii::$app->user->id])->one()->rol !== 'A') {
-            return $this->goHome();
+        $us = Yii::$app->user->identity;
+        $visto = Usuarios::find()->where(['id' => $id])->one();
+        if ($us->rol === 'A' || ($us->rol === 'C' && $us->colegio_id === $visto->colegio_id)) {
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+            ]);
         }
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        return $this->goHome();
     }
 
     public function actionVerificar($token_val)
@@ -231,6 +233,7 @@ class UsuariosController extends Controller
             $model = new Usuarios(['scenario' => Usuarios::ESCENARIO_CREATE]);
             $model->nom_usuario = substr($tutor->nombre, 0, 2) . substr($tutor->apellidos, 0, 2) . substr($tutor->telefono, 0, 2);
             $model->password = Yii::$app->security->generateRandomString(10);
+            $model->contrasena = $model->password;
             $model->confirmar = $model->password;
             $model->nombre = $tutor->nombre;
             $model->apellidos = $tutor->apellidos;
@@ -240,6 +243,7 @@ class UsuariosController extends Controller
             $model->email = $tutor->email;
             $model->colegio_id = $tutor->colegio_id;
             $model->rol = 'P';
+            var_dump($model->validate());
             if ($model->save()) {
                 return $this->redirect(['tutores/index']);
             }

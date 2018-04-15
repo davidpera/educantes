@@ -99,6 +99,7 @@ CREATE TABLE usuarios
     id          bigserial       PRIMARY KEY
   , nom_usuario varchar(255)    NOT NULL UNIQUE
   , password    varchar(255)    NOT NULL
+  , contrasena  varchar(255)
   , nombre      varchar(255)
   , apellidos   varchar(255)
   , nif         char(9)        UNIQUE

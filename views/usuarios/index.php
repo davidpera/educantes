@@ -19,7 +19,6 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <?php
     $columnas = [
-        ['class' => 'yii\grid\SerialColumn'],
 
         'nom_usuario',
         'nombre',
@@ -29,8 +28,10 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
         'email:email',
         'tel_movil',
         'rol',
-        'colegio.nombre',
     ];
+    if (Yii::$app->user->identity->rol === 'A') {
+        $columnas[] = 'colegio.nombre';
+    }
     $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
     if ($us->rol === 'A' || $us->rol === 'C') {
         $columnas[] = [
@@ -59,7 +60,6 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
                            ['rol' => 'V'],
                            ['rol' => 'P'],
                         ])->one();
-                        var_dump($usv->rol);
                         if ($usv->rol === 'V') {
                             return Html::a('Dar de baja vendedor', ['usuarios/delete', 'id' => $model->id], [
                                     'class' => 'btn btn-danger',
