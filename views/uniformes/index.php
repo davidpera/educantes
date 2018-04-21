@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-
+<?php if (Yii::$app->user->identity->rol === 'A' || isset($mio)): ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -57,7 +57,25 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
+<?php else: ?>
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
 
+            'descripcion',
+            'talla',
+            'precio',
+            'iva',
+            'cantidad',
+            'colegio.nombre',
+
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
+<?php endif ?>
+
+<?php if (Yii::$app->user->identity->rol !== 'V'): ?>
     <div class="acciones">
         <?= Html::button('', [
             'class' => 'mas btn glyphicon glyphicon-plus',
@@ -82,4 +100,6 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div>
+<?php endif; ?>
+
 </div>

@@ -43,15 +43,16 @@ class UniformesController extends Controller
     /**
      * Lists all Uniformes models.
      * @return mixed
+     * @param null|mixed $mio
      */
-    public function actionIndex()
+    public function actionIndex($mio = null)
     {
         $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
-        if ($us->rol !== 'A' && $us->rol !== 'C') {
-            return $this->goHome();
-        }
+        // if ($us->rol !== 'A' && $us->rol !== 'C') {
+        //     return $this->goHome();
+        // }
         $searchModel = new UniformesSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $mio);
 
         $model = new Uniformes();
 
@@ -59,12 +60,19 @@ class UniformesController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         }
-
+        if ($mio !== null && $mio !== 'no') {
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'mio' => $mio,
+                'model' => $model,
+            ]);
+        }
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'model' => $model,
-        ]);
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'model' => $model,
+            ]);
     }
 
     /**
