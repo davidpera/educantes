@@ -58,7 +58,7 @@ class UniformesController extends Controller
 
         $model->colegio_id = $us->colegio_id;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+            return $this->goBack();
         }
         if ($mio !== null && $mio !== 'no') {
             return $this->render('index', [
@@ -100,13 +100,16 @@ class UniformesController extends Controller
     public function actionCreate()
     {
         $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
-        if ($us->rol !== 'C') {
+        if ($us->rol !== 'C' && $us->rol !== 'V') {
             return $this->goHome();
         }
         $model = new Uniformes();
 
         $model->colegio_id = $us->colegio_id;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if ($us->rol === 'V') {
+                return $this->redirect(['index', 'mio' => 'si']);
+            }
             return $this->redirect(['index']);
         }
 
@@ -130,13 +133,49 @@ class UniformesController extends Controller
         }
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->nif === '') {
+                $model->nif = null;
+            }
+            if ($model->save()) {
+                if ($us->rol === 'V') {
+                    return $this->redirect(['index', 'mio' => 'si']);
+                }
+                return $this->redirect(['index']);
+            }
         }
 
         return $this->render('update', [
             'model' => $model,
         ]);
+    }
+
+    public function actionCantidad($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->cantidad !== '0') {
+            return $model->cantidad;
+        }
+        Yii::$app->session->setFlash('info', 'No hay existencias de ese uniforme');
+        return  $this->redirect(['index', 'mio' => 'no']);
+    }
+
+    public function actionPedido($id, $cantidadPedida)
+    {
+        $uniform = $this->findModel($id);
+        $uniform->cantidad = $uniform->cantidad - $cantidadPedida;
+        if ($uniform->save()) {
+            $usuario = Usuarios::find()->where(['colegio_id' => $uniform->colegio_id, 'rol' => 'V'])->one();
+            $usuario->emailPedido($id, Yii::$app->user->id);
+            $this->redirect(['index', 'mio' => 'no']);
+        }
+    }
+
+    public function actionAceptar($id, $pedidorid)
+    {
+        $user = Usuarios::find()->where(['id' => $pedidorid])->one();
+        $user->emailAceptar($id);
     }
 
     /**
@@ -149,11 +188,14 @@ class UniformesController extends Controller
     public function actionDelete($id)
     {
         $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
-        if ($us->rol !== 'A' && $us->rol !== 'C') {
+        if ($us->rol === 'P') {
             return $this->goHome();
         }
         $this->findModel($id)->delete();
 
+        if ($us->rol === 'V') {
+            return $this->redirect(['index', 'mio' => 'si']);
+        }
         return $this->redirect(['index']);
     }
 

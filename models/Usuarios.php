@@ -99,15 +99,28 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         ];
     }
 
-    public function email()
+    public function emailPedido($id, $pedidorid)
     {
         $resultado = Yii::$app->mailer->compose()
             ->setFrom(Yii::$app->params['adminEmail'])
             ->setTo($this->email)
-            ->setSubject('Validación de tu cuenta de email')->setTextBody('A traves del enlace de este correo verificaras tu cuenta de email')
-            ->setHtmlBody(Html::a('verificar', Url::to(['usuarios/verificar', 'token_val' => $this->token_val], true)))
+            ->setSubject('Se ha realizado un pedido a tu colegio')->setTextBody('A traves del enlace de este correo aceptaras el pedido y tendras que prepararlo')
+            ->setHtmlBody(Html::a('Aceptar', Url::to(['uniformes/aceptar', 'id' => $id, 'pedidorid' => $pedidorid], true)))
             ->send();
-        Yii::$app->session->setFlash('info', 'Se le ha enviado un correo');
+        Yii::$app->session->setFlash('info', 'Se le ha enviado un correo al administrador del colegio, se le contestará cuando lo acepte');
+    }
+
+    public function emailAceptar($id)
+    {
+        $uniforme = Uniformes::find()->where(['id' => $id])->one();
+        $colegio = Colegios::find()->where(['id' => $this->colegio_id])->one();
+        $resultado = Yii::$app->mailer->compose()
+            ->setFrom(Yii::$app->params['adminEmail'])
+            ->setTo($this->email)
+            ->setSubject('Han aceptado su pedido')->setTextBody('Han aceptado su pedido de ' . $uniforme->descripcion . ' en el colegio ' . $colegio->nombre . ', ya puede ir a recogerlo')
+            ->setHtmlBody('<h3>Han aceptado su pedido de ' . $uniforme->descripcion . ' en el colegio ' . $colegio->nombre . ', ya puede ir a recogerlo</h3>')
+            ->send();
+        Yii::$app->session->setFlash('info', 'Se le ha enviado un correo al usuario para que venga a recoger el pedido');
     }
 
     /**
