@@ -4,8 +4,8 @@ $(document).ready(function(){
 });
 
 function eventoPedidoMultiple(){
-    $('.pedidoMult').on('click', function(){
-        var nueva = 
+    $('#pedidoMult').on('click', function(){
+        var nueva = window.open('/js/ventana.html','Pedido',"width=300px, height=400px, menubar=no")
     });
 }
 
