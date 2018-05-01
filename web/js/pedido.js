@@ -1,6 +1,13 @@
 $(document).ready(function(){
     eventoPedido();
+    eventoPedidoMultiple();
 });
+
+function eventoPedidoMultiple(){
+    $('.pedidoMult').on('click', function(){
+        var nueva = 
+    });
+}
 
 function eventoPedido(){
     $('.pedido').on('click',function(){
