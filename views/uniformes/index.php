@@ -29,7 +29,7 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-<?php if (Yii::$app->user->identity->rol === 'A' || isset($mio)): ?>
+<?php if (Yii::$app->user->identity->rol === 'A' || isset($mio) || Yii::$app->user->identity->rol === 'C'): ?>
     <?php $columnas = [
         'codigo',
         'descripcion',
@@ -89,6 +89,11 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
             </div>
         </div>
 <?php else: ?>
+    <?= Html::button('Hacer pedido multiple',
+        [
+            'id' => 'pedidoMult',
+            'class' => 'btn btn-info',
+        ])?>
     <?php $columnas = [
         'descripcion',
         'talla',

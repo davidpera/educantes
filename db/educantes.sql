@@ -98,7 +98,7 @@ CREATE TABLE usuarios
   , contrasena  varchar(255)    DEFAULT NULL
   , nombre      varchar(255)    DEFAULT NULL
   , apellidos   varchar(255)    DEFAULT NULL
-  , nif         char(9)         UNIQUE DEFAULT NULL
+  , nif         varchar(255)    UNIQUE DEFAULT NULL
   , direccion   varchar(255)    DEFAULT NULL
   , email       varchar(255)    UNIQUE DEFAULT NULL
   , tel_movil   numeric(9)      UNIQUE DEFAULT NULL

@@ -167,7 +167,8 @@ class UniformesController extends Controller
         $uniform->cantidad = $uniform->cantidad - $cantidadPedida;
         if ($uniform->save()) {
             $usuario = Usuarios::find()->where(['colegio_id' => $uniform->colegio_id, 'rol' => 'V'])->one();
-            $usuario->emailPedido($id, Yii::$app->user->id);
+            $usuario->emailPedido($id, Yii::$app->user->id, $cantidadPedida);
+            Yii::$app->session->setFlash('info', 'Se le ha enviado un correo al administrador del colegio, se le contestará cuando lo acepte');
             $this->redirect(['index', 'mio' => 'no']);
         }
     }
@@ -176,6 +177,20 @@ class UniformesController extends Controller
     {
         $user = Usuarios::find()->where(['id' => $pedidorid])->one();
         $user->emailAceptar($id);
+        Yii::$app->session->setFlash('info', 'Se le ha enviado un correo al usuario para que venga a recoger el pedido');
+        $this->goHome();
+    }
+
+    public function actionRechazar($id, $pedidorid, $cantidadPedida)
+    {
+        $uniform = $this->findModel($id);
+        $user = Usuarios::find()->where(['id' => $pedidorid])->one();
+        $uniform->cantidad = $uniform->cantidad + $cantidadPedida;
+        if ($uniform->save()) {
+            $user->emailRechazar($id);
+            Yii::$app->session->setFlash('info', 'Se le ha enviado un correo al usuario informandole que el pedido ha sido rechazado');
+            $this->goHome();
+        }
     }
 
     /**

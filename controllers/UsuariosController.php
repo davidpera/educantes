@@ -316,8 +316,16 @@ class UsuariosController extends Controller
             return ActiveForm::validate($model);
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->goHome();
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->nif === '') {
+                $model->nif = null;
+            }
+            if ($model->email === '') {
+                $model->email = null;
+            }
+            if ($model->save()) {
+                return $this->goHome();
+            }
         }
 
         return $this->render('update', [
