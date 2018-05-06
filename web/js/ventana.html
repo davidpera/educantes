@@ -3,9 +3,18 @@
     <head>
         <meta charset="utf-8">
         <title>Pedido</title>
-        <script src="ventana.js" charset="utf-8"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="/js/ventana.js" charset="utf-8"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+        <link rel="stylesheet" href="/css/ventana.css">
     </head>
     <body>
-        <button type="button" name="button" class="btn btn-info">Añadir articulo</button>
+        <div id="pedidos" class="pedidos">
+
+        </div>
+        <div id="botones" class="botones">
+            <button id="anadir-pedido" type="button" name="button" class="btn btn-info">Añadir articulo</button>
+            <button type="button" name="button" class="btn btn-success">Confirmar</button>
+        </div>
     </body>
 </html>

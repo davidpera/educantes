@@ -9,6 +9,7 @@ use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * UniformesController implements the CRUD actions for Uniformes model.
@@ -159,6 +160,13 @@ class UniformesController extends Controller
         }
         Yii::$app->session->setFlash('info', 'No hay existencias de ese uniforme');
         return  $this->redirect(['index', 'mio' => 'no']);
+    }
+
+    public function actionExternos()
+    {
+        $externos = Uniformes::find()->where('colegio_id != :id', ['id' => Yii::$app->user->identity->colegio_id])->all();
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return $externos;
     }
 
     public function actionPedido($id, $cantidadPedida)

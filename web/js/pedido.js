@@ -5,7 +5,10 @@ $(document).ready(function(){
 
 function eventoPedidoMultiple(){
     $('#pedidoMult').on('click', function(){
-        var nueva = window.open('/js/ventana.html','Pedido',"width=300px, height=400px, menubar=no")
+        var le = ($(window).width()/2)-150;
+        var to = ($(window).height()/2)-50;
+        var options = "width=400px, height=500px,top="+to+",left="+le+", menubar=no, resizable=no,scrollbars=yes";
+        var nueva = window.open('/js/ventana.html','Pedido',options);
     });
 }
 

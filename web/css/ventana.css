@@ -1,0 +1,16 @@
+.pedidos{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.pedidos > div{
+    margin-bottom: 5px;
+}
+
+.botones{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
