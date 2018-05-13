@@ -10,6 +10,7 @@ use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * ColegiosController implements the CRUD actions for Colegios model.
@@ -39,6 +40,13 @@ class ColegiosController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function actionLista()
+    {
+        $lista = Colegios::find()->where('id != :id', ['id' => Yii::$app->user->identity->colegio_id])->all();
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return $lista;
     }
 
     /**

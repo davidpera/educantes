@@ -95,12 +95,13 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
             'class' => 'btn btn-info',
         ])?>
     <?php $columnas = [
+        'codigo',
         'descripcion',
         'talla',
         'precio',
         'iva',
         'cantidad',
-
+        'colegio.nombre',
         [
             'class' => 'yii\grid\ActionColumn',
             'template' => '{pedido}',

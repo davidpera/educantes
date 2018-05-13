@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Colegios;
 use app\models\Uniformes;
 use app\models\UniformesSearch;
 use app\models\Usuarios;
@@ -164,7 +165,10 @@ class UniformesController extends Controller
 
     public function actionExternos()
     {
-        $externos = Uniformes::find()->where('colegio_id != :id', ['id' => Yii::$app->user->identity->colegio_id])->all();
+        // var_dump($_GET['nombre']);
+        // die();
+        $colegio = Colegios::findOne(['nombre' => $_GET['nombre']]);
+        $externos = Uniformes::find()->where(['colegio_id' => $colegio->id])->all();
         Yii::$app->response->format = Response::FORMAT_JSON;
         return $externos;
     }
