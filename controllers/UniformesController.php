@@ -185,6 +185,14 @@ class UniformesController extends Controller
         }
     }
 
+    public function actionMultiple($pedido)
+    {
+        if ($pedido) {
+            $com = str_split($pedido);
+            return $pedido;
+        }
+    }
+
     public function actionAceptar($id, $pedidorid)
     {
         $user = Usuarios::find()->where(['id' => $pedidorid])->one();

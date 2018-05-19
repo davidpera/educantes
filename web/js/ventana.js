@@ -1,5 +1,6 @@
 $(document).ready(function(){
     eventoColegio();
+    confirmar();
     var cont = 0;
 });
 var cont = 0;
@@ -12,7 +13,6 @@ function eventoColegio(){
             success: function(data){
                 var colegios = '<div class="colegios-container"><select>';
                 for (col of data) {
-                    console.log(col.nombre.split(" ").join(""));
                     colegios += '<option value='+col.nombre.split(" ").join("")+'>'+col.nombre+'</option>'
                 }
                 colegios += '</select><button id="aceptar-colegio" class="btn btn-success glyphicon glyphicon-ok"></button></div>';
@@ -22,11 +22,64 @@ function eventoColegio(){
                     $(this).closest('.colegios-container').attr('id',id);
                 });
                 var id =  $('select').last().val().replace(/([a-z](?=[A-Z]))/g, '$1 ');
-                console.log(id);
                 $('.colegios-container').attr('id',id);
                 eventoAceptarColegio();
             }
         })
+    });
+}
+
+function confirmar(){
+
+    $('#confirmar').on('click',function(){
+        var todos = [];
+        // var cont = 0;
+        for (f of $('fieldset')) {
+            var ar = [];
+            var sel = [];
+            var inp = [];
+            var ped = [];
+            var id = f['id'].replace(/([a-z](?=[A-Z]))/g, '$1 ');
+            ar.push(id);
+            for (se of $('fieldset').find('select')) {
+                sel.push(se['value']);
+            }
+            for (num of $('fieldset').find('input')) {
+                inp.push(num['value']);
+            }
+            for (var i = 0; i < sel.length; i++) {
+                var es = false;
+                for (p of ped) {
+                    if (p[0] === sel[i]) {
+                        p[1] += inp[i];
+                        es = true;
+                    }
+                }
+                if (es === false) {
+                    ped.push([sel[i],inp[i]])
+                }
+            }
+            ar.push(ped);
+            todos.push(ar);
+            // todos[cont] = ar;
+            // cont++;
+        }
+        var json = JSON.stringify(todos);
+        $.ajax({
+            url:"/index.php?r=uniformes/multiple",
+            type:"GET",
+            data: {'pedido':json},
+            datatype: 'json',
+            contentType: "application/json",
+            success: function(data){
+                console.log(data);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(xhr);
+                // alert(xhr.status);
+                // alert(thrownError);
+            }
+        });
     });
 }
 
@@ -50,22 +103,19 @@ function eventoPedido(cont){
     $('#anadir-pedido'+cont).on('click',function(){
         var boton = $(this);
         var colegio = boton.closest('.colegios-container').attr('id');
-        console.log(colegio);
         $.ajax({
             url:"/index.php?r=uniformes/externos",
             type:'GET',
             data: {'nombre' : colegio },
             dataType: 'json',
             success: function(data){
-                console.log(data);
                 var pedido = '<div class="pedido-container"><select>';
                 for (unif of data) {
-                    pedido += '<option value='+unif.id+'>'+unif.descripcion+'</option>'
+                    pedido += '<option value='+unif.id+'>'+unif.codigo+'</option>'
                 }
                 pedido += '</select></div>';
                 boton.closest('.colegios-container').children('fieldset').append(pedido);
                 var id =  $('select').val();
-                console.log(id);
                 $('.pedido-container').attr('id',id);
                 $.ajax({
                     url: "/index.php?r=uniformes/cantidad",
@@ -73,16 +123,15 @@ function eventoPedido(cont){
                     data: {'id':id},
                     success: function(data){
                         var num = '<input type="number" value="1" min="1" max="'+data+'"></input>';
-                        $('.pedido-container[id='+id+']').last().append(num);
+                        boton.closest('.colegios-container').find('.pedido-container[id='+id+']').last().append(num);
                         var equis = '<a href="#" class="borrar glyphicon glyphicon-remove"></a>'
-                        $('.pedido-container[id='+id+']').last().append(equis);
+                        boton.closest('.colegios-container').find('.pedido-container[id='+id+']').last().append(equis);
                         eventoBorrar();
                     },
                 });
                 $('select').on('change', function(){
                     var id =  $(this).val();
                     var este =  $(this);
-                    console.log(id);
                     $.ajax({
                         url: "/index.php?r=uniformes/cantidad",
                         type: 'GET',
