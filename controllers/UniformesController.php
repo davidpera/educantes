@@ -188,8 +188,24 @@ class UniformesController extends Controller
     public function actionMultiple($pedido)
     {
         if ($pedido) {
-            $com = str_split($pedido);
-            return $pedido;
+            $com = json_decode($pedido);
+            $pedidos = [];
+            foreach ($com->pedidos as $ped) {
+                $colegio = Colegios::find()->where(['nombre' => $ped[0]])->one();
+                $us = Usuarios::find()->where(['colegio_id' => $colegio->id, 'rol' => 'V'])->one();
+                $pedid = [];
+                foreach ($ped[1] as $un) {
+                    $uniform = $this->findModel($un[0]);
+                    $uniform->cantidad = $uniform->cantidad - $un[1];
+                    $pedid[] = [$un[0], $un[1]];
+                }
+                $pedidos[] = $pedid;
+                var_dump($pedidos);
+                die();
+                $us->emailMultiple($pedidos, Yii::$app->user->id);
+            }
+            // Yii::$app->session->setFlash('info', 'Se le ha enviado un correo a los administradores de las colegios, se le contestará cuando lo acepte');
+            // $this->redirect(['index', 'mio' => 'no']);
         }
     }
 
@@ -207,6 +223,33 @@ class UniformesController extends Controller
         $user = Usuarios::find()->where(['id' => $pedidorid])->one();
         $uniform->cantidad = $uniform->cantidad + $cantidadPedida;
         if ($uniform->save()) {
+            $user->emailRechazar($id);
+            Yii::$app->session->setFlash('info', 'Se le ha enviado un correo al usuario informandole que el pedido ha sido rechazado');
+            $this->goHome();
+        }
+    }
+
+    public function actionAceptarmul($articulos, $pedidorid)
+    {
+        $user = Usuarios::find()->where(['id' => $pedidorid])->one();
+        $user->emailAceptar($id);
+        Yii::$app->session->setFlash('info', 'Se le ha enviado un correo al usuario para que venga a recoger el pedido');
+        $this->goHome();
+    }
+
+    public function actionRechazarmul($articulos, $pedidorid, $cantidadPedida)
+    {
+        $user = Usuarios::find()->where(['id' => $pedidorid])->one();
+        $valetodos = true;
+        foreach ($articulos as $art) {
+            $uniform = Uniformes::findOne(['id' => $art[0]]);
+            $uniform->cantidad = $uniform->cantidad + $art[1];
+            if (!$uniform->save()) {
+                $valetodos = false;
+            }
+        }
+
+        if ($valetodos) {
             $user->emailRechazar($id);
             Yii::$app->session->setFlash('info', 'Se le ha enviado un correo al usuario informandole que el pedido ha sido rechazado');
             $this->goHome();

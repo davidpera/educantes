@@ -117,6 +117,23 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             ->send();
     }
 
+    public function emailMultiple($articulos, $pedidorid)
+    {
+        if ($this->email !== null) {
+            $email = $this->email;
+        } else {
+            $email = $this->colegio->email;
+        }
+        $resultado = Yii::$app->mailer->compose()
+            ->setFrom(Yii::$app->params['adminEmail'])
+            ->setTo($email)
+            ->setSubject('Se ha realizado un pedido a tu colegio')->setTextBody('A traves del enlace de este correo aceptaras el pedido y tendras que prepararlo')
+            ->setHtmlBody('<h3>Ha recibido un pedido de varios articulos<br/>' .
+            Html::a('Aceptar', Url::to(['uniformes/aceptarmul', 'articulos' => $articulos, 'pedidorid' => $pedidorid], true)) . ' ' .
+            Html::a('Rechazar', Url::to(['uniformes/rechazarmul', 'articulos' => $articulos, 'pedidorid' => $pedidorid], true)))
+            ->send();
+    }
+
     public function emailAceptar($id)
     {
         $uniforme = Uniformes::find()->where(['id' => $id])->one();

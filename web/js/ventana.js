@@ -32,38 +32,48 @@ function eventoColegio(){
 function confirmar(){
 
     $('#confirmar').on('click',function(){
-        var todos = [];
+        var todos = new Object();
+        var pedidos = [];
+        // var todos = [];
         // var cont = 0;
         for (f of $('fieldset')) {
             var ar = [];
-            var sel = [];
-            var inp = [];
-            var ped = [];
             var id = f['id'].replace(/([a-z](?=[A-Z]))/g, '$1 ');
             ar.push(id);
-            for (se of $('fieldset').find('select')) {
-                sel.push(se['value']);
-            }
-            for (num of $('fieldset').find('input')) {
-                inp.push(num['value']);
-            }
-            for (var i = 0; i < sel.length; i++) {
-                var es = false;
-                for (p of ped) {
-                    if (p[0] === sel[i]) {
-                        p[1] += inp[i];
-                        es = true;
+            for (var i = 2; i <= f.childNodes.length - 1; i++) {
+                var sel = [];
+                var ped = [];
+                var inp = [];
+                // todos.colegio = id;
+                // for (se of f.childNodes[i].childNodes[0]['value']) {
+                //     sel.push(se['value']);
+                // }
+                sel.push(f.childNodes[i].childNodes[0]['value']);
+                // for (num of $('fieldset').find('input')) {
+                //     inp.push(num['value']);
+                // }
+                inp.push(f.childNodes[i].childNodes[1]['value']);
+                for (var j = 0; j < sel.length; j++) {
+                    var es = false;
+                    for (p of ped) {
+                        if (p[0] === sel[j]) {
+                            p[1] += inp[j];
+                            es = true;
+                        }
+                    }
+                    if (es === false) {
+                        ped.push([sel[j],inp[j]])
                     }
                 }
-                if (es === false) {
-                    ped.push([sel[i],inp[i]])
-                }
+                ar.push(ped);
+                // todos.push(ar);
+                // todos[cont] = ar;
+                // cont++;
             }
-            ar.push(ped);
-            todos.push(ar);
-            // todos[cont] = ar;
-            // cont++;
+            pedidos.push(ar);
+            console.log(pedidos);
         }
+        todos.pedidos = pedidos;
         var json = JSON.stringify(todos);
         $.ajax({
             url:"/index.php?r=uniformes/multiple",
@@ -73,11 +83,8 @@ function confirmar(){
             contentType: "application/json",
             success: function(data){
                 console.log(data);
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log(xhr);
-                // alert(xhr.status);
-                // alert(thrownError);
+                // window.opener.location.href="/index.php?r=uniformes%2Findex&mio=no"
+                // window.close();
             }
         });
     });
