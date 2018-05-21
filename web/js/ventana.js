@@ -82,9 +82,9 @@ function confirmar(){
             datatype: 'json',
             contentType: "application/json",
             success: function(data){
-                console.log(data);
-                // window.opener.location.href="/index.php?r=uniformes%2Findex&mio=no"
-                // window.close();
+                // console.log(data);
+                window.opener.location.href="/index.php?r=uniformes%2Findex&mio=no"
+                window.close();
             }
         });
     });

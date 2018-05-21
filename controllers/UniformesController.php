@@ -189,21 +189,36 @@ class UniformesController extends Controller
     {
         if ($pedido) {
             $com = json_decode($pedido);
-            $pedidos = [];
+            // $pedidos = [];
+            $pasa = true;
             foreach ($com->pedidos as $ped) {
                 $colegio = Colegios::find()->where(['nombre' => $ped[0]])->one();
                 $us = Usuarios::find()->where(['colegio_id' => $colegio->id, 'rol' => 'V'])->one();
                 $pedid = [];
-                foreach ($ped[1] as $un) {
-                    $uniform = $this->findModel($un[0]);
-                    $uniform->cantidad = $uniform->cantidad - $un[1];
-                    $pedid[] = [$un[0], $un[1]];
+                for ($i = 1; $i < count($ped); $i++) {
+                    foreach ($ped[$i] as $un) {
+                        $uniform = $this->findModel($un[0]);
+                        if ($un[1] > $uniform->cantidad) {
+                            $pasa = false;
+                        } else {
+                            $uniform->cantidad = $uniform->cantidad - $un[1];
+                            $uniform->save();
+                            $pedid[] = [$un[0], $un[1]];
+                        }
+                    }
                 }
-                $pedidos[] = $pedid;
-                var_dump($pedidos);
-                die();
-                $us->emailMultiple($pedidos, Yii::$app->user->id);
+                if ($pasa) {
+                    $us->emailMultiple($pedid, Yii::$app->user->id);
+                }
+                // $pedidos[] = $pedid;
+                // var_dump($ped);
             }
+            if (!$pasa) {
+                Yii::$app->session->setFlash('error', 'Ha puesto demasiada cantidad en algunos de los uniformes, revise los datos');
+                $this->refresh();
+            }
+            // var_dump($pedidos);
+            // die();
             // Yii::$app->session->setFlash('info', 'Se le ha enviado un correo a los administradores de las colegios, se le contestará cuando lo acepte');
             // $this->redirect(['index', 'mio' => 'no']);
         }
@@ -229,19 +244,22 @@ class UniformesController extends Controller
         }
     }
 
-    public function actionAceptarmul($articulos, $pedidorid)
+    public function actionAceptarmul($articulos, $pedidorid, $recibidor)
     {
+        $rec = Usuarios::findOne(['id' => $recibidor]);
         $user = Usuarios::find()->where(['id' => $pedidorid])->one();
-        $user->emailAceptar($id);
+        $user->emailAceptarmul($rec->colegio_id);
         Yii::$app->session->setFlash('info', 'Se le ha enviado un correo al usuario para que venga a recoger el pedido');
         $this->goHome();
     }
 
-    public function actionRechazarmul($articulos, $pedidorid, $cantidadPedida)
+    public function actionRechazarmul($articulos, $pedidorid, $recibidor)
     {
+        $rec = Usuarios::findOne(['id' => $recibidor]);
         $user = Usuarios::find()->where(['id' => $pedidorid])->one();
         $valetodos = true;
-        foreach ($articulos as $art) {
+        $artic = json_decode($articulos);
+        foreach ($artic as $art) {
             $uniform = Uniformes::findOne(['id' => $art[0]]);
             $uniform->cantidad = $uniform->cantidad + $art[1];
             if (!$uniform->save()) {
@@ -250,7 +268,7 @@ class UniformesController extends Controller
         }
 
         if ($valetodos) {
-            $user->emailRechazar($id);
+            $user->emailRechazarmul($rec->colegio_id);
             Yii::$app->session->setFlash('info', 'Se le ha enviado un correo al usuario informandole que el pedido ha sido rechazado');
             $this->goHome();
         }
