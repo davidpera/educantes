@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
@@ -42,12 +43,19 @@ class UniformesSearch extends Uniformes
      * Creates data provider instance with search query applied.
      *
      * @param array $params
+     * @param null|mixed $mio
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $mio = null)
     {
-        $query = Uniformes::find()->joinWith(['colegio']);
+        if (($mio !== null && $mio !== 'no') || Yii::$app->user->identity->rol === 'C') {
+            $query = Uniformes::find()->where(['colegio_id' => Yii::$app->user->identity->colegio_id])->joinWith(['colegio']);
+        } elseif (Yii::$app->user->identity->rol === 'V') {
+            $query = Uniformes::find()->where(['!=', 'colegio_id', Yii::$app->user->identity->colegio_id])->joinWith(['colegio']);
+        } else {
+            $query = Uniformes::find()->joinWith(['colegio']);
+        }
 
         // add conditions that should always apply here
 

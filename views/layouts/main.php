@@ -95,6 +95,15 @@ AppAsset::register($this);
                     $items[] = ['label' => 'Colegios', 'url' => ['/colegios/index']];
 
                 }
+            } else {
+                $items[] = [
+                    'label' => 'Uniformes',
+                    'items' => [
+                        ['label' => 'Uniformes mi colegio', 'url' => ['uniformes/index', 'mio' => 'si']],
+                        '<li class="divider"></li>',
+                        ['label' => 'Uniformes otros colegios', 'url' => ['uniformes/index', 'mio' => 'no']],
+                    ],
+                ];
             }
         }
     }

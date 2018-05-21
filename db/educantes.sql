@@ -95,13 +95,13 @@ CREATE TABLE usuarios
     id          bigserial       PRIMARY KEY
   , nom_usuario varchar(255)    NOT NULL UNIQUE
   , password    varchar(255)    NOT NULL
-  , contrasena  varchar(255)
-  , nombre      varchar(255)
-  , apellidos   varchar(255)
-  , nif         char(9)        UNIQUE
-  , direccion   varchar(255)
-  , email       varchar(255)    UNIQUE
-  , tel_movil   numeric(9)      UNIQUE
+  , contrasena  varchar(255)    DEFAULT NULL
+  , nombre      varchar(255)    DEFAULT NULL
+  , apellidos   varchar(255)    DEFAULT NULL
+  , nif         varchar(255)    UNIQUE DEFAULT NULL
+  , direccion   varchar(255)    DEFAULT NULL
+  , email       varchar(255)    UNIQUE DEFAULT NULL
+  , tel_movil   numeric(9)      UNIQUE DEFAULT NULL
   , rol         char(1)         NOT NULL
   , token_val   varchar(255)    UNIQUE
   , colegio_id  bigint          REFERENCES colegios (id)

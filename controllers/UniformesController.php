@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Colegios;
 use app\models\Uniformes;
 use app\models\UniformesSearch;
 use app\models\Usuarios;
@@ -9,6 +10,7 @@ use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * UniformesController implements the CRUD actions for Uniformes model.
@@ -43,28 +45,36 @@ class UniformesController extends Controller
     /**
      * Lists all Uniformes models.
      * @return mixed
+     * @param null|mixed $mio
      */
-    public function actionIndex()
+    public function actionIndex($mio = null)
     {
         $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
-        if ($us->rol !== 'A' && $us->rol !== 'C') {
-            return $this->goHome();
-        }
+        // if ($us->rol !== 'A' && $us->rol !== 'C') {
+        //     return $this->goHome();
+        // }
         $searchModel = new UniformesSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $mio);
 
         $model = new Uniformes();
 
         $model->colegio_id = $us->colegio_id;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+            return $this->goBack();
         }
-
+        if ($mio !== null && $mio !== 'no') {
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'mio' => $mio,
+                'model' => $model,
+            ]);
+        }
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'model' => $model,
-        ]);
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'model' => $model,
+            ]);
     }
 
     /**
@@ -92,13 +102,16 @@ class UniformesController extends Controller
     public function actionCreate()
     {
         $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
-        if ($us->rol !== 'C') {
+        if ($us->rol !== 'C' && $us->rol !== 'V') {
             return $this->goHome();
         }
         $model = new Uniformes();
 
         $model->colegio_id = $us->colegio_id;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if ($us->rol === 'V') {
+                return $this->redirect(['index', 'mio' => 'si']);
+            }
             return $this->redirect(['index']);
         }
 
@@ -122,13 +135,143 @@ class UniformesController extends Controller
         }
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->nif === '') {
+                $model->nif = null;
+            }
+            if ($model->save()) {
+                if ($us->rol === 'V') {
+                    return $this->redirect(['index', 'mio' => 'si']);
+                }
+                return $this->redirect(['index']);
+            }
         }
 
         return $this->render('update', [
             'model' => $model,
         ]);
+    }
+
+    public function actionCantidad($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->cantidad !== '0') {
+            return $model->cantidad;
+        }
+        Yii::$app->session->setFlash('info', 'No hay existencias de ese uniforme');
+        return  $this->redirect(['index', 'mio' => 'no']);
+    }
+
+    public function actionExternos()
+    {
+        // var_dump($_GET['nombre']);
+        // die();
+        $colegio = Colegios::findOne(['nombre' => $_GET['nombre']]);
+        $externos = Uniformes::find()->where(['colegio_id' => $colegio->id])->all();
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return $externos;
+    }
+
+    public function actionPedido($id, $cantidadPedida)
+    {
+        $uniform = $this->findModel($id);
+        $uniform->cantidad = $uniform->cantidad - $cantidadPedida;
+        if ($uniform->save()) {
+            $usuario = Usuarios::find()->where(['colegio_id' => $uniform->colegio_id, 'rol' => 'V'])->one();
+            $usuario->emailPedido($id, Yii::$app->user->id, $cantidadPedida);
+            Yii::$app->session->setFlash('info', 'Se le ha enviado un correo al administrador del colegio, se le contestará cuando lo acepte');
+            $this->redirect(['index', 'mio' => 'no']);
+        }
+    }
+
+    public function actionMultiple($pedido)
+    {
+        if ($pedido) {
+            $com = json_decode($pedido);
+            // $pedidos = [];
+            $pasa = true;
+            foreach ($com->pedidos as $ped) {
+                $colegio = Colegios::find()->where(['nombre' => $ped[0]])->one();
+                $us = Usuarios::find()->where(['colegio_id' => $colegio->id, 'rol' => 'V'])->one();
+                $pedid = [];
+                for ($i = 1; $i < count($ped); $i++) {
+                    foreach ($ped[$i] as $un) {
+                        $uniform = $this->findModel($un[0]);
+                        if ($un[1] > $uniform->cantidad) {
+                            $pasa = false;
+                        } else {
+                            $uniform->cantidad = $uniform->cantidad - $un[1];
+                            $uniform->save();
+                            $pedid[] = [$un[0], $un[1]];
+                        }
+                    }
+                }
+                if ($pasa) {
+                    $us->emailMultiple($pedid, Yii::$app->user->id);
+                }
+                // $pedidos[] = $pedid;
+                // var_dump($ped);
+            }
+            if (!$pasa) {
+                Yii::$app->session->setFlash('error', 'Ha puesto demasiada cantidad en algunos de los uniformes, revise los datos');
+                $this->refresh();
+            }
+            // var_dump($pedidos);
+            // die();
+            // Yii::$app->session->setFlash('info', 'Se le ha enviado un correo a los administradores de las colegios, se le contestará cuando lo acepte');
+            // $this->redirect(['index', 'mio' => 'no']);
+        }
+    }
+
+    public function actionAceptar($id, $pedidorid)
+    {
+        $user = Usuarios::find()->where(['id' => $pedidorid])->one();
+        $user->emailAceptar($id);
+        Yii::$app->session->setFlash('info', 'Se le ha enviado un correo al usuario para que venga a recoger el pedido');
+        $this->goHome();
+    }
+
+    public function actionRechazar($id, $pedidorid, $cantidadPedida)
+    {
+        $uniform = $this->findModel($id);
+        $user = Usuarios::find()->where(['id' => $pedidorid])->one();
+        $uniform->cantidad = $uniform->cantidad + $cantidadPedida;
+        if ($uniform->save()) {
+            $user->emailRechazar($id);
+            Yii::$app->session->setFlash('info', 'Se le ha enviado un correo al usuario informandole que el pedido ha sido rechazado');
+            $this->goHome();
+        }
+    }
+
+    public function actionAceptarmul($articulos, $pedidorid, $recibidor)
+    {
+        $rec = Usuarios::findOne(['id' => $recibidor]);
+        $user = Usuarios::find()->where(['id' => $pedidorid])->one();
+        $user->emailAceptarmul($rec->colegio_id);
+        Yii::$app->session->setFlash('info', 'Se le ha enviado un correo al usuario para que venga a recoger el pedido');
+        $this->goHome();
+    }
+
+    public function actionRechazarmul($articulos, $pedidorid, $recibidor)
+    {
+        $rec = Usuarios::findOne(['id' => $recibidor]);
+        $user = Usuarios::find()->where(['id' => $pedidorid])->one();
+        $valetodos = true;
+        $artic = json_decode($articulos);
+        foreach ($artic as $art) {
+            $uniform = Uniformes::findOne(['id' => $art[0]]);
+            $uniform->cantidad = $uniform->cantidad + $art[1];
+            if (!$uniform->save()) {
+                $valetodos = false;
+            }
+        }
+
+        if ($valetodos) {
+            $user->emailRechazarmul($rec->colegio_id);
+            Yii::$app->session->setFlash('info', 'Se le ha enviado un correo al usuario informandole que el pedido ha sido rechazado');
+            $this->goHome();
+        }
     }
 
     /**
@@ -141,11 +284,14 @@ class UniformesController extends Controller
     public function actionDelete($id)
     {
         $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
-        if ($us->rol !== 'A' && $us->rol !== 'C') {
+        if ($us->rol === 'P') {
             return $this->goHome();
         }
         $this->findModel($id)->delete();
 
+        if ($us->rol === 'V') {
+            return $this->redirect(['index', 'mio' => 'si']);
+        }
         return $this->redirect(['index']);
     }
 

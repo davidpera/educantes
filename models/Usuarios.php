@@ -99,15 +99,86 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         ];
     }
 
-    public function email()
+    public function emailPedido($id, $pedidorid, $cantidadPedida)
     {
+        if ($this->email !== null) {
+            $email = $this->email;
+        } else {
+            $email = $this->colegio->email;
+        }
+        $uniforme = Uniformes::find()->where(['id' => $id])->one();
+        $resultado = Yii::$app->mailer->compose()
+            ->setFrom(Yii::$app->params['adminEmail'])
+            ->setTo($email)
+            ->setSubject('Se ha realizado un pedido a tu colegio')->setTextBody('A traves del enlace de este correo aceptaras el pedido y tendras que prepararlo')
+            ->setHtmlBody('<h3>Ha recibido un pedido de ' . $cantidadPedida . ' ' . $uniforme->descripcion . '<br/>' .
+            Html::a('Aceptar', Url::to(['uniformes/aceptar', 'id' => $id, 'pedidorid' => $pedidorid], true)) . ' ' .
+            Html::a('Rechazar', Url::to(['uniformes/rechazar', 'id' => $id, 'pedidorid' => $pedidorid, 'cantidadPedida' => $cantidadPedida], true)))
+            ->send();
+    }
+
+    public function emailMultiple($articulos, $pedidorid)
+    {
+        if ($this->email !== null) {
+            $email = $this->email;
+        } else {
+            $email = $this->colegio->email;
+        }
+        $json = json_encode($articulos);
+        $resultado = Yii::$app->mailer->compose()
+            ->setFrom(Yii::$app->params['adminEmail'])
+            ->setTo($email)
+            ->setSubject('Se ha realizado un pedido a tu colegio')->setTextBody('A traves del enlace de este correo aceptaras el pedido y tendras que prepararlo')
+            ->setHtmlBody('<h3>Ha recibido un pedido de varios articulos<br/>' .
+            Html::a('Aceptar', Url::to(['uniformes/aceptarmul', 'articulos' => $json, 'pedidorid' => $pedidorid, 'recibidor' => $this->id], true)) . ' ' .
+            Html::a('Rechazar', Url::to(['uniformes/rechazarmul', 'articulos' => $json, 'pedidorid' => $pedidorid, 'recibidor' => $this->id], true)))
+            ->send();
+    }
+
+    public function emailAceptar($id)
+    {
+        $uniforme = Uniformes::find()->where(['id' => $id])->one();
+        $colegio = Colegios::find()->where(['id' => $this->colegio_id])->one();
         $resultado = Yii::$app->mailer->compose()
             ->setFrom(Yii::$app->params['adminEmail'])
             ->setTo($this->email)
-            ->setSubject('Validación de tu cuenta de email')->setTextBody('A traves del enlace de este correo verificaras tu cuenta de email')
-            ->setHtmlBody(Html::a('verificar', Url::to(['usuarios/verificar', 'token_val' => $this->token_val], true)))
+            ->setSubject('Han aceptado su pedido')->setTextBody('Han aceptado su pedido de ' . $uniforme->descripcion . ' en el colegio ' . $colegio->nombre . ', ya puede ir a recogerlo')
+            ->setHtmlBody('<h3>Han aceptado su pedido de ' . $uniforme->descripcion . ' en el colegio ' . $colegio->nombre . ', ya puede ir a recogerlo</h3>')
             ->send();
-        Yii::$app->session->setFlash('info', 'Se le ha enviado un correo');
+    }
+
+    public function emailRechazar($id)
+    {
+        $uniforme = Uniformes::find()->where(['id' => $id])->one();
+        $colegio = Colegios::find()->where(['id' => $this->colegio_id])->one();
+        $resultado = Yii::$app->mailer->compose()
+            ->setFrom(Yii::$app->params['adminEmail'])
+            ->setTo($this->email)
+            ->setSubject('Han rechazado su pedido')->setTextBody('Lo siento, pero su pedido de ' . $uniforme->descripcion . ' al colegio ' . $colegio->nombre . ' ha sido rechazado')
+            ->setHtmlBody('<h3>Lo siento, pero su pedido de ' . $uniforme->descripcion . ' al colegio ' . $colegio->nombre . ' ha sido rechazado</h3>')
+            ->send();
+    }
+
+    public function emailAceptarmul($colegio_id)
+    {
+        $colegio = Colegios::find()->where(['id' => $colegio_id])->one();
+        $resultado = Yii::$app->mailer->compose()
+            ->setFrom(Yii::$app->params['adminEmail'])
+            ->setTo($this->email)
+            ->setSubject('Han aceptado su pedido')->setTextBody('Han aceptado su parte del pedido multiple en el colegio ' . $colegio->nombre . ', ya puede ir a recogerlo')
+            ->setHtmlBody('<h3>Han aceptado su parte del pedido multiple en el colegio ' . $colegio->nombre . ', ya puede ir a recogerlo</h3>')
+            ->send();
+    }
+
+    public function emailRechazarmul($colegio_id)
+    {
+        $colegio = Colegios::find()->where(['id' => $colegio_id])->one();
+        $resultado = Yii::$app->mailer->compose()
+            ->setFrom(Yii::$app->params['adminEmail'])
+            ->setTo($this->email)
+            ->setSubject('Han rechazado su pedido')->setTextBody('Lo siento, pero parte de su pedido multiple a sido rechazado en el colegio ' . $colegio->nombre)
+            ->setHtmlBody('<h3>Lo siento, pero parte de su pedido multiple a sido rechazado en el colegio ' . $colegio->nombre . '</h3>')
+            ->send();
     }
 
     /**

@@ -11,6 +11,16 @@ body {
     /* font-family: Anonymice powerline; */
 }
 
+.pedido-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.pedido-container input{
+    margin-top: 3px;
+    max-width: 100px;
+}
+
 .acciones {
     z-index: 1;
     position: fixed;
