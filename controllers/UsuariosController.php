@@ -163,6 +163,11 @@ class UsuariosController extends Controller
                                 return $this->redirect(['upload', 'tabla' => $tabla]);
                             }
 
+                            if ($texto == 'fecha_de_nacimiento') {
+                                $celda = str_replace('/', '-', $celda);
+                                // var_dump($celda);
+                            }
+
                             $model->$texto = $celda;
                             if ($tabla === 'tutores') {
                                 if ($texto === 'nif' && Alumnos::find()->where(['dni_primer_tutor' => $model->nif])->orWhere(['dni_segundo_tutor' => $model->nif])->one() === null) {
@@ -171,6 +176,9 @@ class UsuariosController extends Controller
                                 }
                             }
                         }
+                        // var_dump($model->fecha_de_nacimiento);
+                        // var_dump($model->validate(), $model->errors);
+                        // die();
                         $model->save();
                     }
                     // return;

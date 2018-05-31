@@ -55,7 +55,7 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
 
                         }
                     } elseif ($us->rol === 'C' && $us->colegio_id === $model->colegio_id) {
-                        var_dump($model->rol);
+                        // var_dump($model->rol);
                         if ($model->rol === 'V') {
                             return Html::a('Dar de baja vendedor', ['usuarios/delete', 'id' => $model->id], [
                                     'class' => 'btn btn-danger',

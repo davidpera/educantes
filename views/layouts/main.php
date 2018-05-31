@@ -105,6 +105,8 @@ AppAsset::register($this);
                     ],
                 ];
             }
+        } else {
+            $items[] = ['label' => '', 'url' => ['/uniformes/carrito'], 'linkOptions' => ['class' => 'glyphicon glyphicon-shopping-cart']];
         }
     }
     Yii::$app->user->isGuest ? (

@@ -58,6 +58,8 @@ class AlumnosController extends Controller
         $model->colegio_id = $us->colegio_id;
 
         if ($model->load(Yii::$app->request->post())) {
+            // var_dump($model->validate(), $model->errors);
+            // die();
             if ($model->save()) {
                 return $this->redirect(['index']);
             }

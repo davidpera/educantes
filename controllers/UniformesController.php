@@ -215,7 +215,7 @@ class UniformesController extends Controller
             }
             if (!$pasa) {
                 Yii::$app->session->setFlash('error', 'Ha puesto demasiada cantidad en algunos de los uniformes, revise los datos');
-                $this->refresh();
+                return true;
             }
             // var_dump($pedidos);
             // die();
