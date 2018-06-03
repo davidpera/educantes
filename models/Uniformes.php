@@ -76,7 +76,9 @@ class Uniformes extends \yii\db\ActiveRecord
 
     public function getRutaImagen()
     {
-        $nombre = '/uploads/' . $this->codigo . '.jpg';
+        $nombre = 'uploads/' . $this->codigo . '.jpg';
+        // var_dump($this->codigo);
+        // die();
         if (file_exists($nombre)) {
             return Url::to('/uploads/') . $this->codigo . '.jpg';
         }

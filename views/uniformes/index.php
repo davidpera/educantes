@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Secstocks;
+use app\models\Uniformes;
 
 use yii\web\View;
 use yii\web\Session;
@@ -25,27 +26,44 @@ if (Yii::$app->user->identity->rol === 'P') {
     $js = <<<EOT
         $(document).ready(function(){
             eventoBoton();
+            eventoNumeric();
         });
+
+        function eventoNumeric(){
+            $('.numeric').children('input').on('change', function(){
+                $(this).closest('.numeric').children('p').remove();
+                $(this).closest('.numeric').children('input').removeClass('error-input');
+            });
+        }
 
         function eventoBoton() {
             $('.boton-anadir').children('button').on('click', function(){
                 var bot = $(this);
                 var id = bot.closest('.panel-default').attr('id');
-                var cant = bot.closest('.informacion').children('input').val();
-                $.ajax({
-                    url: "$urlAnadir",
-                    type: 'POST',
-                    data: {uniforme: id, cantidad: cant},
-                    success: function(data){
-                        console.log(data);
-                        var valor = $('.glyphicon-shopping-cart').text();
-                        var regex = /(\d+)/g;
-                        var num = parseInt(valor.match(regex)[0]) + 1;
-                        if (cant !== "0") {
+                var numer = bot.closest('.informacion').children('.datos-anadir').children('.numeric');
+                var cant = numer.children('input').val();
+                // console.log(cant);
+                if (cant !== "0") {
+                    $('.numeric').remove('p');
+                    numer.children('input').removeClass('error-input');
+                    $.ajax({
+                        url: "$urlAnadir",
+                        type: 'POST',
+                        data: {uniforme: id, cantidad: cant},
+                        success: function(data){
+                            console.log(data);
+                            var valor = $('.glyphicon-shopping-cart').text();
+                            var regex = /(\d+)/g;
+                            var num = parseInt(valor.match(regex)[0]) + 1;
                             $('.glyphicon-shopping-cart').text(' ('+num+')');
-                        }
-                    },
-                });
+                        },
+                    });
+                } else {
+                    numer.children('p').remove();
+                    numer.children('input').removeClass('error-input');
+                    numer.append('<p class="error">La cantidad de uniformes no puede ser 0</p>');
+                    numer.children('input').addClass('error-input');
+                }
             });
         }
 EOT;

@@ -3,14 +3,45 @@ body {
     height: 100%;
 }
 
+.error-input {
+    border-color: red;
+}
+
+.error {
+    color: red;
+}
+
 .contenedor {
     display: flex;
     flex-direction: row;
 }
 
-.imagen {
-    width: 200px;
+.imagen-uniforme {
+    width: 150px;
+    margin-right: 20px;
     /* border: 1px solid; */
+}
+
+.informacion {
+    display: flex;
+    flex-direction: row;
+}
+
+.datos-anadir {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.informacion-general {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 20px;
+}
+
+.div-inicial {
+    width: 650px;
 }
 
 .contenedor {

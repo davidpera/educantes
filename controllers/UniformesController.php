@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Carros;
 use app\models\Colegios;
 use app\models\Productoscarro;
 use app\models\Uniformes;
@@ -52,7 +53,11 @@ class UniformesController extends Controller
         $prodcar->uniforme_id = $uniforme->id;
         $prodcar->cantidad = $_POST['cantidad'];
         if ($_POST['cantidad'] !== '0') {
-            $prodcar->save();
+            if ($prodcar->save()) {
+                $carr = Carros::findOne(['id' => $prodcar->carro_id]);
+                $carr->productos = $carr->productos + 1;
+                $carr->save();
+            }
         }
         // return true;
     }
