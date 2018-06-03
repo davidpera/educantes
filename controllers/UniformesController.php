@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Colegios;
+use app\models\Productoscarro;
 use app\models\Uniformes;
 use app\models\UniformesSearch;
 use app\models\Usuarios;
@@ -11,6 +12,7 @@ use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
+use yii\web\UploadedFile;
 
 /**
  * UniformesController implements the CRUD actions for Uniformes model.
@@ -40,6 +42,19 @@ class UniformesController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function actionAnadir()
+    {
+        $uniforme = Uniformes::findOne(['id' => $_POST['uniforme']]);
+        $prodcar = new Productoscarro();
+        $prodcar->carro_id = Yii::$app->user->identity->carro->id;
+        $prodcar->uniforme_id = $uniforme->id;
+        $prodcar->cantidad = $_POST['cantidad'];
+        if ($_POST['cantidad'] !== '0') {
+            $prodcar->save();
+        }
+        // return true;
     }
 
     /**
@@ -108,11 +123,14 @@ class UniformesController extends Controller
         $model = new Uniformes();
 
         $model->colegio_id = $us->colegio_id;
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if ($us->rol === 'V') {
-                return $this->redirect(['index', 'mio' => 'si']);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->foto = UploadedFile::getInstance($model, 'foto');
+            if ($model->save() && $model->upload()) {
+                if ($us->rol === 'V') {
+                    return $this->redirect(['index', 'mio' => 'si']);
+                }
+                return $this->redirect(['index']);
             }
-            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
@@ -130,16 +148,17 @@ class UniformesController extends Controller
     public function actionUpdate($id)
     {
         $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
-        if ($us->rol !== 'A' && $us->rol !== 'C') {
+        if ($us->rol !== 'A' && $us->rol !== 'C' && $us->rol !== 'V') {
             return $this->goHome();
         }
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-            if ($model->nif === '') {
-                $model->nif = null;
-            }
-            if ($model->save()) {
+            // if ($model->nif === '') {
+            //     $model->nif = null;
+            // }
+            $model->foto = UploadedFile::getInstance($model, 'foto');
+            if ($model->save() && $model->upload()) {
                 if ($us->rol === 'V') {
                     return $this->redirect(['index', 'mio' => 'si']);
                 }

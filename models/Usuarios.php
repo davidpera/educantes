@@ -205,6 +205,11 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         return $this->hasMany(Sms::className(), ['receptor_id' => 'id'])->inverseOf('receptor');
     }
 
+    public function getCarro()
+    {
+        return $this->hasOne(Carros::className(), ['usuario_id' => 'id'])->inverseOf('usuario');
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

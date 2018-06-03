@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Alumnos;
+use app\models\Carros;
 use app\models\Libros;
 use app\models\Tutores;
 use app\models\Uniformes;
@@ -246,7 +247,11 @@ class UsuariosController extends Controller
             $model->rol = 'P';
             var_dump($model->validate());
             if ($model->save()) {
-                return $this->redirect(['tutores/index']);
+                $carr = new Carros();
+                $carr->usuario_id = $model->id;
+                if ($carr->save()) {
+                    return $this->redirect(['tutores/index']);
+                }
             }
         } else {
             $us = Yii::$app->user->identity;

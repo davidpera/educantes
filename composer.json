@@ -20,7 +20,8 @@
         "yiisoft/yii2": "~2.0.14",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.1.0",
-        "phpoffice/phpspreadsheet": "^1.2"
+        "phpoffice/phpspreadsheet": "^1.2",
+        "yiisoft/yii2-imagine": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

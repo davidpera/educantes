@@ -12,6 +12,8 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
+    <?= $form->field($model, 'foto')->fileInput() ?>
+
     <?= $form->field($model, 'codigo')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true]) ?>

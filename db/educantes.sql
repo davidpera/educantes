@@ -108,6 +108,28 @@ CREATE TABLE usuarios
                                 ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
+DROP TABLE IF EXISTS carros CASCADE;
+
+CREATE TABLE carros
+(
+    id          bigserial       PRIMARY KEY
+  , usuario_id  bigint          NOT NULL REFERENCES usuarios (id)
+                                ON DELETE NO ACTION ON UPDATE CASCADE
+  , productos   numeric(5)      NOT NULL DEFAULT 0
+);
+
+DROP TABLE IF EXISTS productosCarro CASCADE;
+
+CREATE TABLE productosCarro
+(
+    id          bigserial       PRIMARY KEY
+  , carro_id    bigint          NOT NULL REFERENCES carros (id)
+                                ON DELETE NO ACTION ON UPDATE CASCADE
+  , uniforme_id bigint          NOT NULL REFERENCES uniformes (id)
+                                ON DELETE NO ACTION ON UPDATE CASCADE
+  , cantidad    numeric(5)      NOT NULL
+);
+
 DROP TABLE IF EXISTS sms CASCADE;
 
 CREATE TABLE sms

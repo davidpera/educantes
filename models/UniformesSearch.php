@@ -49,7 +49,7 @@ class UniformesSearch extends Uniformes
      */
     public function search($params, $mio = null)
     {
-        if (($mio !== null && $mio !== 'no') || Yii::$app->user->identity->rol === 'C') {
+        if (($mio !== null && $mio !== 'no') || Yii::$app->user->identity->rol === 'C' || Yii::$app->user->identity->rol === 'P') {
             $query = Uniformes::find()->where(['colegio_id' => Yii::$app->user->identity->colegio_id])->joinWith(['colegio']);
         } elseif (Yii::$app->user->identity->rol === 'V') {
             $query = Uniformes::find()->where(['!=', 'colegio_id', Yii::$app->user->identity->colegio_id])->joinWith(['colegio']);
