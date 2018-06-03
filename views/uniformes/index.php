@@ -51,7 +51,6 @@ if (Yii::$app->user->identity->rol === 'P') {
                         type: 'POST',
                         data: {uniforme: id, cantidad: cant},
                         success: function(data){
-                            console.log(data);
                             var valor = $('.glyphicon-shopping-cart').text();
                             var regex = /(\d+)/g;
                             var num = parseInt(valor.match(regex)[0]) + 1;

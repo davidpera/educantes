@@ -1,7 +1,5 @@
 <?php
 
-use app\models\Uniformes;
-
 use yii\helpers\Html;
 
 
@@ -22,7 +20,7 @@ use yii\helpers\Html;
                     Cantidad: <input class="cantidad form-control" type="number" value='0' min="0" max="<?= $model->cantidad ?>"></br>
                 </div>
                 <div class="boton-anadir">
-                    <button type="button" name="button">Añadir a carrito</button>
+                    <button class="btn btn-success" type="button" name="button">Añadir a carrito</button>
                 </div>
             </div>
         </div>

@@ -9,6 +9,7 @@ use app\models\Uniformes;
 use app\models\UniformesSearch;
 use app\models\Usuarios;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -45,6 +46,19 @@ class UniformesController extends Controller
         ];
     }
 
+    public function actionCarrito()
+    {
+        $query = Productoscarro::find()->where(['carro_id' => Yii::$app->user->identity->carro->id]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        return $this->render('/carros/view', [
+                'dataProvider' => $dataProvider,
+            ]);
+    }
+
     public function actionAnadir()
     {
         $uniforme = Uniformes::findOne(['id' => $_POST['uniforme']]);
@@ -58,6 +72,18 @@ class UniformesController extends Controller
                 $carr->productos = $carr->productos + 1;
                 $carr->save();
             }
+        }
+        // return true;
+    }
+
+    public function actionQuitar()
+    {
+        $producto = Productoscarro::findOne(['id' => $_POST['producto']]);
+
+        if ($producto->delete()) {
+            $carr = Carros::findOne(['id' => $producto->carro_id]);
+            $carr->productos = $carr->productos - 1;
+            $carr->save();
         }
         // return true;
     }
