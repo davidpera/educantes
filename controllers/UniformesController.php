@@ -68,9 +68,12 @@ class UniformesController extends Controller
         $prodcar->cantidad = $_POST['cantidad'];
         if ($_POST['cantidad'] !== '0') {
             if ($prodcar->save()) {
-                $carr = Carros::findOne(['id' => $prodcar->carro_id]);
-                $carr->productos = $carr->productos + 1;
-                $carr->save();
+                $uniforme->cantidad = $uniforme->cantidad - $prodcar->cantidad;
+                if ($uniforme->save()) {
+                    $carr = Carros::findOne(['id' => $prodcar->carro_id]);
+                    $carr->productos = $carr->productos + 1;
+                    $carr->save();
+                }
             }
         }
         // return true;
@@ -79,11 +82,15 @@ class UniformesController extends Controller
     public function actionQuitar()
     {
         $producto = Productoscarro::findOne(['id' => $_POST['producto']]);
-
+        $uniforme = Uniformes::findOne(['id' => $producto->uniforme_id]);
+        $cantidad = $producto->cantidad;
         if ($producto->delete()) {
-            $carr = Carros::findOne(['id' => $producto->carro_id]);
-            $carr->productos = $carr->productos - 1;
-            $carr->save();
+            $uniforme->cantidad = $uniforme->cantidad + $cantidad;
+            if ($uniforme->save()) {
+                $carr = Carros::findOne(['id' => $producto->carro_id]);
+                $carr->productos = $carr->productos - 1;
+                $carr->save();
+            }
         }
         // return true;
     }

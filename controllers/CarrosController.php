@@ -2,12 +2,12 @@
 
 namespace app\controllers;
 
-use Yii;
 use app\models\Carros;
 use app\models\CarrosSearch;
+use Yii;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * CarrosController implements the CRUD actions for Carros model.
@@ -29,6 +29,12 @@ class CarrosController extends Controller
         ];
     }
 
+    public function actionPedido()
+    {
+        // var_dump(json_decode($_POST['pedido'])->pedidos[0]);
+        // die();
+    }
+
     /**
      * Lists all Carros models.
      * @return mixed
@@ -46,7 +52,7 @@ class CarrosController extends Controller
 
     /**
      * Displays a single Carros model.
-     * @param integer $id
+     * @param int $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -78,7 +84,7 @@ class CarrosController extends Controller
     /**
      * Updates an existing Carros model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
+     * @param int $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -98,7 +104,7 @@ class CarrosController extends Controller
     /**
      * Deletes an existing Carros model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
+     * @param int $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -112,7 +118,7 @@ class CarrosController extends Controller
     /**
      * Finds the Carros model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
+     * @param int $id
      * @return Carros the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */

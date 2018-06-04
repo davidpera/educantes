@@ -107,7 +107,7 @@ AppAsset::register($this);
             }
         } else {
             $items[] = ['label' => ' ('.Yii::$app->user->identity->carro->productos.')', 'url' => ['/uniformes/carrito'], 'linkOptions' => ['class' => 'glyphicon glyphicon-shopping-cart']];
-            $items[] = ['label' => 'Pedidos', 'url' => ['/uniformes/index']];
+            $items[] = ['label' => 'Productos', 'url' => ['/uniformes/index']];
         }
     }
     Yii::$app->user->isGuest ? (

@@ -13,10 +13,11 @@ use yii\helpers\Html;
         <div class="imagen-uniforme"><img src="<?= $model->uniforme->getRutaImagen() ?>"></div>
         <div class="informacion">
             <div class="informacion-general">
-                Descripcion: <?= Html::encode($model->uniforme->descripcion)?></br>
-                Talla: <?=Html::encode($model->uniforme->talla)?></br>
-                Precio: <?=Html::encode(Yii::$app->formatter->asCurrency($model->uniforme->precio))?></br>
-                Cantidad: <?=Html::encode($model->cantidad)?>
+                <span id="descripcion" class="infor">Descripcion: <span class="dat"><?= Html::encode($model->uniforme->descripcion)?></span></span></br>
+                <span id="talla" class="infor">Talla: <span class="dat"><?=Html::encode($model->uniforme->talla)?></span></span></br>
+                <span id="precio" class="infor">Precio/U: <span class="dat"><?=Html::encode(Yii::$app->formatter->asCurrency($model->uniforme->precio))?></span></span></br>
+                <span id="cantidad" class="infor">Cantidad: <span class="dat"><?=Html::encode($model->cantidad)?></span></span></br>
+                <span id="total" class="infor">Total: <span class="dat"><?= Html::encode(Yii::$app->formatter->asCurrency(($model->uniforme->precio * $model->cantidad))) ?></span></span>
             </div>
             <div class="datos-anadir">
                 <button class="btn btn-danger boton-borrar" type="button" name="button">Quitar del carro</button>

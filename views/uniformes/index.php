@@ -25,6 +25,7 @@ $urlAnadir = Url::to(['uniformes/anadir']);
 if (Yii::$app->user->identity->rol === 'P') {
     $js = <<<EOT
         $(document).ready(function(){
+            $('.numeric').children('input').val(0);
             eventoBoton();
             eventoNumeric();
         });
@@ -42,6 +43,7 @@ if (Yii::$app->user->identity->rol === 'P') {
                 var id = bot.closest('.panel-default').attr('id');
                 var numer = bot.closest('.informacion').children('.datos-anadir').children('.numeric');
                 var cant = numer.children('input').val();
+                numer.children('input').val(0);
                 // console.log(cant);
                 if (cant !== "0") {
                     $('.numeric').remove('p');
@@ -55,6 +57,7 @@ if (Yii::$app->user->identity->rol === 'P') {
                             var regex = /(\d+)/g;
                             var num = parseInt(valor.match(regex)[0]) + 1;
                             $('.glyphicon-shopping-cart').text(' ('+num+')');
+                            numer.children('input').attr('max', numer.children('input').attr('max') - cant);
                         },
                     });
                 } else {

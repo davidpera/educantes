@@ -61,6 +61,7 @@ class UniformesSearch extends Uniformes
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => ['defaultOrder' => ['descripcion' => SORT_ASC]],
         ]);
 
         $this->load($params);

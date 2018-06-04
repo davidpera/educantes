@@ -128,6 +128,7 @@ CREATE TABLE productosCarro
   , uniforme_id bigint          NOT NULL REFERENCES uniformes (id)
                                 ON DELETE NO ACTION ON UPDATE CASCADE
   , cantidad    numeric(5)      NOT NULL
+  , realizado   bool            NOT NULL DEFAULT false
 );
 
 DROP TABLE IF EXISTS sms CASCADE;
