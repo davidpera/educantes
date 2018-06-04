@@ -106,7 +106,8 @@ AppAsset::register($this);
                 ];
             }
         } else {
-            $items[] = ['label' => ' ('.Yii::$app->user->identity->carro->productos.')', 'url' => ['/uniformes/carrito'], 'linkOptions' => ['class' => 'glyphicon glyphicon-shopping-cart']];
+            $items[] = ['label' => 'Pedidos', 'url' => ['/carros/realizados']];
+            $items[] = ['label' => ' ('.Yii::$app->user->identity->carro->productos.')', 'url' => ['/carros/carrito'], 'linkOptions' => ['class' => 'glyphicon glyphicon-shopping-cart']];
             $items[] = ['label' => 'Productos', 'url' => ['/uniformes/index']];
         }
     }

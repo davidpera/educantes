@@ -4,7 +4,10 @@ namespace app\controllers;
 
 use app\models\Carros;
 use app\models\CarrosSearch;
+use app\models\Productoscarro;
+use app\models\Usuarios;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -29,10 +32,80 @@ class CarrosController extends Controller
         ];
     }
 
+    public function actionCarrito()
+    {
+        if (Yii::$app->user->identity->rol !== 'P') {
+            return $this->redirect(['/site/index']);
+        }
+        $query = Productoscarro::find()->where(['carro_id' => Yii::$app->user->identity->carro->id, 'realizado' => false]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        return $this->render('/carros/view', [
+                'dataProvider' => $dataProvider,
+            ]);
+    }
+
+    public function actionRealizados()
+    {
+        if (Yii::$app->user->identity->rol !== 'P') {
+            return $this->redirect(['/site/index']);
+        }
+
+        $pedidos = true;
+        $query = Productoscarro::find()->where(['carro_id' => Yii::$app->user->identity->carro->id, 'realizado' => true]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        return $this->render('/carros/view', [
+                'dataProvider' => $dataProvider,
+                'pedidos' => $pedidos,
+            ]);
+    }
+
     public function actionPedido()
     {
+        $com = json_decode($_POST['pedido']);
+        foreach ($com->pedidos as $ped) {
+            // var_dump($ped);
+            // die();
+            $mode = Productoscarro::findOne(['id' => $ped[5]]);
+            $mode->realizado = true;
+            $mode->fecha_pedido = date('Y-m-d H:i:s');
+            // var_dump(Yii::$app->formatter->asDatetime($mode->fecha_pedido));
+            // die();
+            $mode->save();
+        }
+        $carro = Carros::findOne(['usuario_id' => Yii::$app->user->id]);
+        $carro->productos = 0;
+        $carro->save();
         // var_dump(json_decode($_POST['pedido'])->pedidos[0]);
         // die();
+        $usuario = Usuarios::find()->where(['colegio_id' => Yii::$app->user->identity->colegio_id, 'rol' => 'V'])->one();
+        if (!isset($usuario)) {
+            $usuario = Usuarios::find()->where(['colegio_id' => Yii::$app->user->identity->colegio_id, 'rol' => 'C'])->one();
+        }
+        $usuario->emailPedidoPadre(Yii::$app->user->id, $com->pedidos);
+        Yii::$app->session->setFlash('info', 'Se le ha enviado un correo al administrador del colegio, se le contestará cuando lo acepte');
+        return $this->redirect(['/site/index']);
+    }
+
+    public function actionAceptar($pedido, $pedidorid)
+    {
+        $com = json_decode($pedido);
+        $user = Usuarios::find()->where(['id' => $pedidorid])->one();
+        $user->emailAceptarPadre($com);
+        foreach ($com as $ped) {
+            $mode = Productoscarro::findOne(['id' => $ped[5]]);
+            $mode->aceptado = true;
+            $mode->save();
+        }
+        Yii::$app->session->setFlash('info', 'Se le ha enviado un correo al usuario para que venga a recoger el pedido');
+        $this->goHome();
     }
 
     /**

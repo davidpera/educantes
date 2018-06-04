@@ -99,6 +99,39 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         ];
     }
 
+    public function emailPedidoPadre($usuario, $pedidos)
+    {
+        if ($this->email !== null) {
+            $email = $this->email;
+        } else {
+            $email = $this->colegio->email;
+        }
+        $total = 0.0;
+        $mensaje = '<table><tr><th>Codigo</th>' .
+        '<th>Descripcion</th><th>Cantidad</th><th>Precio</th></tr>';
+        foreach ($pedidos as $ped) {
+            $num = preg_replace('/([^0-9\\,])/i', '', $ped[4]);
+            $num = str_replace(',', '.', $num);
+            $total += $num;
+            $mensaje .= '<tr><td>' . $ped[1] . '</td>' .
+            '<td>' . $ped[0] . '</td><td>' . $ped[3] . '</td>' .
+            '<td>' . $ped[4] . '</td></tr>';
+        }
+        $pedido = json_encode($pedidos);
+        // var_dump($pedido);
+        // die();
+        $mensaje .= '<tr><th colspan="3">Total</th><td>' . Yii::$app->formatter->asCurrency($total) . '</td></tr></table>' .
+        Html::a('Confirmar', Url::to(['carros/aceptar', 'pedido' => $pedido, 'pedidorid' => $usuario], true));
+        $resultado = Yii::$app->mailer->compose()
+            ->setFrom(Yii::$app->params['adminEmail'])
+            ->setTo($email)
+            ->setSubject('Se ha realizado un pedido a tu colegio')->setTextBody('A traves del enlace de este correo aceptaras el pedido y tendras que prepararlo')
+            ->setHtmlBody($mensaje)
+            ->send();
+        // var_dump($mensaje);
+        // die();
+    }
+
     public function emailPedido($id, $pedidorid, $cantidadPedida)
     {
         if ($this->email !== null) {
@@ -132,6 +165,29 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             ->setHtmlBody('<h3>Ha recibido un pedido de varios articulos<br/>' .
             Html::a('Aceptar', Url::to(['uniformes/aceptarmul', 'articulos' => $json, 'pedidorid' => $pedidorid, 'recibidor' => $this->id], true)) . ' ' .
             Html::a('Rechazar', Url::to(['uniformes/rechazarmul', 'articulos' => $json, 'pedidorid' => $pedidorid, 'recibidor' => $this->id], true)))
+            ->send();
+    }
+
+    public function emailAceptarPadre($pedido)
+    {
+        $total = 0.0;
+        $mensaje = '<table><tr><th>Codigo</th>' .
+        '<th>Descripcion</th><th>Cantidad</th><th>Precio</th></tr>';
+        foreach ($pedido as $ped) {
+            $num = preg_replace('/([^0-9\\,])/i', '', $ped[4]);
+            $num = str_replace(',', '.', $num);
+            $total += $num;
+            $mensaje .= '<tr><td>' . $ped[1] . '</td>' .
+            '<td>' . $ped[0] . '</td><td>' . $ped[3] . '</td>' .
+            '<td>' . $ped[4] . '</td></tr>';
+        }
+        $mensaje .= '<tr><th colspan="3">Total</th><td>' . Yii::$app->formatter->asCurrency($total) . '</td></tr></table>';
+        $colegio = Colegios::find()->where(['id' => $this->colegio_id])->one();
+        $resultado = Yii::$app->mailer->compose()
+            ->setFrom(Yii::$app->params['adminEmail'])
+            ->setTo($this->email)
+            ->setSubject('Han aceptado su pedido')->setTextBody('Han aceptado su pedido en el colegio ' . $colegio->nombre . ', ya puede ir a recogerlo')
+            ->setHtmlBody('<h3>Han aceptado su siguente pedido en el colegio ' . $colegio->nombre . ', ya puede ir a recogerlo</h3>' . $mensaje)
             ->send();
     }
 

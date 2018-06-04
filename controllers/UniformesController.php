@@ -9,7 +9,6 @@ use app\models\Uniformes;
 use app\models\UniformesSearch;
 use app\models\Usuarios;
 use Yii;
-use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -44,19 +43,6 @@ class UniformesController extends Controller
                 ],
             ],
         ];
-    }
-
-    public function actionCarrito()
-    {
-        $query = Productoscarro::find()->where(['carro_id' => Yii::$app->user->identity->carro->id]);
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
-
-        return $this->render('/carros/view', [
-                'dataProvider' => $dataProvider,
-            ]);
     }
 
     public function actionAnadir()

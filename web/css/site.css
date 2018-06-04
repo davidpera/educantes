@@ -11,6 +11,20 @@ body {
     color: red;
 }
 
+.verde {
+    color: green;
+    border: 1px solid green;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.azul {
+    color: blue;
+    border: 1px solid blue;
+    border-radius: 4px;
+    text-align: center;
+}
+
 .contenedor {
     display: flex;
     flex-direction: row;

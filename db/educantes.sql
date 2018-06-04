@@ -122,13 +122,15 @@ DROP TABLE IF EXISTS productosCarro CASCADE;
 
 CREATE TABLE productosCarro
 (
-    id          bigserial       PRIMARY KEY
-  , carro_id    bigint          NOT NULL REFERENCES carros (id)
+    id              bigserial       PRIMARY KEY
+  , carro_id        bigint          NOT NULL REFERENCES carros (id)
                                 ON DELETE NO ACTION ON UPDATE CASCADE
-  , uniforme_id bigint          NOT NULL REFERENCES uniformes (id)
-                                ON DELETE NO ACTION ON UPDATE CASCADE
-  , cantidad    numeric(5)      NOT NULL
-  , realizado   bool            NOT NULL DEFAULT false
+  , uniforme_id     bigint          NOT NULL REFERENCES uniformes (id)
+                                    ON DELETE NO ACTION ON UPDATE CASCADE
+  , cantidad        numeric(5)      NOT NULL
+  , realizado       bool            NOT NULL DEFAULT false
+  , fecha_pedido    timestamp(0)
+  , aceptado        bool            NOT NULL DEFAULT false
 );
 
 DROP TABLE IF EXISTS sms CASCADE;
@@ -183,4 +185,5 @@ INSERT INTO colegios (cif, nombre, email, cod_postal, direccion)
 
 INSERT INTO usuarios (nom_usuario, password, rol, colegio_id)
         VALUES  ('pepe', crypt('pepe', gen_salt('bf', 13)), 'A', null),
-                ('juan', crypt('juan', gen_salt('bf', 13)), 'C', 1);
+                ('juan', crypt('juan', gen_salt('bf', 13)), 'C', 1),
+                ('Pedro', crypt('p', gen_salt('bf', 13)), 'V', 1);

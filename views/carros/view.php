@@ -9,8 +9,11 @@ use yii\widgets\ListView;
 
 $urlQuitar = Url::to(['uniformes/quitar']);
 $urlPedir = Url::to(['carros/pedido']);
-
-$this->title = 'Carro de la compra';
+if (!isset($pedidos)){
+    $this->title = 'Carro de la compra';
+} else {
+    $this->title = 'Listado pedidos realizados';
+}
 $this->params['breadcrumbs'][] = ['label' => 'Carros', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 $js = <<<EOT
@@ -50,10 +53,14 @@ $js = <<<EOT
                 var pedido = [];
                 for (sp of ped.children) {
                     if (sp.className === "infor") {
-                        var col = sp.id;
+                        // var col = sp.id;
                         // console.log(sp.id);
                         // console.log(sp.children[0].innerText);
-                        pedido.push(sp.children[0].innerText);
+                        if (sp.id == "id") {
+                            pedido.push(sp.innerText);
+                        } else {
+                            pedido.push(sp.children[0].innerText);
+                        }
                         // pedido[col] = sp.children[0].innerText;
                     }
                 }
@@ -66,6 +73,7 @@ $js = <<<EOT
                 type: 'POST',
                 data: {pedido: json},
                 success: function(data){
+                    // document.write(data);
                     console.log(data);
                     // var valor = $('.glyphicon-shopping-cart').text();
                     // var regex = /(\d+)/g;
@@ -82,6 +90,7 @@ $productos = $dataProvider->query->all();
 foreach ($productos as $prod) {
     $total += $prod->uniforme->precio * $prod->cantidad;
 }
+$total = $total + $total*0.21;
 ?>
 <div class="carros-view">
 
@@ -94,7 +103,11 @@ foreach ($productos as $prod) {
                 ],
                 'dataProvider' => $dataProvider,
                 'itemView' => function ($model, $key, $index, $widget) {
-                    $itemContent = $this->render('_vistaEnCarro', ['model' => $model]);
+                    if ($model->realizado) {
+                        $itemContent = $this->render('_vistaEnCarro', ['model' => $model, 'pedidos' => true]);
+                    } else {
+                        $itemContent = $this->render('_vistaEnCarro', ['model' => $model]);
+                    }
 
                     return $itemContent;
                 },
@@ -106,11 +119,18 @@ foreach ($productos as $prod) {
                 'layout' => '{items}{pager}',
             ]) ?>
 
-    <div class="Total-iva">
-        <h3>Total de los productos con iva: <span id="num-total"><?= Yii::$app->formatter->asCurrency($total) ?></span> </h3>
-    </div>
-    <div class="botones">
-        <button class="btn btn-success boton-pedido" type="button" name="button">Realizar pedido</button>
-    </div>
+
+    <?php if (!isset($pedidos)): ?>
+        <div class="Total-iva">
+            <h3>Total de los productos con iva: <span id="num-total"><?= Yii::$app->formatter->asCurrency($total) ?></span> </h3>
+        </div>
+        <div class="botones">
+            <button class="btn btn-success boton-pedido" type="button" name="button">Realizar pedido</button>
+        </div>
+    <?php else: ?>
+        <div class="Total-iva">
+            <h3>Total gastado con iva: <span id="num-total"><?= Yii::$app->formatter->asCurrency($total) ?></span> </h3>
+        </div>
+    <?php endif; ?>
 
 </div>
