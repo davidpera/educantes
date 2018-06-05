@@ -3,7 +3,7 @@
 // use Yii;
 /* @var $this yii\web\View */
 
-$this->title = 'My Yii Application';
+$this->title = 'Educantes';
 ?>
 <div class="site-index">
 <?php if (!Yii::$app->user->isGuest) : ?>

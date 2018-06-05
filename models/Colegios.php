@@ -36,8 +36,9 @@ class Colegios extends \yii\db\ActiveRecord
         return [
             [['cif', 'nombre', 'email', 'cod_postal', 'direccion'], 'required'],
             [['cod_postal'], 'number'],
-            [['cif'], 'string', 'max' => 9],
-            [['nombre', 'email', 'direccion'], 'string', 'max' => 255],
+            [['cif'], 'match', 'pattern' => '/^[A-Z]{1}\d{8}$/'],
+            [['nombre', 'direccion'], 'string', 'max' => 255],
+            [['email'], 'email'],
             [['cif'], 'unique'],
             [['email'], 'unique'],
             [['nombre'], 'unique'],

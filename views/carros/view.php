@@ -14,7 +14,6 @@ if (!isset($pedidos)){
 } else {
     $this->title = 'Listado pedidos realizados';
 }
-$this->params['breadcrumbs'][] = ['label' => 'Carros', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 $js = <<<EOT
     $(document).ready(function(){
