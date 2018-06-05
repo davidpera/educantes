@@ -43,7 +43,7 @@ AppAsset::register($this);
         ],
     ]);
     $items = [
-        ['label' => 'Home', 'url' => ['/site/index']],
+        ['label' => 'Inicio', 'url' => ['/site/index']],
     ];
     if (!Yii::$app->user->isGuest) {
         $us = Usuarios::find()->where(['id'=>Yii::$app->user->id])->one();

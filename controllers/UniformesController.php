@@ -98,9 +98,13 @@ class UniformesController extends Controller
         $model = new Uniformes();
 
         $model->colegio_id = $us->colegio_id;
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->goBack();
+        if ($model->load(Yii::$app->request->post())) {
+            $model->foto = UploadedFile::getInstance($model, 'foto');
+            if ($model->save() && $model->upload()) {
+                return $this->goBack();
+            }
         }
+
         if ($mio !== null && $mio !== 'no') {
             return $this->render('index', [
                 'searchModel' => $searchModel,
