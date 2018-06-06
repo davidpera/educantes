@@ -84,16 +84,16 @@ class UniformesController extends Controller
     /**
      * Lists all Uniformes models.
      * @return mixed
-     * @param null|mixed $mio
      */
-    public function actionIndex($mio = null)
+    public function actionIndex()
     {
         $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
         // if ($us->rol !== 'A' && $us->rol !== 'C') {
         //     return $this->goHome();
         // }
         $searchModel = new UniformesSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $mio);
+        $mioProvider = $searchModel->search(Yii::$app->request->queryParams, 'si');
+        $otroProvider = $searchModel->search(Yii::$app->request->queryParams, 'no');
 
         $model = new Uniformes();
 
@@ -104,18 +104,10 @@ class UniformesController extends Controller
                 return $this->goBack();
             }
         }
-
-        if ($mio !== null && $mio !== 'no') {
-            return $this->render('index', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-                'mio' => $mio,
-                'model' => $model,
-            ]);
-        }
         return $this->render('index', [
                 'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
+                'mioProvider' => $mioProvider,
+                'otroProvider' => $otroProvider,
                 'model' => $model,
             ]);
     }
@@ -155,7 +147,7 @@ class UniformesController extends Controller
             $model->foto = UploadedFile::getInstance($model, 'foto');
             if ($model->save() && $model->upload()) {
                 if ($us->rol === 'V') {
-                    return $this->redirect(['index', 'mio' => 'si']);
+                    return $this->redirect(['index']);
                 }
                 return $this->redirect(['index']);
             }
@@ -188,7 +180,7 @@ class UniformesController extends Controller
             $model->foto = UploadedFile::getInstance($model, 'foto');
             if ($model->save() && $model->upload()) {
                 if ($us->rol === 'V') {
-                    return $this->redirect(['index', 'mio' => 'si']);
+                    return $this->redirect(['index']);
                 }
                 return $this->redirect(['index']);
             }
@@ -207,7 +199,7 @@ class UniformesController extends Controller
             return $model->cantidad;
         }
         Yii::$app->session->setFlash('info', 'No hay existencias de ese uniforme');
-        return  $this->redirect(['index', 'mio' => 'no']);
+        return  $this->redirect(['index']);
     }
 
     public function actionExternos()
@@ -228,7 +220,7 @@ class UniformesController extends Controller
             $usuario = Usuarios::find()->where(['colegio_id' => $uniform->colegio_id, 'rol' => 'V'])->one();
             $usuario->emailPedido($id, Yii::$app->user->id, $cantidadPedida);
             Yii::$app->session->setFlash('info', 'Se le ha enviado un correo al administrador del colegio, se le contestará cuando lo acepte');
-            $this->redirect(['index', 'mio' => 'no']);
+            $this->redirect(['index']);
         }
     }
 
@@ -337,7 +329,7 @@ class UniformesController extends Controller
         $this->findModel($id)->delete();
 
         if ($us->rol === 'V') {
-            return $this->redirect(['index', 'mio' => 'si']);
+            return $this->redirect(['index']);
         }
         return $this->redirect(['index']);
     }

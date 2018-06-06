@@ -96,14 +96,7 @@ AppAsset::register($this);
 
                 }
             } else {
-                $items[] = [
-                    'label' => 'Uniformes',
-                    'items' => [
-                        ['label' => 'Uniformes mi colegio', 'url' => ['uniformes/index', 'mio' => 'si']],
-                        '<li class="divider"></li>',
-                        ['label' => 'Uniformes otros colegios', 'url' => ['uniformes/index', 'mio' => 'no']],
-                    ],
-                ];
+                $items[] = ['label' => 'Uniformes','url' => ['/uniformes/index']];
             }
         } else {
             $items[] = ['label' => 'Pedidos', 'url' => ['/carros/realizados']];

@@ -1,4 +1,8 @@
 $(document).ready(function(){
+    if (sessionStorage.length !== 0) {
+        $('li[id='+sessionStorage.getItem('id')+']').find('a').trigger('click');
+    }
+    eventoPestanas();
     eventoPedido();
     eventoPedidoMultiple();
 });
@@ -9,6 +13,11 @@ function eventoPedidoMultiple(){
         var to = ($(window).height()/2)-50;
         var options = "width=400px, height=500px,top="+to+",left="+le+", menubar=no, resizable=no,scrollbars=yes";
         var nueva = window.open('/js/ventana.html','Pedido',options);
+    });
+}
+function eventoPestanas(){
+    $('.pestañas').on('click', function(){
+        sessionStorage.setItem('id', $(this).attr('id'));
     });
 }
 
