@@ -77,7 +77,7 @@ class SecstocksController extends Controller
     public function actionCreate($uniforme_id)
     {
         $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
-        if ($us->rol !== 'C') {
+        if ($us->rol !== 'C' && $us->rol !== 'V') {
             return $this->goHome();
         }
         $model = new Secstocks();
@@ -87,7 +87,7 @@ class SecstocksController extends Controller
             $mp = ($model->cd * $model->pe) + $model->ss;
             $model->mp = $mp;
             if ($model->save()) {
-                return $this->redirect(['uniformes/index']);
+                return $this->redirect(['uniformes/index', 'mio' => 'si']);
             }
         }
 
@@ -106,7 +106,7 @@ class SecstocksController extends Controller
     public function actionUpdate($uniforme_id)
     {
         $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
-        if ($us->rol !== 'C') {
+        if ($us->rol !== 'C' && $us->rol !== 'V') {
             return $this->goHome();
         }
         $st = Secstocks::find()->where(['uniforme_id' => $uniforme_id])->one();
@@ -116,7 +116,7 @@ class SecstocksController extends Controller
             $mp = ($model->cd * $model->pe) + $model->ss;
             $model->mp = $mp;
             if ($model->save()) {
-                return $this->redirect(['uniformes/index']);
+                return $this->redirect(['uniformes/index', 'mio' => 'si']);
             }
         }
 

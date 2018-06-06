@@ -7,7 +7,7 @@ use yii\helpers\Html;
 
 
 <div id='<?= $model->id ?>' class="panel panel-default div-inicial">
-    <div class="panel panel-heading contenedor">
+    <div id='<?= $model->descripcion ?>' class="panel panel-heading contenedor producto">
         <div class="imagen-uniforme"><img src="<?= $model->getRutaImagen() ?>"></div>
         <div class="informacion">
             <div class="informacion-general">

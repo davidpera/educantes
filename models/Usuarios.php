@@ -107,12 +107,16 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             $email = $this->colegio->email;
         }
         $total = 0.0;
+        $totalIva = 0.0;
         $mensaje = '<table><tr><th>Codigo</th>' .
         '<th>Descripcion</th><th>Cantidad</th><th>Precio</th></tr>';
         foreach ($pedidos as $ped) {
             $num = preg_replace('/([^0-9\\,])/i', '', $ped[4]);
             $num = str_replace(',', '.', $num);
+            $iv = preg_replace('/([^0-9\\,])/i', '', $ped[6]);
+            $iv = str_replace(',', '.', $iv);
             $total += $num;
+            $totalIva += $iv;
             $mensaje .= '<tr><td>' . $ped[1] . '</td>' .
             '<td>' . $ped[0] . '</td><td>' . $ped[3] . '</td>' .
             '<td>' . $ped[4] . '</td></tr>';
@@ -121,6 +125,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         // var_dump($pedido);
         // die();
         $mensaje .= '<tr><th colspan="3">Total</th><td>' . Yii::$app->formatter->asCurrency($total) . '</td></tr></table>' .
+        '<tr><th colspan="3">Total con iva</th><td>' . Yii::$app->formatter->asCurrency($totalIva) . '</td></tr></table>' .
         Html::a('Confirmar', Url::to(['carros/aceptar', 'pedido' => $pedido, 'pedidorid' => $usuario], true));
         $resultado = Yii::$app->mailer->compose()
             ->setFrom(Yii::$app->params['adminEmail'])

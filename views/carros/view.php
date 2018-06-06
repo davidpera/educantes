@@ -84,12 +84,13 @@ $js = <<<EOT
     }
 EOT;
 $this->registerJs($js);
-$total = 0;
+$totalIva = 0;
 $productos = $dataProvider->query->all();
 foreach ($productos as $prod) {
-    $total += $prod->uniforme->precio * $prod->cantidad;
+    $total = $prod->uniforme->precio * $prod->cantidad;
+    $totalIva += $total + ($total * ($prod->uniforme->iva/100));
 }
-$total = $total + $total*0.21;
+$total = $totalIva;
 ?>
 <div class="carros-view">
 

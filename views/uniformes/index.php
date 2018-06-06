@@ -26,9 +26,25 @@ if (Yii::$app->user->identity->rol === 'P') {
     $js = <<<EOT
         $(document).ready(function(){
             $('.numeric').children('input').val(0);
+            anadirFiltrado();
             eventoBoton();
             eventoNumeric();
         });
+
+        function anadirFiltrado(){
+            $('.filtrado').append('<input type="text"></input>');
+            eventoFiltrado();
+        }
+
+        function eventoFiltrado(){
+            $('.filtrado').children('input').on('keyup', function(){
+                $('.producto').closest('.div-inicial').hide();
+                $('.producto[id*="'+$(this).val().trim()+'"]').closest('.div-inicial').show();
+                if ($(this).val().trim() === '') {
+                    $('.producto').closest('.div-inicial').show();
+                }
+            });
+        }
 
         function eventoNumeric(){
             $('.numeric').children('input').on('change', function(){
@@ -86,6 +102,9 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 <?php if (Yii::$app->user->identity->rol === 'P'): ?>
+    <div class="filtrado">
+        <span>Filtrado: </span>
+    </div>
     <?= ListView::widget([
                 'options' => [
                     'tag' => 'div',

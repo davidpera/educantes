@@ -20,6 +20,7 @@ use yii\helpers\Html;
                 <span id="cantidad" class="infor">Cantidad: <span class="dat"><?=Html::encode($model->cantidad)?></span></span></br>
                 <span id="total" class="infor">Total: <span class="dat"><?= Html::encode(Yii::$app->formatter->asCurrency(($model->uniforme->precio * $model->cantidad))) ?></span></span>
                 <span id="id" class="infor" hidden><?=$model->id?></span>
+                <span id="total-iva" class="infor" hidden><span class="dat"><?= Html::encode(Yii::$app->formatter->asCurrency(($model->uniforme->precio * $model->cantidad) + ($model->uniforme->precio * $model->cantidad) * ($model->uniforme->iva/100))) ?></span></span>
             </div>
             <div class="datos-anadir">
                 <?php if (!isset($pedidos)): ?>

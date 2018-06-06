@@ -11,7 +11,7 @@ function eventoColegio(){
             type:'GET',
             datatype: 'json',
             success: function(data){
-                var colegios = '<div class="colegios-container form-control"><select>';
+                var colegios = '<div class="colegios-container "><select>';
                 for (col of data) {
                     colegios += '<option value='+col.nombre.split(" ").join("")+'>'+col.nombre+'</option>'
                 }
@@ -116,7 +116,7 @@ function eventoPedido(cont){
             data: {'nombre' : colegio },
             dataType: 'json',
             success: function(data){
-                var pedido = '<div class="pedido-container"><select class="form-control">';
+                var pedido = '<div class="pedido-container"><select>';
                 for (unif of data) {
                     pedido += '<option value='+unif.id+'>'+unif.codigo+'</option>'
                 }
@@ -129,7 +129,7 @@ function eventoPedido(cont){
                     type: 'GET',
                     data: {'id':id},
                     success: function(data){
-                        var num = '<input class="form-control" type="number" value="1" min="1" max="'+data+'"></input>';
+                        var num = '<input type="number" value="1" min="1" max="'+data+'"></input>';
                         boton.closest('.colegios-container').find('.pedido-container[id='+id+']').last().append(num);
                         var equis = '<a href="#" class="borrar glyphicon glyphicon-remove"></a>'
                         boton.closest('.colegios-container').find('.pedido-container[id='+id+']').last().append(equis);
@@ -144,7 +144,7 @@ function eventoPedido(cont){
                         type: 'GET',
                         data: {'id':id},
                         success: function(data){
-                            var num = '<input class="form-control" type="number" value="1" min="1" max="'+data+'"></input>';
+                            var num = '<input type="number" value="1" min="1" max="'+data+'"></input>';
                             este.next().replaceWith(num);
                         },
                     });
