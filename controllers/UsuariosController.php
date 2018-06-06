@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Alumnos;
+use app\models\Carros;
 use app\models\Libros;
 use app\models\Tutores;
 use app\models\Uniformes;
@@ -163,6 +164,11 @@ class UsuariosController extends Controller
                                 return $this->redirect(['upload', 'tabla' => $tabla]);
                             }
 
+                            if ($texto == 'fecha_de_nacimiento') {
+                                $celda = str_replace('/', '-', $celda);
+                                // var_dump($celda);
+                            }
+
                             $model->$texto = $celda;
                             if ($tabla === 'tutores') {
                                 if ($texto === 'nif' && Alumnos::find()->where(['dni_primer_tutor' => $model->nif])->orWhere(['dni_segundo_tutor' => $model->nif])->one() === null) {
@@ -171,6 +177,9 @@ class UsuariosController extends Controller
                                 }
                             }
                         }
+                        // var_dump($model->fecha_de_nacimiento);
+                        // var_dump($model->validate(), $model->errors);
+                        // die();
                         $model->save();
                     }
                     // return;
@@ -238,7 +247,11 @@ class UsuariosController extends Controller
             $model->rol = 'P';
             var_dump($model->validate());
             if ($model->save()) {
-                return $this->redirect(['tutores/index']);
+                $carr = new Carros();
+                $carr->usuario_id = $model->id;
+                if ($carr->save()) {
+                    return $this->redirect(['tutores/index']);
+                }
             }
         } else {
             $us = Yii::$app->user->identity;

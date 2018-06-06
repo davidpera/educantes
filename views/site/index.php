@@ -3,7 +3,7 @@
 // use Yii;
 /* @var $this yii\web\View */
 
-$this->title = 'My Yii Application';
+$this->title = 'Educantes';
 ?>
 <div class="site-index">
 <?php if (!Yii::$app->user->isGuest) : ?>
@@ -22,7 +22,7 @@ $this->title = 'My Yii Application';
             <img src="uploads/foto1.jpg" alt="" class="lema">
         </div>
         <div class="central">
-            <h3>Registrese o conectese para realizar acciones</h3>
+            <h3>Conectese para realizar acciones</h3>
         </div>
         <div class="contenedor-imagen">
             <img src="uploads/lema1.jpg" alt="" class="lema">

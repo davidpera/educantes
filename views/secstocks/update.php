@@ -6,8 +6,6 @@ use yii\helpers\Html;
 /* @var $model app\models\Secstocks */
 
 $this->title = 'Update Secstocks: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Secstocks', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="secstocks-update">

@@ -11,7 +11,7 @@ function eventoColegio(){
             type:'GET',
             datatype: 'json',
             success: function(data){
-                var colegios = '<div class="colegios-container"><select>';
+                var colegios = '<div class="colegios-container "><select>';
                 for (col of data) {
                     colegios += '<option value='+col.nombre.split(" ").join("")+'>'+col.nombre+'</option>'
                 }

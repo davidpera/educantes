@@ -3,6 +3,74 @@ body {
     height: 100%;
 }
 
+.ped-mul {
+    margin-top: 10px;
+}
+
+.table {
+    margin-top: 10px;
+}
+
+.error-input {
+    border-color: red;
+}
+
+.error {
+    color: red;
+}
+
+.verde {
+    color: green;
+    border: 1px solid green;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.azul {
+    color: blue;
+    border: 1px solid blue;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.contenedor {
+    display: flex;
+    flex-direction: row;
+}
+
+.imagen-uniforme {
+    width: 150px;
+    margin-right: 20px;
+    /* border: 1px solid; */
+}
+
+.informacion {
+    display: flex;
+    flex-direction: row;
+}
+
+.datos-anadir {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.informacion-general {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 20px;
+}
+
+.div-inicial {
+    width: 650px;
+}
+
+.contenedor {
+    height: 100%;
+    margin-bottom: 0px;
+}
+
 .wrap {
     min-height: 100%;
     height: auto;

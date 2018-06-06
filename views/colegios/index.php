@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     } elseif ($us->rol === 'C' && $us->colegio_id === $model->id) {
                         if (Usuarios::find()->where(['colegio_id' => $model->id, 'rol' => 'V'])->count('*') !== 0) {
                             $usv = Usuarios::find()->where(['colegio_id' => $model->id , 'rol' => 'V'])->one();
-                            return Html::a('Dar de baja admin', ['usuarios/delete', 'id' => $usv->id], [
+                            return Html::a('Dar de baja Vendedor', ['usuarios/delete', 'id' => $usv->id], [
                                     'class' => 'btn btn-danger',
                                     'data' => [
                                         'confirm' => '¿Está seguro de que quiere dar de baja a '.$usv->nom_usuario.'?',

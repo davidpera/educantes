@@ -2,6 +2,9 @@
 
 namespace app\models;
 
+use yii\helpers\Url;
+use yii\imagine\Image;
+
 /**
  * This is the model class for table "uniformes".
  *
@@ -20,12 +23,21 @@ namespace app\models;
  */
 class Uniformes extends \yii\db\ActiveRecord
 {
+    public $foto;
+
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
         return 'uniformes';
+    }
+
+    public function attributes()
+    {
+        return array_merge(parent::attributes(), [
+            'foto',
+        ]);
     }
 
     /**
@@ -39,6 +51,7 @@ class Uniformes extends \yii\db\ActiveRecord
             [['colegio_id'], 'default', 'value' => null],
             [['colegio_id'], 'integer'],
             [['codigo', 'descripcion', 'talla', 'ubicacion'], 'string', 'max' => 255],
+            [['foto'], 'file', 'extensions' => 'jpg'],
         ];
     }
 
@@ -61,6 +74,32 @@ class Uniformes extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getRutaImagen()
+    {
+        $nombre = 'uploads/' . $this->codigo . '.jpg';
+        // var_dump($this->codigo);
+        // die();
+        if (file_exists($nombre)) {
+            return Url::to('/uploads/') . $this->codigo . '.jpg';
+        }
+        return Url::to('/uploads/') . 'default.jpg';
+    }
+
+    public function upload()
+    {
+        if ($this->foto === null) {
+            return true;
+        }
+        $nombre = 'uploads/' . $this->codigo . '.jpg';
+        // var_dump($this->codigo);
+        // die();
+        $res = $this->foto->saveAs($nombre);
+        if ($res) {
+            Image::thumbnail($nombre, 150, null)->save($nombre);
+        }
+        return $res;
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -77,5 +116,13 @@ class Uniformes extends \yii\db\ActiveRecord
     public function getColegio()
     {
         return $this->hasOne(Colegios::className(), ['id' => 'colegio_id'])->inverseOf('uniformes');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProductoscarros()
+    {
+        return $this->hasMany(Productoscarro::className(), ['uniforme_id' => 'id'])->inverseOf('uniforme');
     }
 }

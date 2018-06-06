@@ -43,7 +43,7 @@ AppAsset::register($this);
         ],
     ]);
     $items = [
-        ['label' => 'Home', 'url' => ['/site/index']],
+        ['label' => 'Inicio', 'url' => ['/site/index']],
     ];
     if (!Yii::$app->user->isGuest) {
         $us = Usuarios::find()->where(['id'=>Yii::$app->user->id])->one();
@@ -96,15 +96,12 @@ AppAsset::register($this);
 
                 }
             } else {
-                $items[] = [
-                    'label' => 'Uniformes',
-                    'items' => [
-                        ['label' => 'Uniformes mi colegio', 'url' => ['uniformes/index', 'mio' => 'si']],
-                        '<li class="divider"></li>',
-                        ['label' => 'Uniformes otros colegios', 'url' => ['uniformes/index', 'mio' => 'no']],
-                    ],
-                ];
+                $items[] = ['label' => 'Uniformes','url' => ['/uniformes/index']];
             }
+        } else {
+            $items[] = ['label' => 'Pedidos', 'url' => ['/carros/realizados']];
+            $items[] = ['label' => ' ('.Yii::$app->user->identity->carro->productos.')', 'url' => ['/carros/carrito'], 'linkOptions' => ['class' => 'glyphicon glyphicon-shopping-cart']];
+            $items[] = ['label' => 'Productos', 'url' => ['/uniformes/index']];
         }
     }
     Yii::$app->user->isGuest ? (

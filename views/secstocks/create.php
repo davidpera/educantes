@@ -7,7 +7,6 @@ use yii\helpers\Html;
 /* @var $model app\models\Secstocks */
 
 $this->title = 'Create Secstocks';
-$this->params['breadcrumbs'][] = ['label' => 'Secstocks', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="secstocks-create">
