@@ -21,8 +21,11 @@ function eventoPedido(){
             type: 'GET',
             data: {'id':id},
             success: function(data){
-                var input = '<div class="pedido-container"><input type="number" id="'+id+'" value="1" min="1" max="'+data+'"><button class="glyphicon glyphicon-ok aceptar-pedido"></button></div>'
-                boton.replaceWith(input);
+                var input = '<div class="pedido-container"><input type="number" id="'+id+'" value="1" min="1" max="'+data+'">'+
+                '<button class="btn-success glyphicon glyphicon-ok aceptar-pedido"></button>'+
+                '<button class="btn-danger glyphicon glyphicon-remove cancelar-pedido"></div>'
+                boton.parent('td').append(input);
+                boton.hide();
                 $('.aceptar-pedido').on('click', function(){
                     var cantidadPedida = $('input[id='+id+']').val();
                     $.ajax({
@@ -35,6 +38,10 @@ function eventoPedido(){
                         //     eventoPedido();
                         // }
                     });
+                });
+                $('.cancelar-pedido').on('click', function(){
+                    $(this).closest('.pedido-container').remove();
+                    boton.show();
                 });
             },
         });
