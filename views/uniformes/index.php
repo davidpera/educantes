@@ -261,7 +261,7 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
                 ],
                 [
                     'label' => 'Otros colegios',
-                    'content' => "<div>".
+                    'content' => "<div class='ped-mul'>".
                     Html::button('Hacer pedido multiple',
                         [
                             'id' => 'pedidoMult',

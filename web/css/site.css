@@ -3,6 +3,14 @@ body {
     height: 100%;
 }
 
+.ped-mul {
+    margin-top: 10px;
+}
+
+.table {
+    margin-top: 10px;
+}
+
 .error-input {
     border-color: red;
 }
