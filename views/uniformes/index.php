@@ -74,6 +74,7 @@ if (Yii::$app->user->identity->rol === 'P') {
                             var valor = $('.glyphicon-shopping-cart').text();
                             var regex = /(\d+)/g;
                             var num = parseInt(valor.match(regex)[0]) + 1;
+                            $('.glyphicon-shopping-cart').animate({color: "red"}, 1000).animate({color: "black"}, 1000);
                             $('.glyphicon-shopping-cart').text(' ('+num+')');
                             numer.children('input').attr('max', numer.children('input').attr('max') - cant);
                         },
@@ -87,6 +88,7 @@ if (Yii::$app->user->identity->rol === 'P') {
             });
         }
 EOT;
+$this->registerJsFile('/js/jquery_color.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 $this->registerJs($js);
 } else {
     $js = <<<EOT
@@ -112,7 +114,7 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
                     'tag' => 'div',
                     'id' => 'vista-tienda'
                 ],
-                'dataProvider' => $dataProvider,
+                'dataProvider' => $mioProvider,
                 'itemView' => function ($model, $key, $index, $widget) {
                     $itemContent = $this->render('_vistaTienda', ['model' => $model]);
 

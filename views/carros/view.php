@@ -40,6 +40,7 @@ $js = <<<EOT
                         var valor = $('.glyphicon-shopping-cart').text();
                         var num = parseInt(valor.match(regex)[0]) - 1;
                         $('#num-total').text(numTotal);
+                        $('.glyphicon-shopping-cart').animate({color: "red"}, 1000).animate({color: "black"}, 1000);
                         $('.glyphicon-shopping-cart').text(' ('+num+')');
                     },
                 });
@@ -73,7 +74,7 @@ $js = <<<EOT
                 data: {pedido: json},
                 success: function(data){
                     // document.write(data);
-                    console.log(data);
+                    // console.log(data);
                     // var valor = $('.glyphicon-shopping-cart').text();
                     // var regex = /(\d+)/g;
                     // var num = parseInt(valor.match(regex)[0]) - 1;
