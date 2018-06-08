@@ -74,6 +74,10 @@ class Uniformes extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * Nos devuelve la ruta completa a una imagen.
+     * @return string Ruta a la imagen
+     */
     public function getRutaImagen()
     {
         $nombre = 'uploads/' . $this->codigo . '.jpg';
@@ -85,6 +89,9 @@ class Uniformes extends \yii\db\ActiveRecord
         return Url::to('/uploads/') . 'default.jpg';
     }
 
+    /**
+     * Guarda una imagen cargada a traves del formulario.
+     */
     public function upload()
     {
         if ($this->foto === null) {
