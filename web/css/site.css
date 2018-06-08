@@ -144,10 +144,9 @@ body {
     text-align: center;
 }
 
-.lema {
-    width: 75%;
-    height: 170px;
-    margin-top: 35px;
+.inferior {
+    width: 100%;
+    text-align: center;
 }
 
 .imagen {

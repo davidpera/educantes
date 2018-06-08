@@ -85,6 +85,8 @@ $js = <<<EOT
     }
 EOT;
 $this->registerJs($js);
+$this->registerJsFile('/js/jquery_color.js',['depends' => [\yii\web\JqueryAsset::className()]]);
+
 $totalIva = 0;
 $productos = $dataProvider->query->all();
 foreach ($productos as $prod) {
