@@ -34,6 +34,9 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-lg-offset-1 col-lg-11">
                 <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
             </div>
+            <div class="col-lg-offset-1 col-lg-11">
+                <?= Html::a('¿Ha olvidado su contraseña? Haz click aqui',['/usuarios/olvidado']); ?>
+            </div>
         </div>
 
     <?php ActiveForm::end(); ?>

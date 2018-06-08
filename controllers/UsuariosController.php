@@ -222,6 +222,58 @@ class UsuariosController extends Controller
         return $this->redirect(['site/login']);
     }
 
+    public function actionCambiar($token_val)
+    {
+        $us = Usuarios::findOne(['token_val' => $token_val]);
+        if ($us !== null) {
+            $us->scenario = Usuarios::ESCENARIO_CAMBIO;
+            $us->password = '';
+            $us->token_val = null;
+            if ($us->load(Yii::$app->request->post()) && $us->save()) {
+                return $this->redirect('/site/index');
+            }
+            return $this->render('contraseña', ['model' => $us]);
+        }
+        return $this->redirect('/site/index');
+    }
+
+    public function actionOlvidado()
+    {
+        $model = new Usuarios();
+        if (Yii::$app->request->post()) {
+            $us = Usuarios::findOne(['email' => Yii::$app->request->post()['Usuarios']['email']]);
+            if ($us !== null) {
+                $us->token_val = Yii::$app->security->generateRandomString(18);
+                if ($us->save()) {
+                    Yii::$app->session->setFlash('success', 'Correo para la recuperacion de contraseña enviado');
+                    $us->emailRecuperacion($us->token_val);
+                    return $this->redirect('/site/index');
+                }
+            }
+            Yii::$app->session->setFlash('error', 'El correo indicado no esta registrado');
+            return $this->redirect('/site/index');
+        }
+        return $this->render('olvidado', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionRegistro($id)
+    {
+        $model = $this->findModel($id);
+        $model->scenario = 'create';
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save()) {
+                return $this->goHome();
+            }
+        }
+
+        return $this->render('registro', [
+            'model' => $model,
+        ]);
+    }
+
     /**
      * Este método da de alta a un colegio.
      * @param  [type] $colegio_id [description]
@@ -235,7 +287,7 @@ class UsuariosController extends Controller
             $model = new Usuarios(['scenario' => Usuarios::ESCENARIO_CREATE]);
             $model->nom_usuario = substr($tutor->nombre, 0, 2) . substr($tutor->apellidos, 0, 2) . substr($tutor->telefono, 0, 2);
             $model->password = Yii::$app->security->generateRandomString(10);
-            $model->contrasena = $model->password;
+            // $model->contrasena = $model->password;
             $model->confirmar = $model->password;
             $model->nombre = $tutor->nombre;
             $model->apellidos = $tutor->apellidos;
@@ -250,12 +302,14 @@ class UsuariosController extends Controller
                 $carr = new Carros();
                 $carr->usuario_id = $model->id;
                 if ($carr->save()) {
+                    $model->emailRegistro();
+                    Yii::$app->session->setFlash('info', 'Se le ha enviado un mensaje al padre para que se termine de registrar');
                     return $this->redirect(['tutores/index']);
                 }
             }
         } else {
             $us = Yii::$app->user->identity;
-            $model = new Usuarios(['scenario' => Usuarios::ESCENARIO_CREATE]);
+            $model = new Usuarios();
             if ($us->rol === 'A') {
                 $model->rol = 'C';
             } elseif ($us->rol === 'C') {
@@ -271,8 +325,9 @@ class UsuariosController extends Controller
             }
 
             if ($model->load(Yii::$app->request->post())) {
-                $model->contrasena = $model->password;
+                // $model->contrasena = $model->password;
                 if ($model->save()) {
+                    $model->emailRegistro();
                     return $this->redirect(['colegios/index']);
                 }
             }

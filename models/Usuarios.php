@@ -30,8 +30,9 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
 {
     const ESCENARIO_CREATE = 'create';
     const ESCENARIO_UPDATE = 'update';
+    const ESCENARIO_CAMBIO = 'cambio';
 
-
+    public $viejaPassword;
     public $confirmar;
     /**
      * {@inheritdoc}
@@ -45,6 +46,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     {
         return array_merge(parent::attributes(), [
             'confirmar',
+            'viejaPassword',
         ]);
     }
 
@@ -54,8 +56,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     public function rules()
     {
         $rules = [
-            [['nom_usuario', 'rol'], 'required'],
-            [['password', 'contrasena', 'confirmar'], 'required', 'on' => self::ESCENARIO_CREATE],
+            [['email', 'rol'], 'required'],
             [
                  ['confirmar'],
                  'compare',
@@ -63,10 +64,15 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
                  'skipOnEmpty' => false,
                  'on' => [self::ESCENARIO_CREATE, self::ESCENARIO_UPDATE],
              ],
+             [
+                 ['password', 'confirmar'],
+                 'required',
+                 'on' => [self::ESCENARIO_CAMBIO],
+             ],
             [['tel_movil'], 'match', 'pattern' => '/^\d{9}$/'],
             [['colegio_id'], 'default', 'value' => null],
             [['colegio_id'], 'integer'],
-            [['nom_usuario', 'password', 'nombre', 'apellidos', 'direccion', 'email'], 'string', 'max' => 255],
+            [['nom_usuario', 'password', 'nombre', 'apellidos', 'viejaPassword', 'direccion', 'email'], 'string', 'max' => 255],
             [['nif'], 'match', 'pattern' => '/^\d{8}[A-Z]{1}$/'],
             [['rol'], 'string', 'max' => 1],
             [['email'], 'email'],
@@ -74,6 +80,11 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             [['nom_usuario', 'email', 'tel_movil'], 'unique'],
             [['colegio_id'], 'exist', 'skipOnError' => true, 'targetClass' => Colegios::className(), 'targetAttribute' => ['colegio_id' => 'id']],
         ];
+        if ($this->rol === 'P') {
+            $rules[] = [['password', 'confirmar', 'nom_usuario', 'nombre', 'apellidos', 'nif', 'direccion', 'tel_movil'], 'required', 'on' => self::ESCENARIO_CREATE];
+        } else {
+            $rules[] = [['password', 'confirmar', 'nom_usuario', 'tel_movil'], 'required', 'on' => self::ESCENARIO_CREATE];
+        }
         return $rules;
     }
 
@@ -86,7 +97,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             'id' => 'ID',
             'nom_usuario' => 'Nombre de Usuario',
             'password' => 'Contraseña',
-            'contrasena' => 'Contraseña',
+            // 'contrasena' => 'Contraseña',
             'nombre' => 'Nombre',
             'apellidos' => 'Apellidos',
             'nif' => 'Nif',
@@ -96,7 +107,31 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             'rol' => 'Rol',
             'colegio_id' => 'Colegio',
             'confirmar' => 'Confirmar contraseña',
+            'viejaPassword' => 'Antigua Contraseña',
         ];
+    }
+
+    public function emailRecuperacion($token_val)
+    {
+        $mensaje = '<p>Para cambiar su contraseña pulse en el siguiente enlace</p>' . Html::a('Cambiar contraseña', Url::to(['usuarios/cambiar', 'token_val' => $token_val], true));
+        $resultado = Yii::$app->mailer->compose()
+            ->setFrom(Yii::$app->params['adminEmail'])
+            ->setTo($this->email)
+            ->setSubject('Cambiar contraseña')
+            ->setHtmlBody($mensaje)
+            ->send();
+    }
+
+    public function emailRegistro()
+    {
+        $mensaje = '<h3>Ha traves del siguiente enlace usted completara el registro y podra comprobar o rellenar sus datos personales</h3>' .
+        Html::a('Acceder a la pagina web', Url::to(['usuarios/registro', 'id' => $this->id], true));
+        $resultado = Yii::$app->mailer->compose()
+            ->setFrom(Yii::$app->params['adminEmail'])
+            ->setTo($this->email)
+            ->setSubject('Usted a sido registrado en la pagina web de Educantes')->setTextBody($mensaje)
+            ->setHtmlBody($mensaje)
+            ->send();
     }
 
     public function emailPedidoPadre($usuario, $pedidos)
@@ -308,32 +343,29 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         if (parent::beforeSave($insert)) {
             if ($insert) {
                 // $this->auth_key = Yii::$app->security->generateRandomString();
-                if (Yii::$app->user->isGuest) {
-                    $query = Alumnos::find()->where(['colegio_id' => Yii::$app->request->post()['Usuarios']['colegio_id']])
-                    ->andWhere(['nombre' => Yii::$app->request->post()['Hijo']['nombre']])
-                    ->andWhere(['primer_apellido' => Yii::$app->request->post()['Hijo']['prim-ape']])
-                    ->andWhere(['fecha_de_nacimiento' => Yii::$app->request->post()['Hijo']['fech-nac']]);
-                    if (Yii::$app->request->post()['Hijo']['sec-ape'] !== '') {
-                        $query->andWhere(['segundo_apellido' => Yii::$app->request->post()['Hijo']['sec-ape']]);
-                    }
-                    $hijo = $query->one();
-                    if ($hijo === null) {
-                        Yii::$app->session->setFlash('error', 'El alumno escogido no existe el el colegio indicado, compruebe que ha elegido bien el colegio');
-                        return false;
-                    }
-                    $this->token_val = Yii::$app->security->generateRandomString();
-                }
+
                 if ($this->scenario === self::ESCENARIO_CREATE) {
-                    $this->contrasena = $this->password;
+                    // $this->contrasena = $this->password;
                     $this->password = Yii::$app->security->generatePasswordHash($this->password);
                 }
             } else {
+                if ($this->scenario === self::ESCENARIO_CREATE) {
+                    // $this->contrasena = $this->password;
+                    $this->password = Yii::$app->security->generatePasswordHash($this->password);
+                }
                 if ($this->scenario === self::ESCENARIO_UPDATE) {
                     if ($this->password === '') {
                         $this->password = $this->getOldAttribute('password');
                     } else {
-                        $this->password = Yii::$app->security->generatePasswordHash($this->password);
+                        if (Yii::$app->getSecurity()->validatePassword($this->viejaPassword, $this->getOldAttribute('password'))) {
+                            $this->password = Yii::$app->security->generatePasswordHash($this->password);
+                        } else {
+                            Yii::$app->session->setFlash('error', 'La contraseña antigua no coincide con la que ha puesto.');
+                            return false;
+                        }
                     }
+                } elseif ($this->scenario === self::ESCENARIO_CAMBIO) {
+                    $this->password = Yii::$app->security->generatePasswordHash($this->password);
                 }
             }
             return true;

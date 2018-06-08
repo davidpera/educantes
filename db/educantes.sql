@@ -93,9 +93,9 @@ DROP TABLE IF EXISTS usuarios CASCADE;
 CREATE TABLE usuarios
 (
     id          bigserial       PRIMARY KEY
-  , nom_usuario varchar(255)    NOT NULL UNIQUE
-  , password    varchar(255)    NOT NULL
-  , contrasena  varchar(255)    DEFAULT NULL
+  , nom_usuario varchar(255)    UNIQUE
+  , password    varchar(255)    
+  /* , contrasena  varchar(255)    DEFAULT NULL */
   , nombre      varchar(255)    DEFAULT NULL
   , apellidos   varchar(255)    DEFAULT NULL
   , nif         varchar(255)    UNIQUE DEFAULT NULL
