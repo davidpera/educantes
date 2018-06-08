@@ -70,8 +70,7 @@ class UsuariosController extends Controller
     /**
      * Este método descarga el archivo y lo inyecta directamente
      * a la base de datos.
-     * @param  [type] $tabla [description]
-     * @return [type]        [description]
+     * @param  string $tabla A que tabla se van a inyectar los datos
      */
     public function actionUpload($tabla)
     {
@@ -222,6 +221,11 @@ class UsuariosController extends Controller
         return $this->redirect(['site/login']);
     }
 
+    /**
+     * Accion usda para cambiar la contraseña una vez que se ha pedido devido
+     * a que el usuario la ha olvidado.
+     * @param  string $token_val Token que nos dice que el usuario a pedido cambiar la contraseña
+     */
     public function actionCambiar($token_val)
     {
         $us = Usuarios::findOne(['token_val' => $token_val]);
@@ -237,6 +241,11 @@ class UsuariosController extends Controller
         return $this->redirect('/site/index');
     }
 
+    /**
+     * Accion que manda el correo para cuando un usaurio a olvidado su contraseña
+     * una vez halla metido en correo en un formulario.
+     * @return mixed
+     */
     public function actionOlvidado()
     {
         $model = new Usuarios();
@@ -258,6 +267,12 @@ class UsuariosController extends Controller
         ]);
     }
 
+    /**
+     * Accion que carga el formulario que el usuario dado de alta tiene que rellenar
+     * para poder logearse en la pagina.
+     * @param  int $id Id del usuario
+     * @return mixed
+     */
     public function actionRegistro($id)
     {
         $model = $this->findModel($id);
@@ -275,10 +290,10 @@ class UsuariosController extends Controller
     }
 
     /**
-     * Este método da de alta a un colegio.
-     * @param  [type] $colegio_id [description]
+     * Este método da de alta a un usuario nuevo metiendo su email y mandandole un mensaje,
+     * o si es unpadre introduciendo todos los datos de este.
+     * @param  int $colegio_id Id del colegio del usuario que esta dando de alta al nuevo
      * @param null|mixed $idtut
-     * @return [type]             [description]
      */
     public function actionAlta($colegio_id, $idtut = null)
     {

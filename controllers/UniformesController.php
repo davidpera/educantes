@@ -45,6 +45,9 @@ class UniformesController extends Controller
         ];
     }
 
+    /**
+     * Añade un uniforme al carro del usuario padre actual.
+     */
     public function actionAnadir()
     {
         $uniforme = Uniformes::findOne(['id' => $_POST['uniforme']]);
@@ -65,6 +68,9 @@ class UniformesController extends Controller
         // return true;
     }
 
+    /**
+     * Quita un uniforme del carro del usuario padre actual.
+     */
     public function actionQuitar()
     {
         $producto = Productoscarro::findOne(['id' => $_POST['producto']]);
@@ -191,6 +197,11 @@ class UniformesController extends Controller
         ]);
     }
 
+    /**
+     * Devuelve la cantidad que hay del uniforme marcado.
+     * @param  int $id Id del uniforme del cual se quiere saver la cantidad
+     * @return int     Cantidad de uniformes
+     */
     public function actionCantidad($id)
     {
         $model = $this->findModel($id);
@@ -202,16 +213,23 @@ class UniformesController extends Controller
         return  $this->redirect(['index']);
     }
 
+    /**
+     * Nos devuelve todos los uniformes que no pertenecen al colegio del usuario.
+     * @return array Grupo de uniformes
+     */
     public function actionExternos()
     {
-        // var_dump($_GET['nombre']);
-        // die();
         $colegio = Colegios::findOne(['nombre' => $_GET['nombre']]);
         $externos = Uniformes::find()->where(['colegio_id' => $colegio->id])->all();
         Yii::$app->response->format = Response::FORMAT_JSON;
         return $externos;
     }
 
+    /**
+     * Pedido simple realizado a un colegio.
+     * @param  int $id             Id del uniforme
+     * @param  int $cantidadPedida Cantidad de uniformes de ese tipo pedidos
+     */
     public function actionPedido($id, $cantidadPedida)
     {
         $uniform = $this->findModel($id);
@@ -220,10 +238,15 @@ class UniformesController extends Controller
             $usuario = Usuarios::find()->where(['colegio_id' => $uniform->colegio_id, 'rol' => 'V'])->one();
             $usuario->emailPedido($id, Yii::$app->user->id, $cantidadPedida);
             Yii::$app->session->setFlash('info', 'Se le ha enviado un correo al administrador del colegio, se le contestará cuando lo acepte');
-            $this->redirect(['index']);
+            // return $this->redirect(['index']);
         }
     }
 
+    /**
+     * Pedido multiple realizado a varios colegios con varios uniformes.
+     * @param  array $pedido    Grupo de colegios con los uniformes que se les pide
+     *                          a cada uno y su cantidad
+     */
     public function actionMultiple($pedido)
     {
         if ($pedido) {
@@ -263,6 +286,11 @@ class UniformesController extends Controller
         }
     }
 
+    /**
+     * Aceptacion del pedido simple de uniforme.
+     * @param  int $id        Id del uniforme
+     * @param  int $pedidorid Id del usuario que realizo el pedido
+     */
     public function actionAceptar($id, $pedidorid)
     {
         $user = Usuarios::find()->where(['id' => $pedidorid])->one();
@@ -271,6 +299,12 @@ class UniformesController extends Controller
         $this->goHome();
     }
 
+    /**
+     * Rechazo del pedido simple de uniforme.
+     * @param  int $id             Id del uniforme
+     * @param  int $pedidorid      Id del usuario que realizo el pedido
+     * @param  int $cantidadPedida Cantidad pedida de ese uniforme
+     */
     public function actionRechazar($id, $pedidorid, $cantidadPedida)
     {
         $uniform = $this->findModel($id);
@@ -283,6 +317,12 @@ class UniformesController extends Controller
         }
     }
 
+    /**
+     * Aceptacion de la parte del pedido multiple de uniformes a tu colegio.
+     * @param  array  $articulos Uniformes pedidos
+     * @param  int    $pedidorid Id del usuario que ha realizado el pedido
+     * @param  int    $recibidor Id del usuario que ha recivido el pedido
+     */
     public function actionAceptarmul($articulos, $pedidorid, $recibidor)
     {
         $rec = Usuarios::findOne(['id' => $recibidor]);
@@ -292,6 +332,12 @@ class UniformesController extends Controller
         $this->goHome();
     }
 
+    /**
+     * Rechazo del pedido multiple de uniformes.
+     * @param  [type] $articulos Uniformes pedidos
+     * @param  int    $pedidorid Id del usuario que ha realizado el pedido
+     * @param  int    $recibidor Id del usuario que ha recivido el pedido
+     */
     public function actionRechazarmul($articulos, $pedidorid, $recibidor)
     {
         $rec = Usuarios::findOne(['id' => $recibidor]);

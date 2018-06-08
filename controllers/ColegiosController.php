@@ -42,6 +42,10 @@ class ColegiosController extends Controller
         ];
     }
 
+    /**
+     * Devuleve todos los colegios a los que el usuario no pertenezca.
+     * @return array Conjunto de colegios
+     */
     public function actionLista()
     {
         $lista = Colegios::find()->where('id != :id', ['id' => Yii::$app->user->identity->colegio_id])->all();
@@ -82,6 +86,12 @@ class ColegiosController extends Controller
         ]);
     }
 
+    /**
+     * Muestra la pagina de gestion de colegios en la cual puedes añadir colegios
+     * nuevos y modificar existentes.
+     * @param  int  $id     Id del colegio que se quiere modificar
+     * @return mixed
+     */
     public function actionGestionar($id = null)
     {
         $query = Colegios::find();
