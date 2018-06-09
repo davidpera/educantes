@@ -1,24 +1,22 @@
 # Descripción general del proyecto
 
-Explicar.
+Se trata de una web de gestion de colegios la cual se centra principalmente en los pedidos de uniformes y en visualizar los datos insertados
 
 ## Funcionalidad principal de la aplicación
 
-Explicar.
+Facilitar el poder realizar pedidos de uniformes a los colegios 
 
 ## Objetivos generales
 
-A diferencia de los casos de uso, los objetivos no tienen principio ni fin.
-
-Por ejemplo:
-
-* Objetivo: "gestionar los alquileres y las devoluciones de las películas".
-* Casos de uso: "alquilar una película", "devolver una película".
+* Gestionar los colegios.
+* Gestionar alumnos, uniformes, libros y padres de cada colegio.
+* Realizar pedidos entre colegios
+* Realizar pedidos de un padre a su colegio
 
 ## URL del repositorio
 
-[https://github.com/ricpelo/proyecto](https://github.com/ricpelo/proyecto)
+[https://github.com/davidpera/educantes](https://github.com/davidpera/educantes)
 
 ## URL de la documentación
 
-[https://ricpelo.github.io/proyecto](https://ricpelo.github.io/proyecto)
+[https://davidpera.github.io/educantes](https://davidpera.github.io/educantes)
