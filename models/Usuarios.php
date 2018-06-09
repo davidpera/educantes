@@ -197,14 +197,32 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         } else {
             $email = $this->colegio->email;
         }
+        $total = 0.0;
+        $totalIva = 0.0;
+        $mensaje = '<table><tr><th>Codigo</th>' .
+        '<th>Descripcion</th><th>Cantidad</th><th>Precio</th></tr>';
+        foreach ($articulos as $art) {
+            $un = Uniformes::findOne(['id' => $art[0]]);
+            $num = $art[1] * $un->precio;
+            $iv = $num * ($un->iva / 100);
+            $total += $num;
+            $totalIva += $iv;
+            $mensaje .= '<tr><td>' . $un->codigo . '</td>' .
+            '<td>' . $un->descripcion . '</td><td>' . $art[1] . '</td>' .
+            '<td>' . $art[1] * $un->precio . '</td></tr>';
+        }
         $json = json_encode($articulos);
+        // var_dump($pedido);
+        // die();
+        $mensaje .= '<tr><th colspan="3">Total</th><td>' . Yii::$app->formatter->asCurrency($total) . '</td></tr></table>' .
+        '<tr><th colspan="3">Total con iva</th><td>' . Yii::$app->formatter->asCurrency($totalIva) . '</td></tr></table>' .
+        Html::a('Aceptar', Url::to(['uniformes/aceptarmul', 'articulos' => $json, 'pedidorid' => $pedidorid, 'recibidor' => $this->id], true)) . ' ' .
+        Html::a('Rechazar', Url::to(['uniformes/rechazarmul', 'articulos' => $json, 'pedidorid' => $pedidorid, 'recibidor' => $this->id], true));
         $resultado = Yii::$app->mailer->compose()
             ->setFrom(Yii::$app->params['adminEmail'])
             ->setTo($email)
             ->setSubject('Se ha realizado un pedido a tu colegio')->setTextBody('A traves del enlace de este correo aceptaras el pedido y tendras que prepararlo')
-            ->setHtmlBody('<h3>Ha recibido un pedido de varios articulos<br/>' .
-            Html::a('Aceptar', Url::to(['uniformes/aceptarmul', 'articulos' => $json, 'pedidorid' => $pedidorid, 'recibidor' => $this->id], true)) . ' ' .
-            Html::a('Rechazar', Url::to(['uniformes/rechazarmul', 'articulos' => $json, 'pedidorid' => $pedidorid, 'recibidor' => $this->id], true)))
+            ->setHtmlBody($mensaje)
             ->send();
     }
 

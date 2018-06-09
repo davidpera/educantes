@@ -232,6 +232,7 @@ class UsuariosController extends Controller
             if ($us->load(Yii::$app->request->post()) && $us->save()) {
                 return $this->redirect('/site/index');
             }
+            Yii::$app->session->setFlash('success', 'Correo para cambiar contraseña enviado.');
             return $this->render('contraseña', ['model' => $us]);
         }
         return $this->redirect('/site/index');

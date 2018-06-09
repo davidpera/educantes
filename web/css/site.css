@@ -139,14 +139,17 @@ body {
     text-align: center;
 }
 
-.central {
+.superior {
     width: 100%;
-    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
 }
 
-.inferior {
+.hijo {
     width: 100%;
     text-align: center;
+    margin-bottom: 15px;
 }
 
 .imagen {

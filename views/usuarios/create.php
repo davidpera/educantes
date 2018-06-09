@@ -21,6 +21,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <span>Se le mandara un correo al email que ponga en este formulario para que
+    esa persona pueda terminar de registrarse</span>
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>
