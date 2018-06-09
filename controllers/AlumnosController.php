@@ -11,7 +11,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
- * AlumnosController implements the CRUD actions for Alumnos model.
+ * AlumnosController implemenya las acciones de CRUD para el modelo de alumnos.
  */
 class AlumnosController extends Controller
 {
@@ -41,7 +41,7 @@ class AlumnosController extends Controller
     }
 
     /**
-     * Lists all Alumnos models.
+     * Lista todos los modelos de Alumnos.
      * @return mixed
      */
     public function actionIndex()
@@ -73,7 +73,7 @@ class AlumnosController extends Controller
     }
 
     /**
-     * Displays a single Alumnos model.
+     * Muestra un unico modelo de Alumnos.
      * @param int $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -90,8 +90,8 @@ class AlumnosController extends Controller
     }
 
     /**
-     * Creates a new Alumnos model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
+     * Crea un nuevo alumno.
+     * Si la creacion funciona correctamente se redireccionara al usuario a la pagina de index.
      * @return mixed
      */
     public function actionCreate()
@@ -115,11 +115,11 @@ class AlumnosController extends Controller
     }
 
     /**
-     * Updates an existing Alumnos model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * Modifica un alumno existente.
+     * Si la modificacion funciona correctamente se redireccionara al usuario a la pagina de index.
      * @param int $id
      * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @throws NotFoundHttpException si el modelo no es encontrado
      */
     public function actionUpdate($id)
     {
@@ -144,11 +144,11 @@ class AlumnosController extends Controller
     }
 
     /**
-     * Deletes an existing Alumnos model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * Borra un alumno existente.
+     * Si el borrado funciona correctamente se redireccionara al usuario a la pagina de index.
      * @param int $id
      * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @throws NotFoundHttpException si el modelo no es encontrado
      */
     public function actionDelete($id)
     {
@@ -165,8 +165,8 @@ class AlumnosController extends Controller
      * Finds the Alumnos model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id
-     * @return Alumnos the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return Alumnos el modelo cargado
+     * @throws NotFoundHttpException si el modelo no es encontrado
      */
     protected function findModel($id)
     {

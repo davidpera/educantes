@@ -13,7 +13,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
- * CarrosController implements the CRUD actions for Carros model.
+ * CarrosController implementa las acciones de CRUD para los carros.
  */
 class CarrosController extends Controller
 {
@@ -32,6 +32,10 @@ class CarrosController extends Controller
         ];
     }
 
+    /**
+     * Muesta una lista de los productos del carro del padre actual.
+     * @return mixed
+     */
     public function actionCarrito()
     {
         if (Yii::$app->user->identity->rol !== 'P') {
@@ -48,6 +52,10 @@ class CarrosController extends Controller
             ]);
     }
 
+    /**
+     * Muestra una lsita de los productos que ya se han pedido.
+     * @return mixed
+     */
     public function actionRealizados()
     {
         if (Yii::$app->user->identity->rol !== 'P') {
@@ -67,6 +75,9 @@ class CarrosController extends Controller
             ]);
     }
 
+    /**
+     * Realiza un pedido de uniformes pasados por post al colegio de estos.
+     */
     public function actionPedido()
     {
         $com = json_decode($_POST['pedido']);
@@ -94,6 +105,11 @@ class CarrosController extends Controller
         return $this->redirect(['/site/index']);
     }
 
+    /**
+     * Acepta el pedido que le ha llegado por correo.
+     * @param  array $pedido      Conjunto de uniformes que se han pedido
+     * @param  int   $pedidorid   Id del usuario que ha realizado el pedido
+     */
     public function actionAceptar($pedido, $pedidorid)
     {
         $com = json_decode($pedido);
@@ -109,7 +125,7 @@ class CarrosController extends Controller
     }
 
     /**
-     * Lists all Carros models.
+     * Lista todos los carros.
      * @return mixed
      */
     public function actionIndex()

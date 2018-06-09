@@ -111,6 +111,10 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         ];
     }
 
+    /**
+     * Email para CAmbiar la contraseña de un usuario si este se a olvidado de ella.
+     * @param  string $token_val Token que nos dice que el usuario no sabe su contraseña
+     */
     public function emailRecuperacion($token_val)
     {
         $mensaje = '<p>Para cambiar su contraseña pulse en el siguiente enlace</p>' . Html::a('Cambiar contraseña', Url::to(['usuarios/cambiar', 'token_val' => $token_val], true));
@@ -122,6 +126,10 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             ->send();
     }
 
+    /**
+     * Email mandado cuando se da de alta a un usuario y que nos lleva a
+     * la accion para completar el registro.
+     */
     public function emailRegistro()
     {
         $mensaje = '<h3>Ha traves del siguiente enlace usted completara el registro y podra comprobar o rellenar sus datos personales</h3>' .
@@ -134,6 +142,11 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             ->send();
     }
 
+    /**
+     * Email que realiza el pedido de un padre a traves del carro.
+     * @param  int $usuario Id del usuario que hace el pedido
+     * @param  array $pedidos Todos los uniformes que componen el pedido
+     */
     public function emailPedidoPadre($usuario, $pedidos)
     {
         if ($this->email !== null) {
@@ -172,6 +185,12 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         // die();
     }
 
+    /**
+     * Email que realiza el pedido simple.
+     * @param  int $id             Id del uniforme pedido
+     * @param  int $pedidorid      Id del usuario que realiza el pedido
+     * @param  int $cantidadPedida Cantidad pedida del uniforme marcado
+     */
     public function emailPedido($id, $pedidorid, $cantidadPedida)
     {
         if ($this->email !== null) {
@@ -190,6 +209,11 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             ->send();
     }
 
+    /**
+     * Email que se realiza con el pedido multiple entre colegios.
+     * @param  array $articulos Todos los uniformes que se piden a un cada colegio
+     * @param  int $pedidorid Id de l usuario que ha realizado el pedido
+     */
     public function emailMultiple($articulos, $pedidorid)
     {
         if ($this->email !== null) {
@@ -226,6 +250,10 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             ->send();
     }
 
+    /**
+     * Email que acepta el pedido del padre.
+     * @param  array $pedido Todos los uniformes que han sido pedidos con sus cantidades
+     */
     public function emailAceptarPadre($pedido)
     {
         $total = 0.0;
@@ -249,6 +277,10 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             ->send();
     }
 
+    /**
+     * Email que acepta el pedido simple entre colegios.
+     * @param  int $id Id del uniforme pedido
+     */
     public function emailAceptar($id)
     {
         $uniforme = Uniformes::find()->where(['id' => $id])->one();
@@ -261,6 +293,10 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             ->send();
     }
 
+    /**
+     * Email que rechaza el pedido simple entre colegios.
+     * @param  int $id Id del uniforme pedido
+     */
     public function emailRechazar($id)
     {
         $uniforme = Uniformes::find()->where(['id' => $id])->one();
@@ -273,6 +309,10 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             ->send();
     }
 
+    /**
+     * Email que acepta el pedido multiple entre colegios.
+     * @param  int $colegio_id Id del colegio al que se le ha hecho parte de ese pedido
+     */
     public function emailAceptarmul($colegio_id)
     {
         $colegio = Colegios::find()->where(['id' => $colegio_id])->one();
@@ -284,6 +324,10 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             ->send();
     }
 
+    /**
+     * Email que rechaza el pedido multiple entre colegios.
+     * @param  int $colegio_id Id del colegio al que se le ha hecho parte de ese pedido
+     */
     public function emailRechazarmul($colegio_id)
     {
         $colegio = Colegios::find()->where(['id' => $colegio_id])->one();
@@ -341,14 +385,6 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     public function getId()
     {
         return $this->id;
-    }
-    public function getAuthKey()
-    {
-        // return $this->auth_key;
-    }
-    public function validateAuthKey($authKey)
-    {
-        // return $this->getAuthKey() === $authKey;
     }
     public function validatePassword($password)
     {
