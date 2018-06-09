@@ -278,6 +278,7 @@ class UsuariosController extends Controller
     {
         $model = $this->findModel($id);
         $model->scenario = 'create';
+        $model->password = '';
 
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
@@ -391,7 +392,7 @@ class UsuariosController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = Yii::$app->user->identity;
+        $model = $this->findModel($id);
         $model->scenario = Usuarios::ESCENARIO_UPDATE;
         $model->password = '';
 

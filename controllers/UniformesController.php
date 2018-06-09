@@ -58,6 +58,14 @@ class UniformesController extends Controller
         if ($_POST['cantidad'] !== '0') {
             if ($prodcar->save()) {
                 $uniforme->cantidad = $uniforme->cantidad - $prodcar->cantidad;
+                $vend = Usuarios::findOne(['colegio_id' => $uniforme->colegio_id, 'rol' => 'V']);
+                if ($vend !== null) {
+                    if ($vend->tel_movil !== null) {
+                        $vend->smsStock($uniforme->id);
+                    }
+                }
+                // var_dump($prodcar->cantidad);
+                // die();
                 if ($uniforme->save()) {
                     $carr = Carros::findOne(['id' => $prodcar->carro_id]);
                     $carr->productos = $carr->productos + 1;
@@ -234,6 +242,12 @@ class UniformesController extends Controller
     {
         $uniform = $this->findModel($id);
         $uniform->cantidad = $uniform->cantidad - $cantidadPedida;
+        $vend = Usuarios::findOne(['colegio_id' => $uniform->colegio_id, 'rol' => 'V']);
+        if ($vend !== null) {
+            if ($vend->tel_movil !== null) {
+                $vend->smsStock($uniform->id);
+            }
+        }
         if ($uniform->save()) {
             $usuario = Usuarios::find()->where(['colegio_id' => $uniform->colegio_id, 'rol' => 'V'])->one();
             $usuario->emailPedido($id, Yii::$app->user->id, $cantidadPedida);
@@ -264,6 +278,12 @@ class UniformesController extends Controller
                             $pasa = false;
                         } else {
                             $uniform->cantidad = $uniform->cantidad - $un[1];
+                            $vend = Usuarios::findOne(['colegio_id' => $uniform->colegio_id, 'rol' => 'V']);
+                            if ($vend !== null) {
+                                if ($vend->tel_movil !== null) {
+                                    $vend->smsStock($uniforme->id);
+                                }
+                            }
                             $uniform->save();
                             $pedid[] = [$un[0], $un[1]];
                         }

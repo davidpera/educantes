@@ -111,6 +111,24 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         ];
     }
 
+    public function smsStock($uniforme_id)
+    {
+        $uniform = Uniformes::findOne(['id' => $uniforme_id]);
+        $secs = Secstocks::findOne(['uniforme_id' => $uniform->id]);
+        if ($secs !== null && $uniform->cantidad <= $secs->mp) {
+            $headers = ['Content-Type: application/json'];
+
+            $ch = curl_init('http://api.gateway360.com/api/sms/submit_sms/?APIKEY=8e792f6f80ee4ddd7054f793a03142b6&SA=Educantes&DA=34' . $this->tel_movil . '&M=Deberia%20de%20pedir%20el%20uniforme%20codigo:%20' . $uniform->codigo . ',%20ya%20que%20su%20stock%20es%20igual%20o%20menor%20del%20stock%20de%20seguridad');
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            // curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
+
+            $result = curl_exec($ch);
+            // var_dump('bien');
+        }
+    }
+
     /**
      * Email para CAmbiar la contraseña de un usuario si este se a olvidado de ella.
      * @param  string $token_val Token que nos dice que el usuario no sabe su contraseña
@@ -386,6 +404,21 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     {
         return $this->id;
     }
+    /**
+     * {@inheritdoc}
+     */
+    public function getAuthKey()
+    {
+        // return $this->authKey;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateAuthKey($authKey)
+    {
+        // return $this->authKey === $authKey;
+    }
     public function validatePassword($password)
     {
         return Yii::$app->security->validatePassword($password, $this->password);
@@ -411,11 +444,16 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
                     if ($this->password === '') {
                         $this->password = $this->getOldAttribute('password');
                     } else {
-                        if (Yii::$app->getSecurity()->validatePassword($this->viejaPassword, $this->getOldAttribute('password'))) {
+                        $rol = Yii::$app->user->identity->rol;
+                        if ($rol === 'A' || $rol === 'C') {
                             $this->password = Yii::$app->security->generatePasswordHash($this->password);
                         } else {
-                            Yii::$app->session->setFlash('error', 'La contraseña antigua no coincide con la que ha puesto.');
-                            return false;
+                            if (Yii::$app->getSecurity()->validatePassword($this->viejaPassword, $this->getOldAttribute('password'))) {
+                                $this->password = Yii::$app->security->generatePasswordHash($this->password);
+                            } else {
+                                Yii::$app->session->setFlash('error', 'La contraseña antigua no coincide con la que ha puesto.');
+                                return false;
+                            }
                         }
                     }
                 } elseif ($this->scenario === self::ESCENARIO_CAMBIO) {
