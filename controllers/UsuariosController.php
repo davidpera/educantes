@@ -37,7 +37,7 @@ class UsuariosController extends Controller
             ],
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only' => ['index', 'create', 'update', 'view', 'upload'],
+                'only' => ['index', 'create', 'update', 'view', 'upload', 'alta'],
                 'rules' => [
                     [
                         'allow' => true,
