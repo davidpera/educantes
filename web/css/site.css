@@ -3,6 +3,11 @@ body {
     height: 100%;
 }
 
+.logo {
+    display: inline!important;
+    margin-top: -3px;
+}
+
 .ped-mul {
     margin-top: 10px;
 }
