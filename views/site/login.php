@@ -7,7 +7,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'Login';
+$this->title = 'Logeo';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-login col-md-10 col-md-offset-4 formul">
@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div class="form-group">
             <div class="col-lg-offset-1 col-lg-11">
-                <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                <?= Html::submitButton('Confirmar', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
             </div>
             <div class="col-lg-offset-1 col-lg-11">
                 <?= Html::a('¿Ha olvidado su contraseña? Haz click aqui',['/usuarios/olvidado']); ?>

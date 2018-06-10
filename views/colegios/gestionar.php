@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Colegios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="colegios-gestionar">
-
+    <h2 class="titulo">Gestion de colegios</h2>
     <?= ListView::widget([
        'options' => [
            'tag' => 'div',
@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
    <div class="sucursales-form col-md-offset-2 col-md-3">
 
-       <?php $form = ActiveForm::begin(); ?>
+       <?php $form = ActiveForm::begin(['options' => ['id' => 'gestionar-form']]); ?>
 
        <?= $form->field($model, 'cif')->textInput(['maxlength' => true]) ?>
 

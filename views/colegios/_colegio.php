@@ -7,7 +7,7 @@ use yii\helpers\Html;
 
 <div class="panel panel-default">
     <div class="panel panel-heading contenedor">
-        <?= $model->nombre ?>
+        <span><?= $model->nombre ?></span>
         <div>
             <?= Html::a('', ['colegios/gestionar', 'id' => $model->id],['class' => 'btn glyphicon glyphicon-pencil'])?>
             <?= Html::a('', ['colegios/delete', 'id' => $model->id],[
