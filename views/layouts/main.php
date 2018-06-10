@@ -32,7 +32,9 @@ AppAsset::register($this);
 
     <?php
     $options = ['class' => 'navbar-inverse navbar-fixed-top'];
+    $nombre = Yii::$app->name;
     if (!Yii::$app->user->isGuest) {
+        $nombre = $nombre . ' ('.Yii::$app->user->identity->colegio->nombre.')';
         if (Yii::$app->user->identity->rol === 'C') {
             $options = ['class' => 'navbar-inverse navbar-fixed-top adcol'];
         }
@@ -43,7 +45,7 @@ AppAsset::register($this);
             'alt' => 'Educantes',
             'width' => '30px;',
             'style' => 'display: inline; margin-top: -3px;',
-        ]) . ' ' . Yii::$app->name,
+        ]) . ' ' . $nombre,
         'brandUrl' => Yii::$app->homeUrl,
         'options' => $options,
     ]);
