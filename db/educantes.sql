@@ -14,7 +14,7 @@ CREATE TABLE uniformes
   , iva         numeric(3)      NOT NULL
   , ubicacion   varchar(255)
   , cantidad    numeric(10)     NOT NULL
-  , undesSS     bool            DEFAULT false
+  , underSS     bool            DEFAULT false
   , colegio_id  bigint          NOT NULL REFERENCES colegios (id)
                                 ON DELETE NO ACTION ON UPDATE CASCADE
 );
@@ -144,41 +144,6 @@ CREATE TABLE sms
   , receptor_id bigint          NOT NULL REFERENCES usuarios (id)
                                 ON DELETE NO ACTION ON UPDATE CASCADE
   , mensaje     varchar(255)    NOT NULL
-);
-
-DROP TABLE IF EXISTS correos CASCADE;
-
-CREATE TABLE correos
-(
-    id          bigserial       PRIMARY KEY
-  , emisario_id bigint          NOT NULL REFERENCES colegios (id)
-                                ON DELETE NO ACTION ON UPDATE CASCADE
-  , receptor_id bigint          NOT NULL REFERENCES usuarios (id)
-                                ON DELETE NO ACTION ON UPDATE CASCADE
-  , mensaje     varchar(255)    NOT NULL
-);
-
-DROP TABLE IF EXISTS facturas CASCADE;
-
-CREATE TABLE facturas
-(
-    id              bigserial   PRIMARY KEY
-  , usuario_id      bigint      NOT NULL REFERENCES usuarios (id)
-                                ON DELETE NO ACTION ON UPDATE CASCADE
-  , fecha           date        DEFAULT current_date
-  , descuento       numeric(3)  DEFAULT 0
-);
-
-DROP TABLE IF EXISTS detalles CASCADE;
-
-CREATE TABLE detalles
-(
-    num_detalle     bigserial
-  , factura_id      bigint
-  , uniformes_id    bigint          NOT NULL REFERENCES uniformes (id)
-                                    ON DELETE NO ACTION ON UPdATE CASCADE
-  , cantidad        numeric(10)     NOT NULL
-  , PRIMARY KEY (num_detalle, factura_id)
 );
 
 INSERT INTO colegios (cif, nombre, email, cod_postal, direccion)
