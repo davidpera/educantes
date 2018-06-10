@@ -58,11 +58,17 @@ class UniformesSearch extends Uniformes
         }
 
         // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => ['defaultOrder' => ['descripcion' => SORT_ASC]],
         ]);
+        if (Yii::$app->user->identity->rol === 'P') {
+            $dataProvider = new ActiveDataProvider([
+                'query' => $query,
+                'sort' => ['defaultOrder' => ['descripcion' => SORT_ASC]],
+                'pagination' => false,
+            ]);
+        }
 
         $this->load($params);
 

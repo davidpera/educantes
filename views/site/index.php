@@ -31,7 +31,7 @@ $this->registerJsFile('/js/devrama_slider.js',['depends' => [\yii\web\JqueryAsse
             <h2>Conectese para realizar acciones</h2>
         </div>
         <div class="superior">
-            <video width="500" height="280" controls autoplay muted>
+            <video class="video" controls autoplay muted>
               <source src="/uploads/video.mp4" type="video/mp4">
               Your browser does not support the video tag.
             </video>

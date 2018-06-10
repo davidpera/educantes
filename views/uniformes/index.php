@@ -27,6 +27,8 @@ $urlAnadir = Url::to(['uniformes/anadir']);
 if (Yii::$app->user->identity->rol === 'P') {
     $js = <<<EOT
         $(document).ready(function(){
+            var alt = document.body.clientHeight * 0.6;
+            $('#vista-tienda').css({height:alt});
             $('.numeric').children('input').val(0);
             anadirFiltrado();
             eventoBoton();
@@ -71,6 +73,7 @@ if (Yii::$app->user->identity->rol === 'P') {
                         type: 'POST',
                         data: {uniforme: id, cantidad: cant},
                         success: function(data){
+                            console.log(data);
                             var valor = $('.glyphicon-shopping-cart').text();
                             var regex = /(\d+)/g;
                             var num = parseInt(valor.match(regex)[0]) + 1;
@@ -103,7 +106,7 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
 ?>
 <div class="uniformes-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1 class="titulo"><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 <?php if (Yii::$app->user->identity->rol === 'P'): ?>
     <div class="filtrado">
@@ -198,6 +201,9 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
                     'content' => GridView::widget([
                         'dataProvider' => $mioProvider,
                         'filterModel' => $searchModel,
+                        'options' => [
+                            'class' => 'uniformes-escritorio'
+                        ],
                         'columns' => [
                             'codigo',
                             'descripcion',
@@ -206,7 +212,6 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
                             'iva',
                             'ubicacion',
                             'cantidad',
-                            'colegio.nombre',
                             'secstock.mp',
                             [
                                 'class' => 'yii\grid\ActionColumn',
@@ -229,6 +234,19 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
                                     }
                                 ]
                             ],
+
+                            ['class' => 'yii\grid\ActionColumn'],
+                            ],
+                    ]) . GridView::widget([
+                        'options' => [
+                            'class' => 'uniformes-mobil'
+                        ],
+                        'dataProvider' => $mioProvider,
+                        'filterModel' => $searchModel,
+                        'columns' => [
+                            'codigo',
+                            'precio',
+                            'cantidad',
 
                             ['class' => 'yii\grid\ActionColumn'],
                             ],
@@ -269,6 +287,9 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
                             'id' => 'pedidoMult',
                             'class' => 'btn btn-info',
                         ]) . "</div>" . GridView::widget([
+                            'options' => [
+                                'class' => 'uniformes-escritorio'
+                            ],
                         'dataProvider' => $otroProvider,
                         'filterModel' => $searchModel,
                         'columns' => [
@@ -293,9 +314,45 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
                                 ]
                             ],
 
-                            ['class' => 'yii\grid\ActionColumn'],
                             ],
-                    ]),
+                    ]) . GridView::widget([
+                        'options' => [
+                            'class' => 'uniformes-mobil'
+                        ],
+                        'dataProvider' => $otroProvider,
+                        'filterModel' => $searchModel,
+                        'columns' => [
+                            'codigo',
+                            'precio',
+                            'cantidad',
+                            'colegio.nombre',
+                            [
+                                'class' => 'yii\grid\ActionColumn',
+                                'template' => '{pedido}',
+                                'buttons' => [
+                                    'pedido' => function($url, $model, $key){
+                                        return Html::button('Hacer pedido',
+                                                    [
+                                                        'id' => $model->id,
+                                                        'class' => 'btn btn-success pedido',
+                                                    ]);
+                                    }
+                                ]
+                            ],
+
+                            ],
+                    ]) . GridView::widget([
+                            'options' => [
+                                'class' => 'uniformes-mobilPequeno'
+                            ],
+                            'dataProvider' => $otroProvider,
+                            'filterModel' => $searchModel,
+                            'columns' => [
+                                'codigo',
+                                'cantidad',
+                                'colegio.nombre',
+                            ],
+                        ]),
                     'headerOptions' => [
                         'id' => 'otros',
                         'class' => 'pestañas'

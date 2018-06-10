@@ -58,7 +58,8 @@ body {
     width: 50%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
+    flex-wrap: wrap;
 }
 
 .informacion {
@@ -79,8 +80,30 @@ body {
     margin-right: 20px;
 }
 
-.div-inicial {
-    width: 650px;
+.filtrado {
+    text-align: center;
+}
+
+#vista-tienda{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+}
+
+#vista-carro{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+}
+
+.producto {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
 }
 
 .contenedor {
@@ -144,6 +167,12 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.video {
+    width: 45%;
+    height: auto;
 }
 
 .hijo {
@@ -272,12 +301,100 @@ a.desc:after {
     border: none;
 }
 
+.uniformes-mobil {
+    display: none;
+}
+
+.uniformes-mobilPequeno {
+    display: none;
+}
+
+.mobil {
+    display: none;
+}
+
+@media(max-width:992px) {
+
+    .uniformes-escritorio {
+        display: none;
+    }
+
+    .uniformes-mobil {
+        display: block;
+    }
+    .video {
+        width: 70%;
+        height: auto;
+    }
+}
+
 @media(max-width:767px) {
     .nav li > form > button.logout {
         display:block;
         text-align: left;
         width: 100%;
         padding: 10px 15px;
+    }
+
+    .producto {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .mobil {
+        display: block;
+    }
+    .escritorio {
+        display: none;
+    }
+
+}
+
+@media(max-width:576px) {
+    .nav li > form > button.logout {
+        display:block;
+        text-align: left;
+        width: 100%;
+        padding: 10px 15px;
+    }
+
+    .video {
+        width: 100%;
+        height: auto;
+    }
+
+    .uniformes-escritorio {
+        display: none;
+    }
+
+    .uniformes-mobil {
+        display: none;
+    }
+
+    .uniformes-mobilPequeno {
+        display: block;
+    }
+
+    .informacion {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 5px;
+    }
+
+    .informacion-general {
+        margin-bottom: 10px;
+    }
+    .contenedor {
+        height: 100%;
+        margin-bottom: 0px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .imagen-uniforme {
+        margin-right: 0px;
     }
 }
 

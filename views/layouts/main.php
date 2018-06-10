@@ -31,6 +31,10 @@ AppAsset::register($this);
 <div class="wrap">
 
     <?php
+    $options = ['class' => 'navbar-inverse navbar-fixed-top'];
+    if (Yii::$app->user->identity->rol === 'C') {
+        $options = ['class' => 'navbar-inverse navbar-fixed-top adcol'];
+    }
     NavBar::begin([
         'brandLabel' => Html::img('/uploads/icono.png', [
             'alt' => 'Educantes',
@@ -38,18 +42,16 @@ AppAsset::register($this);
             'style' => 'display: inline; margin-top: -3px;',
         ]) . ' ' . Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
+        'options' => $options,
     ]);
-    $items = [
-        ['label' => 'Inicio', 'url' => ['/site/index']],
-    ];
+    // $items = [
+    //     ['label' => 'Inicio', 'url' => ['/site/index']],
+    // ];
     if (!Yii::$app->user->isGuest) {
         $us = Usuarios::find()->where(['id'=>Yii::$app->user->id])->one();
         if ($us->rol !== 'P') {
             if ($us->rol !== 'V') {
-                $items[] = ['label' => 'Lista Usuarios', 'url' => ['/usuarios/index']];
+                $items[] = ['label' => 'Usuarios', 'url' => ['/usuarios/index']];
                 if ($us->rol === 'A') {
                     $items2 =[
                         ['label' => 'Gestionar colegios', 'url' => ['/colegios/gestionar']],
@@ -68,14 +70,14 @@ AppAsset::register($this);
                             ['label' => 'Ver uniformes', 'url' => ['uniformes/index']],
                         ],
                     ];
-                    $items[] = [
-                        'label' => 'Libros',
-                        'items' => [
-                            ['label' => 'Insertar Libros', 'url' => ['usuarios/upload', 'tabla' => 'libros']],
-                            '<li class="divider"></li>',
-                            ['label' => 'Ver libros', 'url' => ['libros/index']],
-                        ],
-                    ];
+                    // $items[] = [
+                    //     'label' => 'Libros',
+                    //     'items' => [
+                    //         ['label' => 'Insertar Libros', 'url' => ['usuarios/upload', 'tabla' => 'libros']],
+                    //         '<li class="divider"></li>',
+                    //         ['label' => 'Ver libros', 'url' => ['libros/index']],
+                    //     ],
+                    // ];
                     $items[] = [
                         'label' => 'Alumnos',
                         'items' => [
@@ -108,7 +110,7 @@ AppAsset::register($this);
         $items[] = ['label' => 'Login', 'url' => ['/site/login']]
     ) : (
         $items[] = [
-            'label' => 'Usuarios ('.Yii::$app->user->identity->nom_usuario.')',
+            'label' => '('.Yii::$app->user->identity->nom_usuario.')',
             'items' => [
                 ['label' => 'Modificar datos', 'url' => ['usuarios/update', 'id' => Yii::$app->user->id]],
                 '<li class="divider"></li>',

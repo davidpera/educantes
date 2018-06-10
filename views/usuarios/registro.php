@@ -41,8 +41,8 @@ $this->params['breadcrumbs'][] = 'Modificar datos usuario';
                     <?= $form->field($model, 'apellidos')->textInput(['maxlength' => true]) ?>
 
                     <?php if ($model->rol === 'P'): ?>
-                        <span>Si su nif esta incorrecto por favor contacte con su colegio para que lo corrijan</span>
-                        <?= $form->field($model, 'nif', ['readonly'=>true])->textInput(['maxlength' => true]) ?>
+                        <span>Si su nif esta incorrecto por favor</br> contacte con su colegio para que lo corrijan</span>
+                        <?= $form->field($model, 'nif')->textInput(['maxlength' => true, 'readOnly'=>true]) ?>
                     <?php else: ?>
                         <?= $form->field($model, 'nif')->textInput(['maxlength' => true]) ?>
                     <?php endif; ?>

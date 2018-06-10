@@ -61,9 +61,51 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
     ?>
 
     <?= GridView::widget([
+        'options' => [
+            'class' => 'escritorio',
+        ],
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => $columnas,
+    ]); ?>
+
+    <?= GridView::widget([
+        'options' => [
+            'class' => 'mobil',
+        ],
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            'nif',
+            'nombre',
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{alta}',
+                'buttons' => [
+                    'alta' => function($url, $model, $key){
+                        if (Usuarios::find()->where(['colegio_id' => $model->colegio_id, 'nif' => $model->nif])->count('*') !== 0) {
+                            $usc = Usuarios::find()->where(['nif' => $model->nif])->one();
+                            return Html::a('Baja', ['usuarios/delete', 'id' => $usc->id], [
+                                    'class' => 'btn btn-danger',
+                                    'data' => [
+                                        'confirm' => '¿Está seguro de que quiere dar de baja a '.$usc->nom_usuario.'?',
+                                        'method' => 'post',
+                                    ],
+                                ]);
+                        } else {
+                            return Html::a('Alta', ['usuarios/alta', 'colegio_id' => $model->colegio_id, 'idtut' => $model->id],
+                            [
+                                'class' => 'btn btn-primary',
+                            ]);
+                        }
+
+
+                    },
+                ],
+            ],
+            ['class' => 'yii\grid\ActionColumn']
+        ],
+
     ]); ?>
 
     <div class="acciones">

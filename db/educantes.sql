@@ -14,6 +14,7 @@ CREATE TABLE uniformes
   , iva         numeric(3)      NOT NULL
   , ubicacion   varchar(255)
   , cantidad    numeric(10)     NOT NULL
+  , undesSS     bool            DEFAULT false
   , colegio_id  bigint          NOT NULL REFERENCES colegios (id)
                                 ON DELETE NO ACTION ON UPDATE CASCADE
 );
@@ -94,7 +95,7 @@ CREATE TABLE usuarios
 (
     id          bigserial       PRIMARY KEY
   , nom_usuario varchar(255)    UNIQUE
-  , password    varchar(255)    
+  , password    varchar(255)
   /* , contrasena  varchar(255)    DEFAULT NULL */
   , nombre      varchar(255)    DEFAULT NULL
   , apellidos   varchar(255)    DEFAULT NULL
@@ -181,9 +182,12 @@ CREATE TABLE detalles
 );
 
 INSERT INTO colegios (cif, nombre, email, cod_postal, direccion)
-        VALUES  ('A12345678','Educantes Sanlucar','educantes.sanlucar@educantes.es',11540,'C/Urano nº 6');
+        VALUES  ('A12345678','Educantes Sanlucar','educantes.sanlucar@educantes.es',11540,'C/Urano nº 6')
+        , ('B12345678','Educantes Jerez','educantes.jerez@educantes.es',11540,'C/falsa nº 6');
 
 INSERT INTO usuarios (nom_usuario, password, rol, colegio_id)
         VALUES  ('pepe', crypt('pepe', gen_salt('bf', 13)), 'A', null),
-                ('juan', crypt('juan', gen_salt('bf', 13)), 'C', 1),
-                ('Pedro', crypt('p', gen_salt('bf', 13)), 'V', 1);
+                ('juan', crypt('j', gen_salt('bf', 13)), 'C', 1),
+                ('pedro', crypt('p', gen_salt('bf', 13)), 'V', 1),
+                ('maria', crypt('m', gen_salt('bf', 13)), 'C', 2),
+                ('ana', crypt('a', gen_salt('bf', 13)), 'V', 2);
