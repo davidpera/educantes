@@ -43,8 +43,8 @@ AppAsset::register($this);
     NavBar::begin([
         'brandLabel' => Html::img('/uploads/icono.png', [
             'alt' => 'Educantes',
-            'width' => '30p;',
-            'style' => 'display: inline; margin-top: -3p;',
+            'width' => '30;',
+            'style' => 'display: inline; margin-top: -3;',
         ]) . ' ' . $nombre,
         'brandUrl' => Yii::$app->homeUrl,
         'options' => $options,
