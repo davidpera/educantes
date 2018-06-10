@@ -17,6 +17,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <?= GridView::widget([
+        'options' => [
+            'class' => 'escritorio',
+        ],
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
@@ -28,6 +31,22 @@ $this->params['breadcrumbs'][] = $this->title;
             'fecha_de_nacimiento',
             'dni_primer_tutor',
             'dni_segundo_tutor',
+
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
+
+    <?= GridView::widget([
+        'options' => [
+            'class' => 'mobil',
+        ],
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+
+            'nombre',
+            'primer_apellido',
+            'dni_primer_tutor',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
