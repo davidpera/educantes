@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="language" content="en" />
+        <link href="./assets/ae49b77d/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/58aa2861/solarized_light.css" rel="stylesheet">
+<link href="./assets/3e0bdfc1/style.css" rel="stylesheet">
+<script src="./assets/36e748ec/jquery.js"></script>
+<script src="./assets/ae49b77d/js/bootstrap.js"></script>
+<script src="./assets/fa1730b9/jssearch.js"></script>    <title>API del proyecto</title>
+</head>
+<body>
+
+<div class="wrap">
+    <nav id="w17203" class="navbar-inverse navbar-fixed-top navbar"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w17203-collapse"><span class="sr-only">Toggle navigation</span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span></button><a class="navbar-brand" href="./index.html">API del proyecto</a></div><div id="w17203-collapse" class="collapse navbar-collapse"><ul id="w17204" class="navbar-nav nav"><li><a href="./index.html">Class reference</a></li>
+<li><a href="../README.html">Guide</a></li></ul><div class="navbar-form navbar-left" role="search">
+  <div class="form-group">
+    <input id="searchbox" type="text" class="form-control" placeholder="Search">
+  </div>
+</div>
+</div></nav>
+    <div id="search-resultbox" style="display: none;" class="modal-content">
+        <ul id="search-results">
+        </ul>
+    </div>
+
+    
+<div class="row">
+    <div class="col-md-3">
+                <div id="navigation" class="list-group"><a class="list-group-item" href="#navigation-17196" data-toggle="collapse" data-parent="#navigation">Not namespaced classes <b class="caret"></b></a><div id="navigation-17196" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii.html">Yii</a>
+<a class="list-group-item" href="./yiirequirementchecker.html">YiiRequirementChecker</a></div>
+<a class="list-group-item" href="#navigation-17197" data-toggle="collapse" data-parent="#navigation">app\assets <b class="caret"></b></a><div id="navigation-17197" class="submenu panel-collapse collapse"><a class="list-group-item" href="./app-assets-appasset.html">AppAsset</a></div>
+<a class="list-group-item" href="#navigation-17198" data-toggle="collapse" data-parent="#navigation">app\commands <b class="caret"></b></a><div id="navigation-17198" class="submenu panel-collapse collapse"><a class="list-group-item" href="./app-commands-hellocontroller.html">HelloController</a></div>
+<a class="list-group-item" href="#navigation-17199" data-toggle="collapse" data-parent="#navigation">app\components <b class="caret"></b></a><div id="navigation-17199" class="submenu panel-collapse collapse"><a class="list-group-item" href="./app-components-herokutarget.html">HerokuTarget</a></div>
+<a class="list-group-item" href="#navigation-17200" data-toggle="collapse" data-parent="#navigation">app\controllers <b class="caret"></b></a><div id="navigation-17200" class="submenu panel-collapse collapse"><a class="list-group-item" href="./app-controllers-alumnoscontroller.html">AlumnosController</a>
+<a class="list-group-item" href="./app-controllers-carroscontroller.html">CarrosController</a>
+<a class="list-group-item" href="./app-controllers-colegioscontroller.html">ColegiosController</a>
+<a class="list-group-item" href="./app-controllers-libroscontroller.html">LibrosController</a>
+<a class="list-group-item" href="./app-controllers-productoscarrocontroller.html">ProductoscarroController</a>
+<a class="list-group-item" href="./app-controllers-secstockscontroller.html">SecstocksController</a>
+<a class="list-group-item" href="./app-controllers-sitecontroller.html">SiteController</a>
+<a class="list-group-item" href="./app-controllers-smscontroller.html">SmsController</a>
+<a class="list-group-item" href="./app-controllers-tutorescontroller.html">TutoresController</a>
+<a class="list-group-item" href="./app-controllers-uniformescontroller.html">UniformesController</a>
+<a class="list-group-item" href="./app-controllers-usuarioscontroller.html">UsuariosController</a></div>
+<a class="list-group-item" href="#navigation-17201" data-toggle="collapse" data-parent="#navigation">app\models <b class="caret"></b></a><div id="navigation-17201" class="submenu panel-collapse collapse"><a class="list-group-item" href="./app-models-alumnos.html">Alumnos</a>
+<a class="list-group-item" href="./app-models-alumnossearch.html">AlumnosSearch</a>
+<a class="list-group-item" href="./app-models-carros.html">Carros</a>
+<a class="list-group-item" href="./app-models-carrossearch.html">CarrosSearch</a>
+<a class="list-group-item" href="./app-models-colegios.html">Colegios</a>
+<a class="list-group-item" href="./app-models-colegiossearch.html">ColegiosSearch</a>
+<a class="list-group-item" href="./app-models-contactform.html">ContactForm</a>
+<a class="list-group-item" href="./app-models-libros.html">Libros</a>
+<a class="list-group-item" href="./app-models-librossearch.html">LibrosSearch</a>
+<a class="list-group-item" href="./app-models-loginform.html">LoginForm</a>
+<a class="list-group-item" href="./app-models-productoscarro.html">Productoscarro</a>
+<a class="list-group-item" href="./app-models-secstocks.html">Secstocks</a>
+<a class="list-group-item" href="./app-models-secstockssearch.html">SecstocksSearch</a>
+<a class="list-group-item" href="./app-models-sms.html">Sms</a>
+<a class="list-group-item" href="./app-models-smssearch.html">SmsSearch</a>
+<a class="list-group-item" href="./app-models-tutores.html">Tutores</a>
+<a class="list-group-item" href="./app-models-tutoressearch.html">TutoresSearch</a>
+<a class="list-group-item" href="./app-models-uniformes.html">Uniformes</a>
+<a class="list-group-item" href="./app-models-uniformessearch.html">UniformesSearch</a>
+<a class="list-group-item" href="./app-models-uploadform.html">UploadForm</a>
+<a class="list-group-item" href="./app-models-user.html">User</a>
+<a class="list-group-item" href="./app-models-usuarios.html">Usuarios</a>
+<a class="list-group-item" href="./app-models-usuariossearch.html">UsuariosSearch</a></div>
+<a class="list-group-item" href="#navigation-17202" data-toggle="collapse" data-parent="#navigation">app\widgets <b class="caret"></b></a><div id="navigation-17202" class="submenu panel-collapse collapse"><a class="list-group-item" href="./app-widgets-alert.html">Alert</a></div></div>    </div>
+    <div class="col-md-9 api-content" role="main">
+        <h1>API del Proyecto Integrado <span id="api-del-proyecto-integrado"></span><a href="#api-del-proyecto-integrado" class="hashlink">&para;</a></h1><p>Este es el documento que explica el API del proyecto...</p>
+<h1>Class Reference</h1>
+
+<table class="summaryTable docIndex table table-bordered table-striped table-hover">
+    <colgroup>
+        <col class="col-package" />
+        <col class="col-class" />
+        <col class="col-description" />
+    </colgroup>
+    <tr>
+        <th>Class</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><a href="yii.html">Yii</a></td>
+        <td>Yii is a helper class serving common framework functionalities.</td>
+    </tr>
+    <tr>
+        <td><a href="yiirequirementchecker.html">YiiRequirementChecker</a></td>
+        <td>YiiRequirementChecker allows checking, if current system meets the requirements for running the Yii application.</td>
+    </tr>
+    <tr>
+        <td><a href="app-assets-appasset.html">app\assets\AppAsset</a></td>
+        <td>Main application asset bundle.</td>
+    </tr>
+    <tr>
+        <td><a href="app-commands-hellocontroller.html">app\commands\HelloController</a></td>
+        <td>This command echoes the first argument that you have entered.</td>
+    </tr>
+    <tr>
+        <td><a href="app-components-herokutarget.html">app\components\HerokuTarget</a></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><a href="app-controllers-alumnoscontroller.html">app\controllers\AlumnosController</a></td>
+        <td>AlumnosController implemenya las acciones de CRUD para el modelo de alumnos.</td>
+    </tr>
+    <tr>
+        <td><a href="app-controllers-carroscontroller.html">app\controllers\CarrosController</a></td>
+        <td>CarrosController implementa las acciones de CRUD para los carros.</td>
+    </tr>
+    <tr>
+        <td><a href="app-controllers-colegioscontroller.html">app\controllers\ColegiosController</a></td>
+        <td>ColegiosController implements the CRUD actions for Colegios model.</td>
+    </tr>
+    <tr>
+        <td><a href="app-controllers-libroscontroller.html">app\controllers\LibrosController</a></td>
+        <td>LibrosController implements the CRUD actions for Libros model.</td>
+    </tr>
+    <tr>
+        <td><a href="app-controllers-productoscarrocontroller.html">app\controllers\ProductoscarroController</a></td>
+        <td>ProductoscarroController implements the CRUD actions for Productoscarro model.</td>
+    </tr>
+    <tr>
+        <td><a href="app-controllers-secstockscontroller.html">app\controllers\SecstocksController</a></td>
+        <td>SecstocksController implements the CRUD actions for Secstocks model.</td>
+    </tr>
+    <tr>
+        <td><a href="app-controllers-sitecontroller.html">app\controllers\SiteController</a></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><a href="app-controllers-smscontroller.html">app\controllers\SmsController</a></td>
+        <td>SmsController implements the CRUD actions for Sms model.</td>
+    </tr>
+    <tr>
+        <td><a href="app-controllers-tutorescontroller.html">app\controllers\TutoresController</a></td>
+        <td>TutoresController implements the CRUD actions for Tutores model.</td>
+    </tr>
+    <tr>
+        <td><a href="app-controllers-uniformescontroller.html">app\controllers\UniformesController</a></td>
+        <td>UniformesController implements the CRUD actions for Uniformes model.</td>
+    </tr>
+    <tr>
+        <td><a href="app-controllers-usuarioscontroller.html">app\controllers\UsuariosController</a></td>
+        <td>UsuariosController implements the CRUD actions for Usuarios model.</td>
+    </tr>
+    <tr>
+        <td><a href="app-models-alumnos.html">app\models\Alumnos</a></td>
+        <td>This is the model class for table "alumnos".</td>
+    </tr>
+    <tr>
+        <td><a href="app-models-alumnossearch.html">app\models\AlumnosSearch</a></td>
+        <td>AlumnosSearch represents the model behind the search form of <code>app\models\Alumnos</code>.</td>
+    </tr>
+    <tr>
+        <td><a href="app-models-carros.html">app\models\Carros</a></td>
+        <td>This is the model class for table "carros".</td>
+    </tr>
+    <tr>
+        <td><a href="app-models-carrossearch.html">app\models\CarrosSearch</a></td>
+        <td>CarrosSearch represents the model behind the search form of <code>app\models\Carros</code>.</td>
+    </tr>
+    <tr>
+        <td><a href="app-models-colegios.html">app\models\Colegios</a></td>
+        <td>This is the model class for table "colegios".</td>
+    </tr>
+    <tr>
+        <td><a href="app-models-colegiossearch.html">app\models\ColegiosSearch</a></td>
+        <td>ColegiosSearch represents the model behind the search form of <code>app\models\Colegios</code>.</td>
+    </tr>
+    <tr>
+        <td><a href="app-models-contactform.html">app\models\ContactForm</a></td>
+        <td>ContactForm is the model behind the contact form.</td>
+    </tr>
+    <tr>
+        <td><a href="app-models-libros.html">app\models\Libros</a></td>
+        <td>This is the model class for table "libros".</td>
+    </tr>
+    <tr>
+        <td><a href="app-models-librossearch.html">app\models\LibrosSearch</a></td>
+        <td>LibrosSearch represents the model behind the search form of <code>app\models\Libros</code>.</td>
+    </tr>
+    <tr>
+        <td><a href="app-models-loginform.html">app\models\LoginForm</a></td>
+        <td>LoginForm is the model behind the login form.</td>
+    </tr>
+    <tr>
+        <td><a href="app-models-productoscarro.html">app\models\Productoscarro</a></td>
+        <td>This is the model class for table "productoscarro".</td>
+    </tr>
+    <tr>
+        <td><a href="app-models-secstocks.html">app\models\Secstocks</a></td>
+        <td>This is the model class for table "secstocks".</td>
+    </tr>
+    <tr>
+        <td><a href="app-models-secstockssearch.html">app\models\SecstocksSearch</a></td>
+        <td>SecstocksSearch represents the model behind the search form of <code>app\models\Secstocks</code>.</td>
+    </tr>
+    <tr>
+        <td><a href="app-models-sms.html">app\models\Sms</a></td>
+        <td>This is the model class for table "sms".</td>
+    </tr>
+    <tr>
+        <td><a href="app-models-smssearch.html">app\models\SmsSearch</a></td>
+        <td>SmsSearch represents the model behind the search form of <code>app\models\Sms</code>.</td>
+    </tr>
+    <tr>
+        <td><a href="app-models-tutores.html">app\models\Tutores</a></td>
+        <td>This is the model class for table "tutores".</td>
+    </tr>
+    <tr>
+        <td><a href="app-models-tutoressearch.html">app\models\TutoresSearch</a></td>
+        <td>TutoresSearch represents the model behind the search form of <code>app\models\Tutores</code>.</td>
+    </tr>
+    <tr>
+        <td><a href="app-models-uniformes.html">app\models\Uniformes</a></td>
+        <td>This is the model class for table "uniformes".</td>
+    </tr>
+    <tr>
+        <td><a href="app-models-uniformessearch.html">app\models\UniformesSearch</a></td>
+        <td>UniformesSearch represents the model behind the search form of <code>app\models\Uniformes</code>.</td>
+    </tr>
+    <tr>
+        <td><a href="app-models-uploadform.html">app\models\UploadForm</a></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><a href="app-models-user.html">app\models\User</a></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><a href="app-models-usuarios.html">app\models\Usuarios</a></td>
+        <td>This is the model class for table "usuarios".</td>
+    </tr>
+    <tr>
+        <td><a href="app-models-usuariossearch.html">app\models\UsuariosSearch</a></td>
+        <td>UsuariosSearch represents the model behind the search form of <code>app\models\Usuarios</code>.</td>
+    </tr>
+    <tr>
+        <td><a href="app-widgets-alert.html">app\widgets\Alert</a></td>
+        <td>Alert widget renders a message from session flash. All flash messages are displayed
+in the sequence they were assigned using setFlash. You can set message as following:</td>
+    </tr>
+</table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    /*<![CDATA[*/
+    $("a.toggle").on('click', function () {
+        var $this = $(this);
+        if ($this.hasClass('properties-hidden')) {
+            $this.text($this.text().replace(/Show/,'Hide'));
+            $this.parents(".summary").find(".inherited").show();
+            $this.removeClass('properties-hidden');
+        } else {
+            $this.text($this.text().replace(/Hide/,'Show'));
+            $this.parents(".summary").find(".inherited").hide();
+            $this.addClass('properties-hidden');
+        }
+
+        return false;
+    });
+    /*
+     $(".sourceCode a.show").toggle(function () {
+     $(this).text($(this).text().replace(/show/,'hide'));
+     $(this).parents(".sourceCode").find("div.code").show();
+     },function () {
+     $(this).text($(this).text().replace(/hide/,'show'));
+     $(this).parents(".sourceCode").find("div.code").hide();
+     });
+     $("a.sourceLink").click(function () {
+     $(this).attr('target','_blank');
+     });
+     */
+    /*]]>*/
+</script>
+
+
+</div>
+
+<footer class="footer">
+        <p class="pull-right"><small>Page generated on Sun, 10 Jun 2018 19:35:12 +0000</small></p>
+    Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
+
+<script>jQuery(function ($) {
+    var shiftWindow = function () { scrollBy(0, -50) };
+    if (location.hash) setTimeout(shiftWindow, 1);
+    window.addEventListener("hashchange", shiftWindow);
+var element = document.createElement("script");
+element.src = "./jssearch.index.js";
+document.body.appendChild(element);
+
+var searchBox = $('#searchbox');
+
+// search when typing in search field
+searchBox.on("keyup", function(event) {
+    var query = $(this).val();
+
+    if (query == '' || event.which == 27) {
+        $('#search-resultbox').hide();
+        return;
+    } else if (event.which == 13) {
+        var selectedLink = $('#search-resultbox a.selected');
+        if (selectedLink.length != 0) {
+            document.location = selectedLink.attr('href');
+            return;
+        }
+    } else if (event.which == 38 || event.which == 40) {
+        $('#search-resultbox').show();
+
+        var selected = $('#search-resultbox a.selected');
+        if (selected.length == 0) {
+            $('#search-results').find('a').first().addClass('selected');
+        } else {
+            var next;
+            if (event.which == 40) {
+                next = selected.parent().next().find('a').first();
+            } else {
+                next = selected.parent().prev().find('a').first();
+            }
+            if (next.length != 0) {
+                var resultbox = $('#search-results');
+                var position = next.position();
+
+//              TODO scrolling is buggy and jumps around
+//                resultbox.scrollTop(Math.floor(position.top));
+//                console.log(position.top);
+
+                selected.removeClass('selected');
+                next.addClass('selected');
+            }
+        }
+
+        return;
+    }
+    $('#search-resultbox').show();
+    $('#search-results').html('<li><span class="no-results">No results</span></li>');
+
+    var result = jssearch.search(query);
+
+    if (result.length > 0) {
+        var i = 0;
+        var resHtml = '';
+
+        for (var key in result) {
+            if (i++ > 20) {
+                break;
+            }
+            resHtml = resHtml +
+            '<li><a href="' + result[key].file.u.substr(3) +'"><span class="title">' + result[key].file.t + '</span>' +
+            '<span class="description">' + result[key].file.d + '</span></a></li>';
+        }
+        $('#search-results').html(resHtml);
+    }
+});
+
+// hide the search results on ESC
+$(document).on("keyup", function(event) { if (event.which == 27) { $('#search-resultbox').hide(); } });
+// hide search results on click to document
+$(document).bind('click', function (e) { $('#search-resultbox').hide(); });
+// except the following:
+searchBox.bind('click', function(e) { e.stopPropagation(); });
+$('#search-resultbox').bind('click', function(e) { e.stopPropagation(); });
+
+});</script></body>
+</html>
