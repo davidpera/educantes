@@ -44,7 +44,7 @@ $email = Usuarios::findOne(['rol' => 'A'])->email;
                 <img alt="Foto sobre educacion" src="uploads/lema3.jpg" data-lazy-src="uploads/lema3.jpg" />
             </div>
         </div>
-        <div class="inferior">
+        <div class="inferior titulo">
             <h3 itemprop="legalName" ><?= $this->title ?></h3>
             <h4>Email Administrador: <span itemprop="email"><?= $email ?></span></h4>
         </div>
