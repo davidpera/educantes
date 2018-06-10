@@ -11,7 +11,7 @@ class ColegiosFormCest
     public function ColegiosGestionarSinLoguearse(\FunctionalTester $I)
     {
         $I->amOnRoute('colegios/gestionar');
-        $I->amOnRoute('site/index');
+        $I->amOnRoute('site/login');
     }
 
     /**
