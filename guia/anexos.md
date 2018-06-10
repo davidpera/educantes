@@ -35,4 +35,6 @@
 
     La web dispone en la parte de la tienda de un buscador pra encontrar mas facilmente un producto
 
+## R(26) Uso de microdatos
 
+![Image of Microdata](images/microdatos.png)

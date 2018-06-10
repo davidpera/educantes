@@ -111,12 +111,17 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         ];
     }
 
-    public function smsStock($uniforme_id)
+    public function smsStock($uniforme_id, $emisor)
     {
         $uniform = Uniformes::findOne(['id' => $uniforme_id]);
         $secs = Secstocks::findOne(['uniforme_id' => $uniform->id]);
         if ($secs !== null && $uniform->cantidad <= $secs->mp) {
             if ($uniform->underSS === false) {
+                $sms = new Sms();
+                $sms->emisario_id = $emisor;
+                $sms->receptor_id = $this->id;
+                $sms->mensaje = "Deberia de pedir el uniforme%20codigo: ' . $uniform->codigo . ', ya que su stock es igual o menor del stock de seguridad";
+                $sms->save();
                 $headers = ['Content-Type: application/json'];
 
                 $ch = curl_init('http://api.gateway360.com/api/sms/submit_sms/?APIKEY=8e792f6f80ee4ddd7054f793a03142b6&SA=Educantes&DA=34' . $this->tel_movil . '&M=Deberia%20de%20pedir%20el%20uniforme%20codigo:%20' . $uniform->codigo . ',%20ya%20que%20su%20stock%20es%20igual%20o%20menor%20del%20stock%20de%20seguridad');

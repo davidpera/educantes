@@ -34,9 +34,6 @@ AppAsset::register($this);
     $options = ['class' => 'navbar-inverse navbar-fixed-top'];
     $nombre = Yii::$app->name;
     if (!Yii::$app->user->isGuest) {
-        if (Yii::$app->user->identity->rol !== 'A') {
-            $nombre = $nombre . ' ('.Yii::$app->user->identity->colegio->nombre.')';
-        }
         if (Yii::$app->user->identity->rol === 'C') {
             $options = ['class' => 'navbar-inverse navbar-fixed-top adcol'];
         }
@@ -58,7 +55,7 @@ AppAsset::register($this);
         $us = Usuarios::find()->where(['id'=>Yii::$app->user->id])->one();
         if ($us->rol !== 'P') {
             if ($us->rol !== 'V') {
-                $items[] = ['label' => 'Usuarios', 'url' => ['/usuarios/index']];
+                $items[] = ['label' => '', 'url' => ['/usuarios/index'], 'linkOptions' => ['class' => 'glyphicon glyphicon-user']];
                 if ($us->rol === 'A') {
                     $items2 =[
                         ['label' => 'Gestionar colegios', 'url' => ['/colegios/gestionar']],
@@ -77,14 +74,14 @@ AppAsset::register($this);
                             ['label' => 'Ver uniformes', 'url' => ['uniformes/index']],
                         ],
                     ];
-                    // $items[] = [
-                    //     'label' => 'Libros',
-                    //     'items' => [
-                    //         ['label' => 'Insertar Libros', 'url' => ['usuarios/upload', 'tabla' => 'libros']],
-                    //         '<li class="divider"></li>',
-                    //         ['label' => 'Ver libros', 'url' => ['libros/index']],
-                    //     ],
-                    // ];
+                    $items[] = [
+                        'label' => 'Libros',
+                        'items' => [
+                            ['label' => 'Insertar Libros', 'url' => ['usuarios/upload', 'tabla' => 'libros']],
+                            '<li class="divider"></li>',
+                            ['label' => 'Ver libros', 'url' => ['libros/index']],
+                        ],
+                    ];
                     $items[] = [
                         'label' => 'Alumnos',
                         'items' => [
@@ -106,6 +103,7 @@ AppAsset::register($this);
                 }
             } else {
                 $items[] = ['label' => 'Uniformes','url' => ['/uniformes/index']];
+                $items[] = ['label' => 'SMS','url' => ['/sms/index']];
             }
         } else {
             $items[] = ['label' => 'Pedidos', 'url' => ['/carros/realizados']];

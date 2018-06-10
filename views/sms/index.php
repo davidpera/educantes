@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\SmsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Sms';
+$this->title = 'Listado SMS';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sms-index">
@@ -15,22 +15,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create Sms', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'emisario_id',
-            'receptor_id',
+            'emisario.nombre',
+            'receptor.nombre',
             'mensaje',
-
-            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 </div>
