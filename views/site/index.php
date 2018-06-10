@@ -36,10 +36,10 @@ $this->registerJsFile('/js/devrama_slider.js',['depends' => [\yii\web\JqueryAsse
               Your browser does not support the video tag.
             </video>
             <div id="my-slide">
-                <img data-lazy-src="uploads/foto3.jpg" />
-                <img data-lazy-src="uploads/foto1.jpg" />
-                <img data-lazy-src="uploads/lema1.jpg" />
-                <img data-lazy-src="uploads/lema3.jpg" />
+                <img src="uploads/foto3.jpg" data-lazy-src="uploads/foto3.jpg" />
+                <img src="uploads/foto1.jpg" data-lazy-src="uploads/foto1.jpg" />
+                <img src="uploads/lema1.jpg" data-lazy-src="uploads/lema1.jpg" />
+                <img src="uploads/lema3.jpg" data-lazy-src="uploads/lema3.jpg" />
             </div>
         </div>
     </div>
