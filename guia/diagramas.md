@@ -2,7 +2,11 @@
 
 ## Diagramas de clases
 
-![Image of Clase](images/modelos.jpg)
+### Modelos
+![Image of Models](images/modelos.png)
+
+### Controladores
+![Image of Controlers](images/controladores.png)
 
 ## Diagramas de estructura lógica de datos
 
