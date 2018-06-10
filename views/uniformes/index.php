@@ -104,7 +104,7 @@ $this->registerJsFile('/js/pedido.js',['depends' => [\yii\web\JqueryAsset::class
 
 Yii::$app->user->setReturnUrl(Yii::$app->request->url);
 ?>
-<div class="uniformes-index">
+<div class="uniformes-index" itemscope itemtype="http://schema.org/Product">
 
     <h1 class="titulo"><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
