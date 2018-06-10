@@ -186,6 +186,10 @@ body {
     margin-bottom: 15px;
 }
 
+.inferior {
+    width: 100%;
+}
+
 .imagen {
     width: 45%;
 }

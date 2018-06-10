@@ -34,7 +34,9 @@ AppAsset::register($this);
     $options = ['class' => 'navbar-inverse navbar-fixed-top'];
     $nombre = Yii::$app->name;
     if (!Yii::$app->user->isGuest) {
-        $nombre = $nombre . ' ('.Yii::$app->user->identity->colegio->nombre.')';
+        if (Yii::$app->user->identity->rol !== 'A') {
+            $nombre = $nombre . ' ('.Yii::$app->user->identity->colegio->nombre.')';
+        }
         if (Yii::$app->user->identity->rol === 'C') {
             $options = ['class' => 'navbar-inverse navbar-fixed-top adcol'];
         }
