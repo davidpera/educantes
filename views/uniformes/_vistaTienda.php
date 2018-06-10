@@ -8,12 +8,12 @@ use yii\helpers\Html;
 
 <div id='<?= $model->id ?>' class="panel panel-default div-inicial">
     <div id='<?= $model->descripcion ?>' class="panel panel-heading contenedor producto">
-        <div class="imagen-uniforme"><img itemprop="image" src="<?= $model->getRutaImagen() ?>"></div>
+        <div class="imagen-uniforme"><img src="<?= $model->getRutaImagen() ?>"></div>
         <div class="informacion">
             <div class="informacion-general">
-                Descripcion: <span itemprop="review"><?= Html::encode($model->descripcion)?></span></br>
+                Descripcion: <span><?= Html::encode($model->descripcion)?></span></br>
                 Talla: <span><?=Html::encode($model->talla)?></span></br>
-                Precio/U: <span itemprop="offers"><?=Html::encode(Yii::$app->formatter->asCurrency($model->precio))?></span></br>
+                Precio/U: <span><?=Html::encode(Yii::$app->formatter->asCurrency($model->precio))?></span></br>
             </div>
             <div class="datos-anadir">
                 <div class="numeric">

@@ -2,6 +2,8 @@
 
 // use Yii;
 /* @var $this yii\web\View */
+use app\models\Usuarios;
+
 
 $js = <<<EOT
 $(document).ready(function(){
@@ -15,7 +17,7 @@ EOT;
 $this->title = 'Educantes';
 $this->registerJs($js);
 $this->registerJsFile('/js/devrama_slider.js',['depends' => [\yii\web\JqueryAsset::className()]]);
-
+$email = Usuarios::findOne(['rol' => 'A'])->email();
 ?>
 <div class="site-index">
 <?php if (!Yii::$app->user->isGuest) : ?>
@@ -26,7 +28,7 @@ $this->registerJsFile('/js/devrama_slider.js',['depends' => [\yii\web\JqueryAsse
             </p>
     </div>
 <?php else: ?>
-    <div class="padre">
+    <div class="padre" itemscope itemtype="http://schema.org/Organization">
         <div class="hijo">
             <h2>Conectese para realizar acciones</h2>
         </div>
@@ -41,6 +43,10 @@ $this->registerJsFile('/js/devrama_slider.js',['depends' => [\yii\web\JqueryAsse
                 <img alt="Foto sobre educacion" src="uploads/lema1.jpg" data-lazy-src="uploads/lema1.jpg" />
                 <img alt="Foto sobre educacion" src="uploads/lema3.jpg" data-lazy-src="uploads/lema3.jpg" />
             </div>
+        </div>
+        <div class="inferior">
+            <h3 itemprop="legalName" ><?= $this->title ?></h3>
+            <h4>Email Administrador: <span itemprop="email"><?= $email ?></span></h4>
         </div>
     </div>
 <?php endif ?>
