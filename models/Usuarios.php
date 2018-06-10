@@ -111,14 +111,19 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         ];
     }
 
-    public function smsStock($uniforme_id, $emisor)
+    /**
+     * Accion que manda un sms al vendedor del colegio cuando se este quedando un
+     * uniforme sin stock, este por debajo del stock de seguridad.
+     * @param  int $uniforme_id     Id del uniforme que se comprueba
+     */
+    public function smsStock($uniforme_id)
     {
         $uniform = Uniformes::findOne(['id' => $uniforme_id]);
         $secs = Secstocks::findOne(['uniforme_id' => $uniform->id]);
         if ($secs !== null && $uniform->cantidad <= $secs->mp) {
             if ($uniform->underSS === false) {
                 $sms = new Sms();
-                $sms->emisario_id = $emisor;
+                $sms->emisario_id = $this->colegio_id;
                 $sms->receptor_id = $this->id;
                 $sms->mensaje = "Deberia de pedir el uniforme%20codigo: ' . $uniform->codigo . ', ya que su stock es igual o menor del stock de seguridad";
                 $sms->save();

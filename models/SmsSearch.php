@@ -65,8 +65,8 @@ class SmsSearch extends Sms
         }
 
         $dataProvider->sort->attributes['emisario.nombre'] = [
-            'asc' => ['usuarios.nombre' => SORT_ASC],
-            'desc' => ['usuarios.nombre' => SORT_DESC],
+            'asc' => ['colegios.nombre' => SORT_ASC],
+            'desc' => ['colegios.nombre' => SORT_DESC],
         ];
 
         $dataProvider->sort->attributes['receptor.nombre'] = [
@@ -82,7 +82,7 @@ class SmsSearch extends Sms
         ]);
 
         $query->andFilterWhere(['ilike', 'mensaje', $this->mensaje])
-            ->andFilterWhere(['ilike', 'usuarios.nombre', $this->getAttribute('emisario.nombre')])
+            ->andFilterWhere(['ilike', 'colegios.nombre', $this->getAttribute('emisario.nombre')])
             ->andFilterWhere(['ilike', 'usuarios.nombre', $this->getAttribute('receptor.nombre')]);
 
         return $dataProvider;

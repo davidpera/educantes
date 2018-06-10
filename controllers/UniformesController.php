@@ -62,7 +62,7 @@ class UniformesController extends Controller
                 $vend = Usuarios::findOne(['colegio_id' => $uniforme->colegio_id, 'rol' => 'V']);
                 if ($vend !== null) {
                     if ($vend->tel_movil !== null) {
-                        $vend->smsStock($uniforme->id, $prodcar->carro->usuario_id);
+                        $vend->smsStock($uniforme->id);
                     }
                 }
                 // var_dump($prodcar->cantidad);
@@ -251,7 +251,7 @@ class UniformesController extends Controller
         $vend = Usuarios::findOne(['colegio_id' => $uniform->colegio_id, 'rol' => 'V']);
         if ($vend !== null) {
             if ($vend->tel_movil !== null) {
-                $vend->smsStock($uniform->id, $prodcar->carro->usuario_id);
+                $vend->smsStock($uniform->id);
             }
         }
         if ($uniform->save()) {
@@ -287,7 +287,7 @@ class UniformesController extends Controller
                             $vend = Usuarios::findOne(['colegio_id' => $uniform->colegio_id, 'rol' => 'V']);
                             if ($vend !== null) {
                                 if ($vend->tel_movil !== null) {
-                                    $vend->smsStock($uniforme->id, $prodcar->carro->usuario_id);
+                                    $vend->smsStock($uniforme->id);
                                 }
                             }
                             $uniform->save();
