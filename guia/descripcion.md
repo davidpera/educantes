@@ -1,10 +1,10 @@
 # Descripción general del proyecto
 
-Se trata de una web de gestion de colegios la cual se centra principalmente en los pedidos de uniformes y en visualizar los datos insertados
+Se trata de una web de gestion de colegios la cual se centra principalmente en los pedidos de uniformes y en visualizar los datos insertados.
 
 ## Funcionalidad principal de la aplicación
 
-Facilitar el poder realizar pedidos de uniformes a los colegios 
+Facilitar el poder realizar pedidos de uniformes a los colegios desde otros colegios o los padres desde el mismo coelgio. 
 
 ## Objetivos generales
 
