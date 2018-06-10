@@ -17,7 +17,7 @@ EOT;
 $this->title = 'Educantes';
 $this->registerJs($js);
 $this->registerJsFile('/js/devrama_slider.js',['depends' => [\yii\web\JqueryAsset::className()]]);
-$email = Usuarios::findOne(['rol' => 'A'])->email();
+$email = Usuarios::findOne(['rol' => 'A'])->email;
 ?>
 <div class="site-index">
 <?php if (!Yii::$app->user->isGuest) : ?>
