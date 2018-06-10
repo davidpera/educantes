@@ -35,7 +35,7 @@ class UniformesController extends Controller
             ],
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only' => ['index', 'create', 'update', 'view'],
+                'only' => ['create', 'update', 'view'],
                 'rules' => [
                     [
                         'allow' => true,
