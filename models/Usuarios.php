@@ -116,16 +116,20 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         $uniform = Uniformes::findOne(['id' => $uniforme_id]);
         $secs = Secstocks::findOne(['uniforme_id' => $uniform->id]);
         if ($secs !== null && $uniform->cantidad <= $secs->mp) {
-            $headers = ['Content-Type: application/json'];
+            if ($uniform->underSS === false) {
+                $headers = ['Content-Type: application/json'];
 
-            $ch = curl_init('http://api.gateway360.com/api/sms/submit_sms/?APIKEY=8e792f6f80ee4ddd7054f793a03142b6&SA=Educantes&DA=34' . $this->tel_movil . '&M=Deberia%20de%20pedir%20el%20uniforme%20codigo:%20' . $uniform->codigo . ',%20ya%20que%20su%20stock%20es%20igual%20o%20menor%20del%20stock%20de%20seguridad');
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            // curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
+                $ch = curl_init('http://api.gateway360.com/api/sms/submit_sms/?APIKEY=8e792f6f80ee4ddd7054f793a03142b6&SA=Educantes&DA=34' . $this->tel_movil . '&M=Deberia%20de%20pedir%20el%20uniforme%20codigo:%20' . $uniform->codigo . ',%20ya%20que%20su%20stock%20es%20igual%20o%20menor%20del%20stock%20de%20seguridad');
+                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                // curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
 
-            $result = curl_exec($ch);
-            // var_dump('bien');
+                $result = curl_exec($ch);
+                // var_dump('bien');
+            }
+            $uniform->underSS = true;
+            $uniform->save();
         }
     }
 

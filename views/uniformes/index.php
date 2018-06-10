@@ -27,6 +27,9 @@ $urlAnadir = Url::to(['uniformes/anadir']);
 if (Yii::$app->user->identity->rol === 'P') {
     $js = <<<EOT
         $(document).ready(function(){
+            var alt = document.body.clientHeight * 0.6;
+            console.log(alt);
+            $('#vista-tienda').css({height:alt})
             $('.numeric').children('input').val(0);
             anadirFiltrado();
             eventoBoton();
@@ -104,7 +107,7 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
 ?>
 <div class="uniformes-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1 class="titulo"><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 <?php if (Yii::$app->user->identity->rol === 'P'): ?>
     <div class="filtrado">

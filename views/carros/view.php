@@ -17,6 +17,8 @@ if (!isset($pedidos)){
 $this->params['breadcrumbs'][] = $this->title;
 $js = <<<EOT
     $(document).ready(function(){
+        var alt = document.body.clientHeight * 0.5;
+        $('#vista-carro').css({height:alt});
         eventosBotones();
     });
 
@@ -97,12 +99,12 @@ $total = $totalIva;
 ?>
 <div class="carros-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1 class="titulo"><?= Html::encode($this->title) ?></h1>
 
     <?= ListView::widget([
                 'options' => [
                     'tag' => 'div',
-                    'id' => 'vista-tienda'
+                    'id' => 'vista-carro'
                 ],
                 'dataProvider' => $dataProvider,
                 'itemView' => function ($model, $key, $index, $widget) {
@@ -122,18 +124,19 @@ $total = $totalIva;
                 'layout' => '{items}{pager}',
             ]) ?>
 
-
-    <?php if (!isset($pedidos)): ?>
-        <div class="Total-iva">
-            <h3>Total de los productos con iva: <span id="num-total"><?= Yii::$app->formatter->asCurrency($total) ?></span> </h3>
-        </div>
-        <div class="botones">
-            <button class="btn btn-success boton-pedido" type="button" name="button">Realizar pedido</button>
-        </div>
-    <?php else: ?>
-        <div class="Total-iva">
-            <h3>Total gastado con iva: <span id="num-total"><?= Yii::$app->formatter->asCurrency($total) ?></span> </h3>
-        </div>
-    <?php endif; ?>
+    <div class="titulo">
+        <?php if (!isset($pedidos)): ?>
+            <div class="Total-iva">
+                <h3>Total de los productos con iva: <span id="num-total"><?= Yii::$app->formatter->asCurrency($total) ?></span> </h3>
+            </div>
+            <div class="botones">
+                <button class="btn btn-success boton-pedido" type="button" name="button">Realizar pedido</button>
+            </div>
+        <?php else: ?>
+            <div class="Total-iva">
+                <h3>Total gastado con iva: <span id="num-total"><?= Yii::$app->formatter->asCurrency($total) ?></span> </h3>
+            </div>
+        <?php endif; ?>
+    </div>
 
 </div>

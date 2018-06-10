@@ -14,6 +14,7 @@ CREATE TABLE uniformes
   , iva         numeric(3)      NOT NULL
   , ubicacion   varchar(255)
   , cantidad    numeric(10)     NOT NULL
+  , undesSS     bool            DEFAULT false
   , colegio_id  bigint          NOT NULL REFERENCES colegios (id)
                                 ON DELETE NO ACTION ON UPDATE CASCADE
 );
@@ -94,7 +95,7 @@ CREATE TABLE usuarios
 (
     id          bigserial       PRIMARY KEY
   , nom_usuario varchar(255)    UNIQUE
-  , password    varchar(255)    
+  , password    varchar(255)
   /* , contrasena  varchar(255)    DEFAULT NULL */
   , nombre      varchar(255)    DEFAULT NULL
   , apellidos   varchar(255)    DEFAULT NULL

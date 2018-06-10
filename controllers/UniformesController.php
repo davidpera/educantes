@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Carros;
 use app\models\Colegios;
 use app\models\Productoscarro;
+use app\models\Secstocks;
 use app\models\Uniformes;
 use app\models\UniformesSearch;
 use app\models\Usuarios;
@@ -86,6 +87,11 @@ class UniformesController extends Controller
         $cantidad = $producto->cantidad;
         if ($producto->delete()) {
             $uniforme->cantidad = $uniforme->cantidad + $cantidad;
+            $secs = Secstocks::findOne(['uniforme_id' => $uniforme->id]);
+            if ($secs !== null && $uniforme->cantidad > $secs->mp) {
+                $uniforme->underSS = true;
+                $uniforme->save();
+            }
             if ($uniforme->save()) {
                 $carr = Carros::findOne(['id' => $producto->carro_id]);
                 $carr->productos = $carr->productos - 1;
@@ -330,6 +336,11 @@ class UniformesController extends Controller
         $uniform = $this->findModel($id);
         $user = Usuarios::find()->where(['id' => $pedidorid])->one();
         $uniform->cantidad = $uniform->cantidad + $cantidadPedida;
+        $secs = Secstocks::findOne(['uniforme_id' => $uniform->id]);
+        if ($secs !== null && $uniform->cantidad > $secs->mp) {
+            $uniform->underSS = true;
+            $uniform->save();
+        }
         if ($uniform->save()) {
             $user->emailRechazar($id);
             Yii::$app->session->setFlash('info', 'Se le ha enviado un correo al usuario informandole que el pedido ha sido rechazado');
@@ -367,6 +378,11 @@ class UniformesController extends Controller
         foreach ($artic as $art) {
             $uniform = Uniformes::findOne(['id' => $art[0]]);
             $uniform->cantidad = $uniform->cantidad + $art[1];
+            $secs = Secstocks::findOne(['uniforme_id' => $uniform->id]);
+            if ($secs !== null && $uniform->cantidad > $secs->mp) {
+                $uniform->underSS = true;
+                $uniform->save();
+            }
             if (!$uniform->save()) {
                 $valetodos = false;
             }

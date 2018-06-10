@@ -79,6 +79,26 @@ body {
     margin-right: 20px;
 }
 
+.filtrado {
+    text-align: center;
+}
+
+#vista-tienda{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+}
+
+#vista-carro{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+}
+
 .div-inicial {
     width: 650px;
 }
