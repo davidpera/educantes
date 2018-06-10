@@ -32,9 +32,12 @@ AppAsset::register($this);
 
     <?php
     $options = ['class' => 'navbar-inverse navbar-fixed-top'];
-    if (Yii::$app->user->identity->rol === 'C') {
-        $options = ['class' => 'navbar-inverse navbar-fixed-top adcol'];
+    if (!Yii::$app->user->isGuest) {
+        if (Yii::$app->user->identity->rol === 'C') {
+            $options = ['class' => 'navbar-inverse navbar-fixed-top adcol'];
+        }
     }
+
     NavBar::begin([
         'brandLabel' => Html::img('/uploads/icono.png', [
             'alt' => 'Educantes',
