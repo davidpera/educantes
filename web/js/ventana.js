@@ -112,7 +112,7 @@ function eventoPedido(cont){
         var boton = $(this);
         var colegio = boton.closest('.colegios-container').attr('id');
         $.ajax({
-            url:"/index.php?r=uniformes/externos",
+            url:"/index.php/uniformes/externos",
             type:'GET',
             data: {'nombre' : colegio },
             dataType: 'json',
@@ -126,7 +126,7 @@ function eventoPedido(cont){
                 var id =  $('select').val();
                 $('.pedido-container').attr('id',id);
                 $.ajax({
-                    url: "/index.php?r=uniformes/cantidad",
+                    url: "/index.php?/uniformes/cantidad",
                     type: 'GET',
                     data: {'id':id},
                     success: function(data){
@@ -141,7 +141,7 @@ function eventoPedido(cont){
                     var id =  $(this).val();
                     var este =  $(this);
                     $.ajax({
-                        url: "/index.php?r=uniformes/cantidad",
+                        url: "/index.php?/uniformes/cantidad",
                         type: 'GET',
                         data: {'id':id},
                         success: function(data){
