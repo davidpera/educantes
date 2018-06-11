@@ -75,6 +75,12 @@ $this->params['breadcrumbs'][] = $this->title;
     }
     // var_dump($columnas[6]);die();
     ?>
+    <?php if (Yii::$app->user->identity->rol === 'A'): ?>
+        <?= Html::a('Gestionar', ['colegios/gestionar'],
+            [
+                'class' => 'btn btn-primary',
+            ]);?>
+    <?php endif; ?>
     <?= GridView::widget([
         'options' => [
             'class' => 'escritorio',

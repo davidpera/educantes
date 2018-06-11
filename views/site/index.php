@@ -7,6 +7,18 @@ use app\models\Usuarios;
 
 $js = <<<EOT
 $(document).ready(function(){
+    var nav = "";
+    var agente = window.navigator.userAgent;
+    var navegadores = ["Chrome", "Firefox", "Safari", "Opera", "Trident", "MSIE", "Edge"];
+    for(var i in navegadores){
+        if(agente.indexOf( navegadores[i]) != -1 ){
+            nav = navegadores[i];
+        }
+    }
+    console.log(agente);
+    if (nav == "Safari") {
+        $('.video').css({"margin-top":"-35px"});
+    }
     $('#my-slide').DrSlider({
         'navigationType': 'circle',
         'positionNavigation': 'in-center-bottom',
