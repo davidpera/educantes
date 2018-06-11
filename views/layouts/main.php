@@ -147,6 +147,7 @@ AppAsset::register($this);
 <footer class="footer">
     <div class="container">
         <p class="pull-left">&copy; Educantes <?= date('Y') ?></p>
+        <a href="https://davidpera.github.io/educantes/index.html" class="pull-right glyphicon glyphicon-question-sign">Documentacion del programa</a>
     </div>
 </footer>
 
