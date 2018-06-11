@@ -58,6 +58,6 @@ class Secstocks extends \yii\db\ActiveRecord
      */
     public function getUniforme()
     {
-        return $this->hasOne(Uniformes::className(), ['id' => 'uniforme_id'])->inverseOf('secstocks');
+        return $this->hasOne(Uniformes::className(), ['id' => 'uniforme_id'])->inverseOf('secstock');
     }
 }
