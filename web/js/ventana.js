@@ -7,11 +7,12 @@ var cont = 0;
 function eventoColegio(){
     $('#anadir-colegio').on('click', function(){
         $.ajax({
-            url:"/index.php?r=colegios/lista",
+            url:"/index.php/colegios/lista",
             type:'GET',
             datatype: 'json',
             success: function(data){
                 var colegios = '<div class="colegios-container "><select>';
+                // console.log(data);
                 for (col of data) {
                     colegios += '<option value='+col.nombre.split(" ").join("")+'>'+col.nombre+'</option>'
                 }
@@ -76,14 +77,14 @@ function confirmar(){
         todos.pedidos = pedidos;
         var json = JSON.stringify(todos);
         $.ajax({
-            url:"/index.php?r=uniformes/multiple",
+            url:"/index.php/uniformes/multiple",
             type:"GET",
             data: {'pedido':json},
             datatype: 'json',
             contentType: "application/json",
             success: function(data){
                 // console.log(data);
-                window.opener.location.href="/index.php?r=uniformes%2Findex&mio=no"
+                window.opener.location.href="/index.php/uniformes%2Findex&mio=no"
                 window.close();
             }
         });
