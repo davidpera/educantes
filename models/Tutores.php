@@ -41,6 +41,7 @@ class Tutores extends \yii\db\ActiveRecord
             [['nif'], 'match', 'pattern' => '/^\d{8}[A-Z]{1}$/'],
             [['nombre', 'apellidos', 'direccion'], 'string', 'max' => 255],
             [['email'], 'email'],
+            [['email'], 'unique'],
             [['colegio_id'], 'exist', 'skipOnError' => true, 'targetClass' => Colegios::className(), 'targetAttribute' => ['colegio_id' => 'id']],
         ];
     }
