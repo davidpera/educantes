@@ -126,7 +126,7 @@ function eventoPedido(cont){
                 var id =  $('select').val();
                 $('.pedido-container').attr('id',id);
                 $.ajax({
-                    url: "/index.php?/uniformes/cantidad",
+                    url: "/index.php/uniformes/cantidad",
                     type: 'GET',
                     data: {'id':id},
                     success: function(data){
@@ -141,7 +141,7 @@ function eventoPedido(cont){
                     var id =  $(this).val();
                     var este =  $(this);
                     $.ajax({
-                        url: "/index.php?/uniformes/cantidad",
+                        url: "/index.php/uniformes/cantidad",
                         type: 'GET',
                         data: {'id':id},
                         success: function(data){
