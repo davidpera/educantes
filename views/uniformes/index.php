@@ -24,6 +24,8 @@ $urlCantidad = Url::to(['uniformes/cantidad']);
 $urlPedido = Url::to(['uniformes/pedido']);
 $urlAnadir = Url::to(['uniformes/anadir']);
 
+Yii::$app->user->setReturnUrl(Yii::$app->request->url);
+
 if (Yii::$app->user->identity->rol === 'P') {
     $js = <<<EOT
         $(document).ready(function(){

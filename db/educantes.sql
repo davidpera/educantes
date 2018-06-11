@@ -29,7 +29,7 @@ CREATE TABLE secstocks
   , SS          numeric(10)     NOT NULL --Security Stock, determinado por el usuario
   , MP          numeric(10)     NOT NULL --Momento de pedido, calculado de los datos anteriores
   , uniforme_id bigint          NOT NULL REFERENCES uniformes (id)
-                                ON DELETE NO ACTION ON UPDATE CASCADE
+                                ON DELETE NO CASCADE ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS colegios CASCADE;
@@ -99,7 +99,7 @@ CREATE TABLE usuarios
   /* , contrasena  varchar(255)    DEFAULT NULL */
   , nombre      varchar(255)    DEFAULT NULL
   , apellidos   varchar(255)    DEFAULT NULL
-  , nif         varchar(255)    UNIQUE DEFAULT NULL
+  , nif         char(9)         UNIQUE DEFAULT NULL
   , direccion   varchar(255)    DEFAULT NULL
   , email       varchar(255)    UNIQUE DEFAULT NULL
   , tel_movil   numeric(9)      UNIQUE DEFAULT NULL

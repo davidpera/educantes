@@ -11,6 +11,8 @@ use yii\grid\GridView;
 
 $this->title = 'Colegios';
 $this->params['breadcrumbs'][] = $this->title;
+
+Yii::$app->user->setReturnUrl(Yii::$app->request->url);
 ?>
 <div class="colegios-index">
 

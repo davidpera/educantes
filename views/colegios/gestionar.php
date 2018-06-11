@@ -47,13 +47,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
        <?php $form = ActiveForm::begin(['options' => ['id' => 'gestionar-form']]); ?>
 
-       <?= $form->field($model, 'cif')->textInput(['maxlength' => true]) ?>
+       <?= $form->field($model, 'cif')->textInput(['maxlength' => 9]) ?>
 
        <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
 
        <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-       <?= $form->field($model, 'cod_postal')->textInput() ?>
+       <?= $form->field($model, 'cod_postal')->textInput(['maxlength' => 5]) ?>
 
        <?= $form->field($model, 'direccion')->textInput(['maxlength' => true]) ?>
 

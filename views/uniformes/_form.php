@@ -20,13 +20,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'talla')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'precio')->textInput() ?>
+    <?= $form->field($model, 'precio')->textInput(['maxlength' => 8]) ?>
 
-    <?= $form->field($model, 'iva')->textInput() ?>
+    <?= $form->field($model, 'iva')->textInput(['maxlength' => 3]) ?>
 
     <?= $form->field($model, 'ubicacion')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'cantidad')->textInput() ?>
+    <?= $form->field($model, 'cantidad')->textInput(['maxlength' => 10]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

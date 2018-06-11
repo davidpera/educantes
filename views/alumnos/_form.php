@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'codigo')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'codigo')->textInput(['maxlength' => 8]) ?>
 
     <?= $form->field($model, 'unidad')->textInput(['maxlength' => true]) ?>
 
@@ -24,9 +24,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'fecha_de_nacimiento')->textInput() ?>
 
-    <?= $form->field($model, 'dni_primer_tutor')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'dni_primer_tutor')->textInput(['maxlength' => 9]) ?>
 
-    <?= $form->field($model, 'dni_segundo_tutor')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'dni_segundo_tutor')->textInput(['maxlength' => 9]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

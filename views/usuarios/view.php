@@ -33,7 +33,25 @@ $this->params['breadcrumbs'][] = $this->title;
         'direccion',
         'email:email',
         'tel_movil',
-        'rol',
+        [
+            'label'  => 'Rol',
+            'value'  => function($model){
+                switch ($model->rol) {
+                    case 'A':
+                        return "Administrador general";
+                        break;
+                    case 'C':
+                        return "Administrador de colegio";
+                        break;
+                    case 'V':
+                        return "Vendedor";
+                        break;
+                    case 'P':
+                        return "Padre";
+                        break;
+                }
+            }
+        ],
     ];
   ?>
 

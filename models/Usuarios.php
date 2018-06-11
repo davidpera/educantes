@@ -459,9 +459,13 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
                         $this->password = $this->getOldAttribute('password');
                     } else {
                         $rol = Yii::$app->user->identity->rol;
-                        if ($rol === 'A' || $rol === 'C') {
+                        if (Yii::$app->user->id != $this->id && ($rol === 'A' || $rol === 'C')) {
                             $this->password = Yii::$app->security->generatePasswordHash($this->password);
                         } else {
+                            if ($this->viejaPassword == '') {
+                                Yii::$app->session->setFlash('error', 'La contraseña antigua no coincide con la que ha puesto.');
+                                return false;
+                            }
                             if (Yii::$app->getSecurity()->validatePassword($this->viejaPassword, $this->getOldAttribute('password'))) {
                                 $this->password = Yii::$app->security->generatePasswordHash($this->password);
                             } else {

@@ -12,13 +12,13 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'isbn')->textInput() ?>
+    <?= $form->field($model, 'isbn')->textInput(['maxlength' => 13]) ?>
 
     <?= $form->field($model, 'titulo')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'curso')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'precio')->textInput() ?>
+    <?= $form->field($model, 'precio')->textInput(['maxlength' => 8]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

@@ -147,13 +147,22 @@ class UsuariosController extends Controller
                             $campo = strtolower($worksheet->getCell($col . 1)
                                 ->getValue());
                             $cade = utf8_decode($campo);
-                            $no_permitidas = ['á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú', 'ñ', 'À', 'Ã', 'Ì', 'Ò', 'Ù', 'Ã™', 'Ã', 'Ã¨', 'Ã¬', 'Ã²', 'Ã¹', 'ç', 'Ç', 'Ã¢', 'ê', 'Ã®', 'Ã´', 'Ã»', 'Ã‚', 'ÃŠ', 'ÃŽ', 'Ã', 'Ã›', 'ü', 'Ã¶', 'Ã–', 'Ã¯', 'Ã¤', '«', 'Ò', 'Ã', 'Ã„', 'Ã‹', 'Ñ', 'à', 'è', 'ì', 'ò', 'ù'];
-                            $permitidas = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', 'n', 'N', 'A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u', 'c', 'C', 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', 'u', 'o', 'O', 'i', 'a', 'e', 'U', 'I', 'A', 'E', 'N', 'a', 'e', 'i', 'o', 'u'];
+                            $no_permitidas = ['á', 'é', 'í', 'ó', 'ú', 'Á', 'É',
+                            'Í', 'Ó', 'Ú', 'ñ', 'À', 'Ã', 'Ì', 'Ò', 'Ù', 'Ã™', 'Ã',
+                            'Ã¨', 'Ã¬', 'Ã²', 'Ã¹', 'ç', 'Ç', 'Ã¢', 'ê', 'Ã®', 'Ã´',
+                            'Ã»', 'Ã‚', 'ÃŠ', 'ÃŽ', 'Ã', 'Ã›', 'ü', 'Ã¶', 'Ã–', 'Ã¯',
+                            'Ã¤', '«', 'Ò', 'Ã', 'Ã„', 'Ã‹', 'Ñ', 'à', 'è', 'ì', 'ò', 'ù', ];
+                            $permitidas = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U',
+                            'n', 'N', 'A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u', 'c',
+                            'C', 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', 'u', 'o',
+                            'O', 'i', 'a', 'e', 'U', 'I', 'A', 'E', 'N', 'a', 'e', 'i', 'o', 'u', ];
                             $texto = str_replace($no_permitidas, $permitidas, $cade);
 
+                            $worksheet->getCell($col . 1)->setValue($texto);
                             $vale = false;
                             for ($i = 0; $i < count($rows); $i++) {
                                 if ($rows[$i]['column_name'] === $texto) {
+                                    // var_dump($texto);
                                     $vale = true;
                                 }
                             }
@@ -176,13 +185,47 @@ class UsuariosController extends Controller
                                 }
                             }
                         }
+                        if ($tabla === 'alumnos') {
+                            $un = Alumnos::findOne(['codigo' => $model->codigo]);
+                            if ($un === null) {
+                                $model->save();
+                            }
+                        } elseif ($tabla === 'libros') {
+                            $model->curso = '' . $model->curso;
+                            $un = Libros::findOne(['isbn' => $model->isbn]);
+                            if ($un === null) {
+                                // var_dump($model->validate(), $model->errors);
+                                // die();
+                                $model->save();
+                            }
+                        } elseif ($tabla === 'uniformes') {
+                            $model->codigo = '' . $model->codigo;
+                            $un = Uniformes::findOne(['codigo' => $model->codigo]);
+                            if ($un !== null) {
+                                $un->cantidad = $un->cantidad + $model->cantidad;
+                                $un->save();
+                            } else {
+                                $model->save();
+                            }
+                        } else {
+                            $un = Tutores::findOne(['nif' => $model->nif]);
+                            if ($un === null) {
+                                $model->save();
+                            }
+                        }
+                        // die();
                         // var_dump($model->fecha_de_nacimiento);
                         // var_dump($model->validate(), $model->errors);
                         // die();
-                        $model->save();
                     }
-                    // return;
-                    return $this->redirect(['alumnos/index']);
+                    if ($tabla === 'alumnos') {
+                        return $this->redirect(['alumnos/index']);
+                    } elseif ($tabla === 'libros') {
+                        return $this->redirect(['libros/index']);
+                    } elseif ($tabla === 'uniformes') {
+                        return $this->redirect(['uniformes/index']);
+                    }
+                    return $this->redirect(['tutores/index']);
                 }
             }
 
@@ -328,8 +371,14 @@ class UsuariosController extends Controller
             $us = Yii::$app->user->identity;
             $model = new Usuarios();
             if ($us->rol === 'A') {
+                if (Usuarios::findOne(['colegio_id' => $colegio_id, 'rol' => 'C']) != null) {
+                    return $this->goHome();
+                }
                 $model->rol = 'C';
             } elseif ($us->rol === 'C') {
+                if (Usuarios::findOne(['colegio_id' => $colegio_id, 'rol' => 'V']) != null) {
+                    return $this->goHome();
+                }
                 $model->rol = 'V';
             } else {
                 return $this->goHome();
@@ -345,6 +394,7 @@ class UsuariosController extends Controller
                 // $model->contrasena = $model->password;
                 if ($model->save()) {
                     $model->emailRegistro();
+                    Yii::$app->session->setFlash('info', 'Se le ha enviado un correo al usuario para que se registre');
                     return $this->redirect(['colegios/index']);
                 }
             }

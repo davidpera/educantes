@@ -34,7 +34,7 @@ use yii\widgets\ActiveForm;
         <li>Ubicación</li>
         <li>Cantidad</li>
     <?php else: ?>
-        <li>Dni/Nif</li>
+        <li>Nif</li>
         <li>Nombre</li>
         <li>Apellidos</li>
         <li>Direccion</li>

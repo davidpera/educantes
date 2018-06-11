@@ -9,6 +9,7 @@ use yii\grid\GridView;
 
 $this->title = 'Libros';
 $this->params['breadcrumbs'][] = $this->title;
+Yii::$app->user->setReturnUrl(Yii::$app->request->url);
 ?>
 <div class="libros-index">
 

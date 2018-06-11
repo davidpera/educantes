@@ -19,7 +19,9 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($model, 'nom_usuario')->textInput(['maxlength' => true]) ?>
 
-                <?= $form->field($model, 'viejaPassword')->passwordInput(['maxlength' => true]) ?>
+                <?php if (Yii::$app->user->id == $model->id || (Yii::$app->user->identity->rol !== 'A' && Yii::$app->user->identity->rol !== 'C')): ?>
+                    <?= $form->field($model, 'viejaPassword')->passwordInput(['maxlength' => true]) ?>
+                <?php endif; ?>
 
                 <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
 
@@ -36,13 +38,13 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($model, 'apellidos')->textInput(['maxlength' => true]) ?>
 
-                <?= $form->field($model, 'nif')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'nif')->textInput(['maxlength' => 9]) ?>
 
                 <?= $form->field($model, 'direccion')->textInput(['maxlength' => true]) ?>
 
                 <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-                <?= $form->field($model, 'tel_movil')->textInput() ?>
+                <?= $form->field($model, 'tel_movil')->textInput(['maxlength' => 9]) ?>
 
             </fieldset>
         </div>
