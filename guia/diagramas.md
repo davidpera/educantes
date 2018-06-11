@@ -9,5 +9,5 @@
 ![Image of Controlers](images/controladores.png)
 
 ## Diagramas de estructura lógica de datos
-
+![Image of ER](images/DiagramaER.png)
 

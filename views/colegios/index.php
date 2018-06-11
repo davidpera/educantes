@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'alta' => function($url, $model, $key){
                     $us = Usuarios::find()->where(['id' => Yii::$app->user->id])->one();
                     if ($us->rol === 'A') {
-                        if (Usuarios::find()->where(['colegio_id' => $model->id])->count('*') !== 0) {
+                        if (Usuarios::find()->where(['colegio_id' => $model->id, 'rol' => 'C'])->count('*') !== 0) {
                             $usc = Usuarios::find()->where(['colegio_id' => $model->id , 'rol' => 'C'])->one();
                             return Html::a('Dar de baja admin', ['usuarios/delete', 'id' => $usc->id], [
                                     'class' => 'btn btn-danger',
