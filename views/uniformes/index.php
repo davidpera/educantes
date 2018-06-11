@@ -170,8 +170,8 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
                 [
                     'class' => 'yii\grid\ActionColumn',
                     'template' => '{update} {delete}'
-                ],,
                 ],
+            ],
         ])?>
         <div class="acciones">
             <?= Html::button('', [
@@ -241,8 +241,8 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
                             [
                                 'class' => 'yii\grid\ActionColumn',
                                 'template' => '{update} {delete}'
-                            ],,
                             ],
+                        ],
                     ]) . GridView::widget([
                         'options' => [
                             'class' => 'uniformes-mobil'

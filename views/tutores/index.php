@@ -57,7 +57,7 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
         $columnas[] = [
             'class' => 'yii\grid\ActionColumn',
             'template' => '{update} {delete}'
-        ],;
+        ];
 
     }
     // var_dump($columnas[6]);die();

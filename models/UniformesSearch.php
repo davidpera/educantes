@@ -47,14 +47,12 @@ class UniformesSearch extends Uniformes
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $mio = null)
+    public function search($params, $mio)
     {
-        if (($mio !== null && $mio !== 'no') || Yii::$app->user->identity->rol === 'C' || Yii::$app->user->identity->rol === 'P') {
+        if ($mio !== 'no') {
             $query = Uniformes::find()->where(['colegio_id' => Yii::$app->user->identity->colegio_id])->joinWith(['colegio']);
-        } elseif (Yii::$app->user->identity->rol === 'V') {
-            $query = Uniformes::find()->where(['!=', 'colegio_id', Yii::$app->user->identity->colegio_id])->joinWith(['colegio']);
         } else {
-            $query = Uniformes::find()->joinWith(['colegio']);
+            $query = Uniformes::find()->where(['!=', 'colegio_id', Yii::$app->user->identity->colegio_id])->joinWith(['colegio']);
         }
 
         // add conditions that should always apply here
