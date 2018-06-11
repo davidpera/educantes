@@ -32,7 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'dni_primer_tutor',
             'dni_segundo_tutor',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{update} {delete}'
+            ],
         ],
     ]); ?>
 

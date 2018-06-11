@@ -131,7 +131,7 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
                 'layout' => '{items}{pager}',
             ]) ?>
 <?php else: ?>
-    <?php if (Yii::$app->user->identity->rol === 'A' || Yii::$app->user->identity->rol === 'C'): ?>
+    <?php if (Yii::$app->user->identity->rol === 'C'): ?>
         <?= GridView::widget([
             'dataProvider' => $mioProvider,
             'filterModel' => $searchModel,
@@ -167,7 +167,10 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
                     ]
                 ],
 
-                ['class' => 'yii\grid\ActionColumn'],
+                [
+                    'class' => 'yii\grid\ActionColumn',
+                    'template' => '{update} {delete}'
+                ],,
                 ],
         ])?>
         <div class="acciones">
@@ -235,7 +238,10 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
                                 ]
                             ],
 
-                            ['class' => 'yii\grid\ActionColumn'],
+                            [
+                                'class' => 'yii\grid\ActionColumn',
+                                'template' => '{update} {delete}'
+                            ],,
                             ],
                     ]) . GridView::widget([
                         'options' => [

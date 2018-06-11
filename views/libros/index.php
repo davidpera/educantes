@@ -26,7 +26,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'precio',
             //'colegio_id',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{update} {delete}'
+            ],
         ],
     ]); ?>
 
