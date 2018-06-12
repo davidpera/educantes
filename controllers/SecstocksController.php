@@ -55,8 +55,8 @@ class SecstocksController extends Controller
         $model->uniforme_id = $uniforme_id;
 
         if ($model->load(Yii::$app->request->post())) {
-            $mp = ($model->cd * $model->pe) + $model->ss;
-            $model->mp = $mp;
+            $mp = (($model->cd / 7) * $model->pe) + $model->ss;
+            $model->mp = ceil($mp);
             if ($model->save()) {
                 return $this->redirect(['uniformes/index']);
             }

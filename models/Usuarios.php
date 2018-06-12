@@ -143,7 +143,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
                 $sms->save();
                 $headers = ['Content-Type: application/json'];
 
-                $ch = curl_init('http://api.gateway360.com/api/sms/submit_sms/?APIKEY=8e792f6f80ee4ddd7054f793a03142b6&SA=Educantes&DA=34' . $this->tel_movil . '&M=Deberia%20de%20pedir%20el%20uniforme%20codigo:%20' . $uniform->codigo . ',%20ya%20que%20su%20stock%20es%20igual%20o%20menor%20del%20stock%20de%20seguridad');
+                $ch = curl_init('http://api.gateway360.com/api/sms/submit_sms/?APIKEY=a814320eec7a4f1f25bbaebba2a94a6e&SA=Educantes&DA=34' . $this->tel_movil . '&M=Deberia%20de%20pedir%20el%20uniforme%20codigo:%20' . $uniform->codigo . ',%20ya%20que%20su%20stock%20es%20igual%20o%20menor%20del%20stock%20de%20seguridad');
                 curl_setopt($ch, CURLOPT_POST, 1);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);

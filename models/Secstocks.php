@@ -31,7 +31,7 @@ class Secstocks extends \yii\db\ActiveRecord
     {
         return [
             [['cd', 'pe', 'ss', 'mp', 'uniforme_id'], 'required'],
-            [['cd', 'pe', 'ss', 'mp'], 'number'],
+            [['cd', 'pe', 'ss', 'mp'], 'integer'],
             [['uniforme_id'], 'default', 'value' => null],
             [['uniforme_id'], 'integer'],
             [['uniforme_id'], 'exist', 'skipOnError' => true, 'targetClass' => Uniformes::className(), 'targetAttribute' => ['uniforme_id' => 'id']],
@@ -45,8 +45,8 @@ class Secstocks extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'cd' => 'Consumo diario',
-            'pe' => 'Tiempo pedido',
+            'cd' => 'Consumo semanal',
+            'pe' => 'Tiempo pedido(dias)',
             'ss' => 'Stock de seguridad',
             'mp' => 'Cantidad cuando pedir',
             'uniforme_id' => 'Uniforme ID',

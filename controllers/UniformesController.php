@@ -421,7 +421,7 @@ class UniformesController extends Controller
     }
 
     /**
-     * Cusca un uniforme segun el id dado.
+     * Busca un uniforme segun el id dado.
      * Si no lo encuentra te da un error 404.
      * @param int $id
      * @return Uniformes el modelo cargado
