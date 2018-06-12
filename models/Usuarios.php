@@ -202,6 +202,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     {
         // var_dump($pedidos);
         // die();
+        $us = self::findOne(['id' => $usuario]);
         if ($this->email !== null) {
             $email = $this->email;
         } else {
@@ -209,7 +210,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         }
         $total = 0.0;
         $totalIva = 0.0;
-        $mensaje = '<table><tr><th>Codigo</th>' .
+        $mensaje = '<p>Pedido por el padre con dni: ' . $us->nif . '</p><table><tr><th>Codigo</th>' .
         '<th>Descripcion</th><th>Cantidad</th><th>Precio</th></tr>';
         foreach ($pedidos as $ped) {
             $un = Productoscarro::findOne(['id' => $ped[5]])->uniforme;
