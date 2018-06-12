@@ -96,7 +96,6 @@ CREATE TABLE usuarios
     id          bigserial       PRIMARY KEY
   , nom_usuario varchar(255)    UNIQUE
   , password    varchar(255)
-  /* , contrasena  varchar(255)    DEFAULT NULL */
   , nombre      varchar(255)    DEFAULT NULL
   , apellidos   varchar(255)    DEFAULT NULL
   , nif         char(9)         UNIQUE DEFAULT NULL
@@ -106,7 +105,7 @@ CREATE TABLE usuarios
   , rol         char(1)         NOT NULL
   , token_val   varchar(255)    UNIQUE
   , colegio_id  bigint          REFERENCES colegios (id)
-                                ON DELETE NO ACTION ON UPDATE CASCADE
+                                ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS carros CASCADE;
@@ -115,7 +114,7 @@ CREATE TABLE carros
 (
     id          bigserial       PRIMARY KEY
   , usuario_id  bigint          NOT NULL REFERENCES usuarios (id)
-                                ON DELETE NO ACTION ON UPDATE CASCADE
+                                ON DELETE CASCADE ON UPDATE CASCADE
   , productos   numeric(5)      NOT NULL DEFAULT 0
 );
 
@@ -125,7 +124,7 @@ CREATE TABLE productosCarro
 (
     id              bigserial       PRIMARY KEY
   , carro_id        bigint          NOT NULL REFERENCES carros (id)
-                                ON DELETE NO ACTION ON UPDATE CASCADE
+                                    ON DELETE CASCADE ON UPDATE CASCADE
   , uniforme_id     bigint          NOT NULL REFERENCES uniformes (id)
                                     ON DELETE NO ACTION ON UPDATE CASCADE
   , cantidad        numeric(5)      NOT NULL
@@ -140,9 +139,9 @@ CREATE TABLE sms
 (
     id          bigserial       PRIMARY KEY
   , emisario_id bigint          NOT NULL REFERENCES colegios (id)
-                                ON DELETE NO ACTION ON UPDATE CASCADE
+                                ON DELETE CASCADE ON UPDATE CASCADE
   , receptor_id bigint          NOT NULL REFERENCES usuarios (id)
-                                ON DELETE NO ACTION ON UPDATE CASCADE
+                                ON DELETE CASCADE ON UPDATE CASCADE
   , mensaje     varchar(255)    NOT NULL
 );
 

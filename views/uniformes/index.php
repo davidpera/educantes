@@ -65,7 +65,7 @@ if (Yii::$app->user->identity->rol === 'P') {
                 var numer = bot.closest('.informacion').children('.datos-anadir').children('.numeric');
                 var cant = numer.children('input').val();
                 numer.children('input').val(0);
-                // console.log(cant);
+                // console.log(numer);
                 if (cant !== "0") {
                     $('.numeric').remove('p');
                     numer.children('input').removeClass('error-input');

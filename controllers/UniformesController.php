@@ -194,9 +194,12 @@ class UniformesController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-            // if ($model->nif === '') {
-            //     $model->nif = null;
-            // }
+            $sec = Secstocks::findOne(['uniforme_id' => $model->id]);
+            if ($sec !== null) {
+                if ($model->cantidad > $sec->ss) {
+                    $model->underss = false;
+                }
+            }
             $model->foto = UploadedFile::getInstance($model, 'foto');
             if ($model->save() && $model->upload()) {
                 if ($us->rol === 'V') {

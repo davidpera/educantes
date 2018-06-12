@@ -78,6 +78,11 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
                  'on' => [self::ESCENARIO_CREATE, self::ESCENARIO_UPDATE],
              ],
              [
+                  ['email', 'tel_movil'],
+                  'required',
+                  'on' => [self::ESCENARIO_UPDATE],
+             ],
+             [
                  ['password', 'confirmar'],
                  'required',
                  'on' => [self::ESCENARIO_CAMBIO],
@@ -195,6 +200,8 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
      */
     public function emailPedidoPadre($usuario, $pedidos)
     {
+        // var_dump($pedidos);
+        // die();
         if ($this->email !== null) {
             $email = $this->email;
         } else {
@@ -205,13 +212,14 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         $mensaje = '<table><tr><th>Codigo</th>' .
         '<th>Descripcion</th><th>Cantidad</th><th>Precio</th></tr>';
         foreach ($pedidos as $ped) {
+            $un = Productoscarro::findOne(['id' => $ped[5]])->uniforme;
             $num = preg_replace('/([^0-9\\,])/i', '', $ped[4]);
             $num = str_replace(',', '.', $num);
             $iv = preg_replace('/([^0-9\\,])/i', '', $ped[6]);
             $iv = str_replace(',', '.', $iv);
             $total += $num;
             $totalIva += $iv;
-            $mensaje .= '<tr><td>' . $ped[1] . '</td>' .
+            $mensaje .= '<tr><td>' . $un->codigo . '</td>' .
             '<td>' . $ped[0] . '</td><td>' . $ped[3] . '</td>' .
             '<td>' . $ped[4] . '</td></tr>';
         }
@@ -302,6 +310,8 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
      */
     public function emailAceptarPadre($pedido)
     {
+        var_dump($pedido);
+        die();
         $total = 0.0;
         $mensaje = '<table><tr><th>Codigo</th>' .
         '<th>Descripcion</th><th>Cantidad</th><th>Precio</th></tr>';

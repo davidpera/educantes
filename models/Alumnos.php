@@ -55,7 +55,7 @@ class Alumnos extends \yii\db\ActiveRecord
             'nombre' => 'Nombre',
             'primer_apellido' => 'Primer Apellido',
             'segundo_apellido' => 'Segundo Apellido',
-            'fecha_de_nacimiento' => 'Fecha de nacimiento',
+            'fecha_de_nacimiento' => 'Fecha de nacimiento (YYYY-MM-DD)',
             'dni_primer_tutor' => 'DNI Primer Tutor',
             'dni_segundo_tutor' => 'DNI Segundo Tutor',
             'colegio_id' => 'Colegio ID',

@@ -7,7 +7,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'Logeo';
+$this->title = 'Iniciar sesion';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-login col-md-10 col-md-offset-4 formul">

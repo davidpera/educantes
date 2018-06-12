@@ -28,25 +28,38 @@ $js = <<<EOT
             var bot = $(this);
             var panel = bot.closest('.panel-default');
             var id = panel.attr('id');
-            var cant = panel.find('#total').children('.dat').text();
-            var cantidad = parseInt(cant.match(regex)[0])+(parseInt(cant.match(regex)[1]) / 100);
-            // console.log(cantidad);
+            var totaliva = panel.find('#totaliva').children('.dat').text().replace(',', '.');
+            console.log(totaliva);
             $.ajax({
                 url: "$urlQuitar",
                 type: 'POST',
                 data: {producto: id},
                     success: function(data){
                         panel.remove();
-                        var valTotal = $('#num-total').text();
-                        var numTotal = (parseInt(valTotal.match(regex)[0])+(parseInt(valTotal.match(regex)[1]) / 100)) - cantidad;
+                        var regex = /(\d+)/g;
+                        var totiva = $('#num-total').text().replace(',', '.');
+                        var total = round(parseFloat(totiva)) - round(parseFloat(totaliva));
                         var valor = $('.glyphicon-shopping-cart').text();
                         var num = parseInt(valor.match(regex)[0]) - 1;
-                        $('#num-total').text(numTotal);
+                        $('#num-total').text(round(total) + ' €');
                         $('.glyphicon-shopping-cart').animate({color: "red"}, 1000).animate({color: "black"}, 1000);
                         $('.glyphicon-shopping-cart').text(' ('+num+')');
                     },
                 });
         });
+
+        function round(num, decimales = 2) {
+            var signo = (num >= 0 ? 1 : -1);
+            num = num * signo;
+            if (decimales === 0) //con 0 decimales
+                return signo * Math.round(num);
+            // round(x * 10 ^ decimales)
+            num = num.toString().split('e');
+            num = Math.round(+(num[0] + 'e' + (num[1] ? (+num[1] + decimales) : decimales)));
+            // x * 10 ^ (-decimales)
+            num = num.toString().split('e');
+            return signo * (num[0] + 'e' + (num[1] ? (+num[1] - decimales) : -decimales));
+        }
         $('.boton-pedido').on('click', function() {
             var todo = new Object();
             var pedidos = [];
@@ -76,7 +89,7 @@ $js = <<<EOT
                 data: {pedido: json},
                 success: function(data){
                     // document.write(data);
-                    // console.log(data);
+                    console.log(data);
                     // var valor = $('.glyphicon-shopping-cart').text();
                     // var regex = /(\d+)/g;
                     // var num = parseInt(valor.match(regex)[0]) - 1;

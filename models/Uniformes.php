@@ -47,9 +47,9 @@ class Uniformes extends \yii\db\ActiveRecord
     {
         return [
             [['codigo', 'descripcion', 'talla', 'precio', 'iva', 'cantidad', 'colegio_id'], 'required'],
-            [['precio', 'iva', 'cantidad'], 'number'],
+            [['precio'], 'number'],
             [['colegio_id'], 'default', 'value' => null],
-            [['colegio_id'], 'integer'],
+            [['colegio_id', 'iva', 'cantidad'], 'integer'],
             [['codigo', 'descripcion', 'talla', 'ubicacion'], 'string', 'max' => 255],
             [['foto'], 'file', 'extensions' => 'jpg'],
         ];
