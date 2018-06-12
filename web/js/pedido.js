@@ -41,16 +41,15 @@ function eventoPedido(){
                         url: urlPedido,
                         type: 'GET',
                         data: {'id':id, 'cantidadPedida':cantidadPedida},
-                        // success: function() {
-                        //     var boton = '<button type="button" id="'+id+'" class="btn btn-success pedido">Hacer pedido</button>'
-                        //     $('.pedido-container').replaceWith(boton);
-                        //     eventoPedido();
-                        // }
+                        success: function(data) {
+                            console.log(data);
+                            window.location.href="/index.php/uniformes%2Findex";
+                        }
                     });
                 });
                 $('.cancelar-pedido').on('click', function(){
+                    $(this).closest('.pedido-container').parent('td').children('button').show();
                     $(this).closest('.pedido-container').remove();
-                    boton.show();
                 });
             },
         });

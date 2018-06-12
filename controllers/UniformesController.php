@@ -60,14 +60,14 @@ class UniformesController extends Controller
             if ($prodcar->save()) {
                 $uniforme->cantidad = $uniforme->cantidad - $prodcar->cantidad;
                 $vend = Usuarios::findOne(['colegio_id' => $uniforme->colegio_id, 'rol' => 'V']);
-                if ($vend !== null) {
-                    if ($vend->tel_movil !== null) {
-                        $vend->smsStock($uniforme->id);
-                    }
-                }
                 // var_dump($prodcar->cantidad);
                 // die();
                 if ($uniforme->save()) {
+                    if ($vend !== null) {
+                        if ($vend->tel_movil !== null) {
+                            $vend->smsStock($uniforme->id);
+                        }
+                    }
                     $carr = Carros::findOne(['id' => $prodcar->carro_id]);
                     $carr->productos = $carr->productos + 1;
                     $carr->save();
@@ -249,12 +249,13 @@ class UniformesController extends Controller
         $uniform = $this->findModel($id);
         $uniform->cantidad = $uniform->cantidad - $cantidadPedida;
         $vend = Usuarios::findOne(['colegio_id' => $uniform->colegio_id, 'rol' => 'V']);
-        if ($vend !== null) {
-            if ($vend->tel_movil !== null) {
-                $vend->smsStock($uniform->id);
-            }
-        }
         if ($uniform->save()) {
+            if ($vend !== null) {
+                if ($vend->tel_movil !== null) {
+                    var_dump('bien');
+                    $vend->smsStock($uniform->id);
+                }
+            }
             $usuario = Usuarios::find()->where(['colegio_id' => $uniform->colegio_id, 'rol' => 'V'])->one();
             $usuario->emailPedido($id, Yii::$app->user->id, $cantidadPedida);
             Yii::$app->session->setFlash('info', 'Se le ha enviado un correo al administrador del colegio, se le contestará cuando lo acepte');
@@ -286,6 +287,7 @@ class UniformesController extends Controller
                             $pasa = false;
                         } else {
                             $uniform->cantidad = $uniform->cantidad - $un[1];
+                            $uniform->save();
                             $vend = Usuarios::findOne(['colegio_id' => $uniform->colegio_id, 'rol' => 'V']);
                             if ($vend !== null) {
                                 if ($vend->tel_movil !== null) {
@@ -293,7 +295,6 @@ class UniformesController extends Controller
                                     // die();
                                 }
                             }
-                            $uniform->save();
                             $pedid[] = [$un[0], $un[1]];
                         }
                     }

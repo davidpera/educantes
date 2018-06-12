@@ -137,7 +137,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
                 // curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
 
                 $result = curl_exec($ch);
-                // var_dump('bien');
+                var_dump('bien');
             }
             $uniform->underss = true;
             $uniform->save();
