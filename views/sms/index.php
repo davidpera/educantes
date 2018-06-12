@@ -23,7 +23,7 @@ Yii::$app->user->setReturnUrl(Yii::$app->request->url);
         'columns' => [
 
             'emisario.nombre',
-            'receptor.nombre',
+            'receptor.tel_movil',
             'mensaje',
         ],
     ]); ?>

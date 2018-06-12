@@ -118,14 +118,15 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
      */
     public function smsStock($uniforme_id)
     {
+        // var_dump('bien');
         $uniform = Uniformes::findOne(['id' => $uniforme_id]);
         $secs = Secstocks::findOne(['uniforme_id' => $uniform->id]);
         if ($secs !== null && $uniform->cantidad <= $secs->mp) {
-            if ($uniform->underSS === false) {
+            if ($uniform->underss === false) {
                 $sms = new Sms();
                 $sms->emisario_id = $this->colegio_id;
                 $sms->receptor_id = $this->id;
-                $sms->mensaje = "Deberia de pedir el uniforme%20codigo: ' . $uniform->codigo . ', ya que su stock es igual o menor del stock de seguridad";
+                $sms->mensaje = 'Deberia de pedir el uniforme codigo: ' . $uniform->codigo . ', ya que su stock es igual o menor del stock de seguridad';
                 $sms->save();
                 $headers = ['Content-Type: application/json'];
 
@@ -138,7 +139,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
                 $result = curl_exec($ch);
                 // var_dump('bien');
             }
-            $uniform->underSS = true;
+            $uniform->underss = true;
             $uniform->save();
         }
     }

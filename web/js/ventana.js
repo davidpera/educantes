@@ -45,34 +45,42 @@ function confirmar(){
                 var sel = [];
                 var ped = [];
                 var inp = [];
-                // todos.colegio = id;
-                // for (se of f.childNodes[i].childNodes[0]['value']) {
-                //     sel.push(se['value']);
-                // }
                 sel.push(f.childNodes[i].childNodes[0]['value']);
-                // for (num of $('fieldset').find('input')) {
-                //     inp.push(num['value']);
-                // }
                 inp.push(f.childNodes[i].childNodes[1]['value']);
+
                 for (var j = 0; j < sel.length; j++) {
-                    var es = false;
-                    for (p of ped) {
-                        if (p[0] === sel[j]) {
-                            p[1] += inp[j];
-                            es = true;
-                        }
-                    }
-                    if (es === false) {
-                        ped.push([sel[j],inp[j]])
-                    }
+                    ped.push([sel[j],inp[j]])
                 }
                 ar.push(ped);
-                // todos.push(ar);
-                // todos[cont] = ar;
-                // cont++;
+            }
+            var inc = [];
+            for (a of ar) {
+                var inda = ar.indexOf(a);
+                // console.log(a);
+                for (b of ar) {
+                    var indb = ar.indexOf(b);
+                    if (inda != indb) {
+                        if (a[0][0] === b[0][0]) {
+                            // console.log(a[0][0], b[0][0]);
+                            if (!inc.includes(indb)) {
+                                inc.push(indb);
+                            }
+
+                            var sum = parseInt(a[0][1]) + parseInt(b[0][1]);
+                            a[0][1] = sum;
+                            // ar.splice(ind);
+                        }
+                    }
+                }
+            }
+            for (var i = 0; i < inc.length; i++) {
+                if (i != inc.length - 1) {
+                    ar.splice(inc[i]);
+                    // console.log(ar[inc[i]]);
+                }
             }
             pedidos.push(ar);
-            console.log(pedidos);
+            // console.log(pedidos);
         }
         todos.pedidos = pedidos;
         var json = JSON.stringify(todos);
@@ -84,9 +92,13 @@ function confirmar(){
             contentType: "application/json",
             success: function(data){
                 // console.log(data);
-                window.opener.location.href="/index.php/uniformes%2Findex&mio=no"
+                window.opener.location.href="/index.php/uniformes%2Findex"
                 window.close();
-            }
+            },
+            error: function(xhr, status, error) {
+                // var err = eval("(" + xhr.responseText + ")");
+                console.log(xhr.responseText);
+            },
         });
     });
 }

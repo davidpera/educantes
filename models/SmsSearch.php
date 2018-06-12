@@ -18,14 +18,14 @@ class SmsSearch extends Sms
     {
         return [
             [['id', 'emisario_id', 'receptor_id'], 'integer'],
-            [['mensaje', 'receptor.nombre', 'emisario.nombre'], 'safe'],
+            [['mensaje', 'receptor.tel_movil', 'emisario.nombre'], 'safe'],
         ];
     }
 
     public function attributes()
     {
         return array_merge(parent::attributes(), [
-            'receptor.nombre',
+            'receptor.tel_movil',
             'emisario.nombre',
         ]);
     }
@@ -69,9 +69,9 @@ class SmsSearch extends Sms
             'desc' => ['colegios.nombre' => SORT_DESC],
         ];
 
-        $dataProvider->sort->attributes['receptor.nombre'] = [
-            'asc' => ['usuarios.nombre' => SORT_ASC],
-            'desc' => ['usuarios.nombre' => SORT_DESC],
+        $dataProvider->sort->attributes['receptor.tel_movil'] = [
+            'asc' => ['usuarios.tel_movil' => SORT_ASC],
+            'desc' => ['usuarios.tel_movil' => SORT_DESC],
         ];
 
         // grid filtering conditions
@@ -79,11 +79,11 @@ class SmsSearch extends Sms
             'id' => $this->id,
             'emisario_id' => $this->emisario_id,
             'receptor_id' => $this->receptor_id,
+            'usuarios.tel_movil' => $this->getAttribute('receptor.tel_movil'),
         ]);
 
         $query->andFilterWhere(['ilike', 'mensaje', $this->mensaje])
-            ->andFilterWhere(['ilike', 'colegios.nombre', $this->getAttribute('emisario.nombre')])
-            ->andFilterWhere(['ilike', 'usuarios.nombre', $this->getAttribute('receptor.nombre')]);
+            ->andFilterWhere(['ilike', 'colegios.nombre', $this->getAttribute('emisario.nombre')]);
 
         return $dataProvider;
     }

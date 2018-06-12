@@ -89,7 +89,7 @@ class UniformesController extends Controller
             $uniforme->cantidad = $uniforme->cantidad + $cantidad;
             $secs = Secstocks::findOne(['uniforme_id' => $uniforme->id]);
             if ($secs !== null && $uniforme->cantidad > $secs->mp) {
-                $uniforme->underSS = true;
+                $uniforme->underss = true;
                 $uniforme->save();
             }
             if ($uniforme->save()) {
@@ -269,10 +269,12 @@ class UniformesController extends Controller
      */
     public function actionMultiple($pedido)
     {
+        // var_dump($pedido);
         if ($pedido) {
             $com = json_decode($pedido);
             // $pedidos = [];
             $pasa = true;
+            // var_dump($com);
             foreach ($com->pedidos as $ped) {
                 $colegio = Colegios::find()->where(['nombre' => $ped[0]])->one();
                 $us = Usuarios::find()->where(['colegio_id' => $colegio->id, 'rol' => 'V'])->one();
@@ -287,7 +289,8 @@ class UniformesController extends Controller
                             $vend = Usuarios::findOne(['colegio_id' => $uniform->colegio_id, 'rol' => 'V']);
                             if ($vend !== null) {
                                 if ($vend->tel_movil !== null) {
-                                    $vend->smsStock($uniforme->id);
+                                    $vend->smsStock($uniform->id);
+                                    // die();
                                 }
                             }
                             $uniform->save();
@@ -338,7 +341,7 @@ class UniformesController extends Controller
         $uniform->cantidad = $uniform->cantidad + $cantidadPedida;
         $secs = Secstocks::findOne(['uniforme_id' => $uniform->id]);
         if ($secs !== null && $uniform->cantidad > $secs->mp) {
-            $uniform->underSS = true;
+            $uniform->underss = true;
             $uniform->save();
         }
         if ($uniform->save()) {
@@ -380,7 +383,7 @@ class UniformesController extends Controller
             $uniform->cantidad = $uniform->cantidad + $art[1];
             $secs = Secstocks::findOne(['uniforme_id' => $uniform->id]);
             if ($secs !== null && $uniform->cantidad > $secs->mp) {
-                $uniform->underSS = true;
+                $uniform->underss = true;
                 $uniform->save();
             }
             if (!$uniform->save()) {
