@@ -146,7 +146,7 @@
     </tr>
             <tr id="$carro">
         <td><a href="app-models-usuarios.html#$carro-detail">$carro</a></td>
-        <td></td>
+        <td><a href="yii-db-activequery.html">yii\db\ActiveQuery</a></td>
         <td></td>
         <td><a href="app-models-usuarios.html">app\models\Usuarios</a></td>
     </tr>
@@ -194,8 +194,8 @@
     </tr>
             <tr id="$id">
         <td><a href="app-models-usuarios.html#$id-detail">$id</a></td>
-        <td></td>
-        <td></td>
+        <td><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.integer">integer</a></td>
+        <td>An ID that uniquely identifies a user identity.</td>
         <td><a href="app-models-usuarios.html">app\models\Usuarios</a></td>
     </tr>
             <tr class="inherited" id="$isNewRecord">
@@ -530,12 +530,12 @@ la accion para completar el registro.</td>
     </tr>
             <tr id="findIdentity()">
         <td><a href="app-models-usuarios.html#findIdentity()-detail">findIdentity()</a></td>
-        <td></td>
+        <td>Finds an identity by the given ID.</td>
         <td><a href="app-models-usuarios.html">app\models\Usuarios</a></td>
     </tr>
             <tr id="findIdentityByAccessToken()">
         <td><a href="app-models-usuarios.html#findIdentityByAccessToken()-detail">findIdentityByAccessToken()</a></td>
-        <td></td>
+        <td>Finds an identity by the given token.</td>
         <td><a href="app-models-usuarios.html">app\models\Usuarios</a></td>
     </tr>
             <tr class="inherited" id="findOne()">
@@ -645,7 +645,7 @@ la accion para completar el registro.</td>
     </tr>
             <tr id="getId()">
         <td><a href="app-models-usuarios.html#getId()-detail">getId()</a></td>
-        <td></td>
+        <td>Returns an ID that can uniquely identify a user identity.</td>
         <td><a href="app-models-usuarios.html">app\models\Usuarios</a></td>
     </tr>
             <tr class="inherited" id="getIsNewRecord()">
@@ -1202,21 +1202,22 @@ The previous example would extract "id".</td>
             <tr id="ESCENARIO_CAMBIO">
           <td id="ESCENARIO_CAMBIO-detail">ESCENARIO_CAMBIO</td>
           <td>'cambio'</td>
-          <td>
+          <td>Escenario que se da cuando se esta cambiado la contraseña cuando pulsa el enlace
+de contraseña olvidada.
                         </td>
           <td><a href="app-models-usuarios.html">app\models\Usuarios</a></td>
         </tr>
             <tr id="ESCENARIO_CREATE">
           <td id="ESCENARIO_CREATE-detail">ESCENARIO_CREATE</td>
           <td>'create'</td>
-          <td>
+          <td>Escenario que se da cuando se esta registrando un usuario.
                         </td>
           <td><a href="app-models-usuarios.html">app\models\Usuarios</a></td>
         </tr>
             <tr id="ESCENARIO_UPDATE">
           <td id="ESCENARIO_UPDATE-detail">ESCENARIO_UPDATE</td>
           <td>'update'</td>
-          <td>
+          <td>Escenario que se da cuando se esta modificando un usuario.
                         </td>
           <td><a href="app-models-usuarios.html">app\models\Usuarios</a></td>
         </tr>
@@ -1294,7 +1295,7 @@ This is a shortcut of the expression: OP_INSERT | OP_UPDATE | OP_DELETE.        
         
             </div>
 
-    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="app-models-usuarios.html#getCarro()-detail">getCarro</a></strong> ( )</div>
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="yii-db-activequery.html">yii\db\ActiveQuery</a></span> <strong><a href="app-models-usuarios.html#getCarro()-detail">getCarro</a></strong> ( )</div>
 
 
     <div class="detail-header h3" id="$colegio-detail">
@@ -1376,10 +1377,11 @@ This is a shortcut of the expression: OP_INSERT | OP_UPDATE | OP_DELETE.        
 
     
     <div class="doc-description">
-        
+        <p>An ID that uniquely identifies a user identity.</p>
+
             </div>
 
-    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="app-models-usuarios.html#getId()-detail">getId</a></strong> ( )</div>
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.integer">integer</a></span> <strong><a href="app-models-usuarios.html#getId()-detail">getId</a></strong> ( )</div>
 
 
     <div class="detail-header h3" id="$sms-detail">
@@ -1828,19 +1830,28 @@ la accion para completar el registro.</strong></p>
 
     
     <div class="doc-description">
-        <p><strong></strong></p>
+        <p><strong>Finds an identity by the given ID.</strong></p>
 
         
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type">void</span> <strong><a href="app-models-usuarios.html#findIdentity()-detail">findIdentity</a></strong> ( <span style="color: #0000BB">$id</span> )</td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type"><a href="yii-web-identityinterface.html">yii\web\IdentityInterface</a></span> <strong><a href="app-models-usuarios.html#findIdentity()-detail">findIdentity</a></strong> ( <span style="color: #0000BB">$id</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$id</span></td>
-                  <td class="param-type-col"></td>
-                  <td class="param-desc-col"></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.integer">integer</a></td>
+                  <td class="param-desc-col"><p>The ID to be looked for</p>
+</td>
                 </tr>
-                                                </table>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="yii-web-identityinterface.html">yii\web\IdentityInterface</a></td>
+                  <td class="param-desc-col"><p>The identity object that matches the given ID.
+Null should be returned if such an identity cannot be found
+or the identity is not in an active state (disabled, deleted, etc.)</p>
+</td>
+                </tr>
+                                    </table>
 
 <!--	-->
 
@@ -1856,24 +1867,35 @@ la accion para completar el registro.</strong></p>
 
     
     <div class="doc-description">
-        <p><strong></strong></p>
+        <p><strong>Finds an identity by the given token.</strong></p>
 
         
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type">void</span> <strong><a href="app-models-usuarios.html#findIdentityByAccessToken()-detail">findIdentityByAccessToken</a></strong> ( <span style="color: #0000BB">$token</span>, <span style="color: #0000BB">$type&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type"><a href="yii-web-identityinterface.html">yii\web\IdentityInterface</a></span> <strong><a href="app-models-usuarios.html#findIdentityByAccessToken()-detail">findIdentityByAccessToken</a></strong> ( <span style="color: #0000BB">$token</span>, <span style="color: #0000BB">$type&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$token</span></td>
-                  <td class="param-type-col"></td>
-                  <td class="param-desc-col"></td>
+                  <td class="param-type-col">mixed</td>
+                  <td class="param-desc-col"><p>The token to be looked for</p>
+</td>
                 </tr>
                             <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$type</span></td>
-                  <td class="param-type-col"></td>
-                  <td class="param-desc-col"></td>
+                  <td class="param-type-col">mixed</td>
+                  <td class="param-desc-col"><p>The type of the token. The value of this parameter depends on the implementation.
+For example, <a href="yii-filters-auth-httpbearerauth.html">yii\filters\auth\HttpBearerAuth</a> will set this parameter to be <code>yii\filters\auth\HttpBearerAuth</code>.</p>
+</td>
                 </tr>
-                                                </table>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="yii-web-identityinterface.html">yii\web\IdentityInterface</a></td>
+                  <td class="param-desc-col"><p>The identity object that matches the given token.
+Null should be returned if such an identity cannot be found
+or the identity is not in an active state (disabled, deleted, etc.)</p>
+</td>
+                </tr>
+                                    </table>
 
 <!--	-->
 
@@ -1928,7 +1950,7 @@ so that it can be used to check the validity of the user identity.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="app-models-usuarios.html#getCarro()-detail">getCarro</a></strong> ( )</td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="yii-db-activequery.html">yii\db\ActiveQuery</a></span> <strong><a href="app-models-usuarios.html#getCarro()-detail">getCarro</a></strong> ( )</td></tr>
             </table>
 
 <!--	-->
@@ -2014,14 +2036,20 @@ so that it can be used to check the validity of the user identity.</p>
 
     
     <div class="doc-description">
-        <p><strong></strong></p>
+        <p><strong>Returns an ID that can uniquely identify a user identity.</strong></p>
 
         
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="app-models-usuarios.html#getId()-detail">getId</a></strong> ( )</td></tr>
-            </table>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.integer">integer</a></span> <strong><a href="app-models-usuarios.html#getId()-detail">getId</a></strong> ( )</td></tr>
+                                                <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.integer">integer</a></td>
+                  <td class="param-desc-col"><p>An ID that uniquely identifies a user identity.</p>
+</td>
+                </tr>
+                                    </table>
 
 <!--	-->
 
@@ -2289,7 +2317,7 @@ if the table is not named after this convention.</p>
 </div>
 
 <footer class="footer">
-        <p class="pull-right"><small>Page generated on Sun, 10 Jun 2018 19:35:02 +0000</small></p>
+        <p class="pull-right"><small>Page generated on Tue, 12 Jun 2018 12:37:23 +0000</small></p>
     Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
 
 <script>jQuery(function ($) {
