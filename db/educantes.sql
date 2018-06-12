@@ -152,7 +152,7 @@ INSERT INTO colegios (cif, nombre, email, cod_postal, direccion)
 INSERT INTO usuarios (nom_usuario, password, rol, colegio_id)
         VALUES  ('pepe', crypt('pepe', gen_salt('bf', 13)), 'A', null),
                 ('juan', crypt('j', gen_salt('bf', 13)), 'C', 1),
-                ('maria', crypt('m', gen_salt('bf', 13)), 'C', 2),;
+                ('maria', crypt('m', gen_salt('bf', 13)), 'C', 2);
 
 INSERT INTO usuarios (nom_usuario, password, email, tel_movil, rol, colegio_id)
         VALUES  ('pedro', crypt('p', gen_salt('bf', 13)),'david.pe.ra.1996@gmail.com',697691185, 'V', 1),
