@@ -11,7 +11,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
- * TutoresController implements the CRUD actions for Tutores model.
+ * TutoresController implementa las acciones del CRUD de tutores.
  */
 class TutoresController extends Controller
 {
@@ -41,7 +41,7 @@ class TutoresController extends Controller
     }
 
     /**
-     * Lists all Tutores models.
+     * muestra todos los tutores.
      * @return mixed
      */
     public function actionIndex()
@@ -74,10 +74,10 @@ class TutoresController extends Controller
     }
 
     /**
-     * Displays a single Tutores model.
+     * Muestra un tutor.
      * @param int $id
      * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @throws NotFoundHttpException si no se encuentra el tutor
      */
     public function actionView($id)
     {
@@ -91,8 +91,8 @@ class TutoresController extends Controller
     }
 
     /**
-     * Creates a new Tutores model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
+     * Crea un nuevo tutor.
+     * si se crea bien te manda al index.
      * @return mixed
      */
     public function actionCreate()
@@ -118,8 +118,8 @@ class TutoresController extends Controller
     }
 
     /**
-     * Updates an existing Tutores model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * Modifica un tutor existente.
+     * si se modifica bien te manda al index.
      * @param int $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -133,7 +133,7 @@ class TutoresController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
@@ -142,11 +142,11 @@ class TutoresController extends Controller
     }
 
     /**
-     * Deletes an existing Tutores model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * Borra un tutor existente.
+     * si se borra bien te manda al index.
      * @param int $id
      * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @throws NotFoundHttpException si no encuentra el modelo
      */
     public function actionDelete($id)
     {
@@ -160,11 +160,11 @@ class TutoresController extends Controller
     }
 
     /**
-     * Finds the Tutores model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
+     * Busca un tutor segun el id dado.
+     * Si no lo encuentra te da un error 404.
      * @param int $id
-     * @return Tutores the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return Tutores el modelo cargado
+     * @throws NotFoundHttpException si no encuentra el modelo
      */
     protected function findModel($id)
     {

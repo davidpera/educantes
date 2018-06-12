@@ -11,7 +11,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
- * LibrosController implements the CRUD actions for Libros model.
+ * LibrosController implementa las acciones del CRUD para Libros.
  */
 class LibrosController extends Controller
 {
@@ -41,7 +41,7 @@ class LibrosController extends Controller
     }
 
     /**
-     * Lists all Libros models.
+     * Muestra todos los modelos de libro.
      * @return mixed
      */
     public function actionIndex()
@@ -68,10 +68,10 @@ class LibrosController extends Controller
     }
 
     /**
-     * Displays a single Libros model.
+     * Muestra un libro.
      * @param int $id
      * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @throws NotFoundHttpException si no es encontrado el libro
      */
     public function actionView($id)
     {
@@ -85,8 +85,8 @@ class LibrosController extends Controller
     }
 
     /**
-     * Creates a new Libros model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
+     * Crea un nuevo libro.
+     * Si se crea bien te devuelve a la vista de libros.
      * @return mixed
      */
     public function actionCreate()
@@ -108,8 +108,8 @@ class LibrosController extends Controller
     }
 
     /**
-     * Updates an existing Libros model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * Modifica un libro existente.
+     * Si se modifica bien te devuelve a la vista de carros.
      * @param int $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -132,8 +132,8 @@ class LibrosController extends Controller
     }
 
     /**
-     * Deletes an existing Libros model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * Borra un libro existente.
+     * Si se borra bien te devuelve al index de carros.
      * @param int $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -150,11 +150,11 @@ class LibrosController extends Controller
     }
 
     /**
-     * Finds the Libros model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
+     * Busca un libro segun el id recibido.
+     * Si no se encuentra el libro manda un error 404.
      * @param int $id
-     * @return Libros the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return Libros el modelo cargado
+     * @throws NotFoundHttpException si no se encuentra el modelo
      */
     protected function findModel($id)
     {

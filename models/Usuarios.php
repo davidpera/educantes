@@ -28,8 +28,21 @@ use yii\helpers\Url;
  */
 class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
+    /**
+     * Escenario que se da cuando se esta registrando un usuario.
+     * @var string
+     */
     const ESCENARIO_CREATE = 'create';
+    /**
+     * Escenario que se da cuando se esta modificando un usuario.
+     * @var string
+     */
     const ESCENARIO_UPDATE = 'update';
+    /**
+     * Escenario que se da cuando se esta cambiado la contraseña cuando pulsa el enlace
+     * de contraseña olvidada.
+     * @var string
+     */
     const ESCENARIO_CAMBIO = 'cambio';
 
     public $viejaPassword;
@@ -395,7 +408,9 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     {
         return $this->hasMany(Sms::className(), ['receptor_id' => 'id'])->inverseOf('receptor');
     }
-
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getCarro()
     {
         return $this->hasOne(Carros::className(), ['usuario_id' => 'id'])->inverseOf('usuario');
@@ -408,13 +423,22 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     {
         return $this->hasOne(Colegios::className(), ['id' => 'colegio_id'])->inverseOf('usuarios');
     }
+    /**
+     * {@inheritdoc}
+     */
     public static function findIdentity($id)
     {
         return self::findOne($id);
     }
+    /**
+     * {@inheritdoc}
+     */
     public static function findIdentityByAccessToken($token, $type = null)
     {
     }
+    /**
+     * {@inheritdoc}
+     */
     public function getId()
     {
         return $this->id;
@@ -434,6 +458,9 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     {
         // return $this->authKey === $authKey;
     }
+    /**
+     * {@inheritdoc}
+     */
     public function validatePassword($password)
     {
         return Yii::$app->security->validatePassword($password, $this->password);

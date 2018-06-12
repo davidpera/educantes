@@ -2,15 +2,13 @@
 
 namespace app\controllers;
 
-use Yii;
 use app\models\Productoscarro;
-use app\models\ProductoscarroSearch;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
- * ProductoscarroController implements the CRUD actions for Productoscarro model.
+ * ProductoscarroController implementa las acciones de CRUD para los productos de los carros.
  */
 class ProductoscarroController extends Controller
 {
@@ -30,77 +28,11 @@ class ProductoscarroController extends Controller
     }
 
     /**
-     * Lists all Productoscarro models.
+     * Borra un producto existente.
+     * Si se borra te manda al index.
+     * @param int $id
      * @return mixed
-     */
-    public function actionIndex()
-    {
-        $searchModel = new ProductoscarroSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
-     * Displays a single Productoscarro model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
-     * Creates a new Productoscarro model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new Productoscarro();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Updates an existing Productoscarro model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Deletes an existing Productoscarro model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @throws NotFoundHttpException si no se encuentra el modelo
      */
     public function actionDelete($id)
     {
@@ -110,11 +42,11 @@ class ProductoscarroController extends Controller
     }
 
     /**
-     * Finds the Productoscarro model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Productoscarro the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
+     * Busca un producto segun el id.
+     * si no se encuentra te da un error 404.
+     * @param int $id
+     * @return Productoscarro el modelo cargado
+     * @throws NotFoundHttpException si no se encuentra el modelo
      */
     protected function findModel($id)
     {

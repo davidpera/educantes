@@ -13,7 +13,7 @@ use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
 /**
- * ColegiosController implements the CRUD actions for Colegios model.
+ * ColegiosController implementa las acciones del CRUD para Colegios.
  */
 class ColegiosController extends Controller
 {
@@ -43,7 +43,7 @@ class ColegiosController extends Controller
     }
 
     /**
-     * Devuleve todos los colegios a los que el usuario no pertenezca.
+     * Devuelve todos los colegios a los que el usuario no pertenezca.
      * @return array Conjunto de colegios
      */
     public function actionLista()
@@ -54,7 +54,7 @@ class ColegiosController extends Controller
     }
 
     /**
-     * Lists all Colegios models.
+     * Muestra todos los modelos de colegio.
      * @return mixed
      */
     public function actionIndex()
@@ -74,10 +74,10 @@ class ColegiosController extends Controller
     }
 
     /**
-     * Displays a single Colegios model.
+     * Muestra un solo colegio.
      * @param int $id
      * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @throws NotFoundHttpException si no es encontrado el colegio
      */
     public function actionView($id)
     {
@@ -122,8 +122,8 @@ class ColegiosController extends Controller
     }
 
     /**
-     * Deletes an existing Colegios model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * Borra un colegio existente.
+     * Si el borrado funciona correctamente se redireccionara al usuario a la pagina de index.
      * @param int $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -136,11 +136,11 @@ class ColegiosController extends Controller
     }
 
     /**
-     * Finds the Colegios model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
+     * Busca un colegio segun el id recibido.
+     * Si no se encuentra el colegio manda un error 404.
      * @param int $id
-     * @return Colegios the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return Colegios el modelo cargado
+     * @throws NotFoundHttpException si el modelo no es encontrado
      */
     protected function findModel($id)
     {

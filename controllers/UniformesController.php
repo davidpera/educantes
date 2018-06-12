@@ -17,7 +17,7 @@ use yii\web\Response;
 use yii\web\UploadedFile;
 
 /**
- * UniformesController implements the CRUD actions for Uniformes model.
+ * UniformesController Implementa las acciones del CRUD de uniformes.
  */
 class UniformesController extends Controller
 {
@@ -102,7 +102,7 @@ class UniformesController extends Controller
     }
 
     /**
-     * Lists all Uniformes models.
+     * Muestra los uniformes.
      * @return mixed
      */
     public function actionIndex()
@@ -133,10 +133,10 @@ class UniformesController extends Controller
     }
 
     /**
-     * Displays a single Uniformes model.
+     * Muestra un uniforme.
      * @param int $id
      * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @throws NotFoundHttpException si no se encuentra el modelo
      */
     public function actionView($id)
     {
@@ -150,8 +150,8 @@ class UniformesController extends Controller
     }
 
     /**
-     * Creates a new Uniformes model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
+     * Crea un nuevo uniforme.
+     * Si se crea bien te manda al index.
      * @return mixed
      */
     public function actionCreate()
@@ -179,8 +179,8 @@ class UniformesController extends Controller
     }
 
     /**
-     * Updates an existing Uniformes model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * Modifica un uniforme existente.
+     * Si se modifica bien te manda al index.
      * @param int $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -400,11 +400,11 @@ class UniformesController extends Controller
     }
 
     /**
-     * Deletes an existing Uniformes model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * Borra un uniforme existente.
+     * Si se borra bien te manda al index.
      * @param int $id
      * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @throws NotFoundHttpException si no encuentra el modelo
      */
     public function actionDelete($id)
     {
@@ -421,11 +421,11 @@ class UniformesController extends Controller
     }
 
     /**
-     * Finds the Uniformes model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
+     * Cusca un uniforme segun el id dado.
+     * Si no lo encuentra te da un error 404.
      * @param int $id
-     * @return Uniformes the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return Uniformes el modelo cargado
+     * @throws NotFoundHttpException si no encuentra el modelo
      */
     protected function findModel($id)
     {

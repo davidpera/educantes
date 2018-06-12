@@ -1,10 +1,8 @@
 <?php
 
 use app\models\Secstocks;
-use app\models\Uniformes;
 
 use yii\web\View;
-use yii\web\Session;
 
 use yii\helpers\Url;
 use yii\helpers\Html;

@@ -63,7 +63,7 @@ class CarrosController extends Controller
     }
 
     /**
-     * Muestra una lsita de los productos que ya se han pedido.
+     * Muestra una lista de los productos que ya se han pedido.
      * @return mixed
      */
     public function actionRealizados()
@@ -150,7 +150,7 @@ class CarrosController extends Controller
     }
 
     /**
-     * Displays a single Carros model.
+     * Mustra un carro con todos sus datos.
      * @param int $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -163,8 +163,8 @@ class CarrosController extends Controller
     }
 
     /**
-     * Creates a new Carros model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
+     * Crea un nuevo carro.
+     * Si se crea bien te devuelve a la vista de carros.
      * @return mixed
      */
     public function actionCreate()
@@ -181,8 +181,8 @@ class CarrosController extends Controller
     }
 
     /**
-     * Updates an existing Carros model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * Modifica un carro existente.
+     * Si se modifica bien te devuelve a la vista de carros.
      * @param int $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -201,11 +201,11 @@ class CarrosController extends Controller
     }
 
     /**
-     * Deletes an existing Carros model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * Borra un carro existente.
+     * Si se borra bien te devuelve al index de carros.
      * @param int $id
      * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @throws NotFoundHttpException si no es encontrado el carro
      */
     public function actionDelete($id)
     {
@@ -215,11 +215,11 @@ class CarrosController extends Controller
     }
 
     /**
-     * Finds the Carros model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
+     * Busca un carro segun el id recibido.
+     * Si no se encuentra el carro manda un error 404.
      * @param int $id
-     * @return Carros the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return Carros el modelo cargado
+     * @throws NotFoundHttpException si el modelo no es encotrado
      */
     protected function findModel($id)
     {

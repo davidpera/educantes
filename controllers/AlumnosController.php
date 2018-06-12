@@ -162,8 +162,8 @@ class AlumnosController extends Controller
     }
 
     /**
-     * Finds the Alumnos model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
+     * Busca un alumno segun el id recibido.
+     * Si no se encuentra el alumno manda un error 404.
      * @param int $id
      * @return Alumnos el modelo cargado
      * @throws NotFoundHttpException si el modelo no es encontrado

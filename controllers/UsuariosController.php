@@ -19,7 +19,7 @@ use yii\web\UploadedFile;
 use yii\widgets\ActiveForm;
 
 /**
- * UsuariosController implements the CRUD actions for Usuarios model.
+ * UsuariosController implementa las acciones del CRUD de usuarios.
  */
 class UsuariosController extends Controller
 {
@@ -49,7 +49,7 @@ class UsuariosController extends Controller
     }
 
     /**
-     * Lists all Usuarios models.
+     * Muestra los usuarioss.
      * @return mixed
      */
     public function actionIndex()
@@ -406,8 +406,8 @@ class UsuariosController extends Controller
     }
 
     /**
-     * Creates a new Usuarios model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
+     * Crea un nuevo usuario.
+     * Si se crea bien te manda al inicio.
      * @return mixed
      */
     public function actionCreate()
@@ -434,8 +434,8 @@ class UsuariosController extends Controller
     }
 
     /**
-     * Updates an existing Usuarios model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * Modifica un usuario existente.
+     * Si se modifica bien te manda al inicio.
      * @param int $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -469,11 +469,11 @@ class UsuariosController extends Controller
     }
 
     /**
-     * Deletes an existing Usuarios model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * Borra un usuario existente.
+     * Si se borra bien te manda a la pagina anterior.
      * @param int $id
      * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @throws NotFoundHttpException si no encuentra el modelo
      */
     public function actionDelete($id)
     {
@@ -483,11 +483,11 @@ class UsuariosController extends Controller
     }
 
     /**
-     * Finds the Usuarios model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
+     * Busca un usuario segun el id dado.
+     * Si no lo encuentra te da un error 404.
      * @param int $id
-     * @return Usuarios the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return Usuarios el modelo cargado
+     * @throws NotFoundHttpException si no encuentra el modelo
      */
     protected function findModel($id)
     {
